@@ -1,7 +1,9 @@
 <?php 
 // $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
 
-$url = (@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'];
+
+
+$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] .'/scrum_app/public' : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +64,7 @@ $url = (@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://') . $_SERVER['SERVER_
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li <?=(!isset(@$_COOKIE['tema']) || @$_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
+                                    <li <?=(null == @$_COOKIE['tema'] || @$_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
                                     <li <?=(@$_COOKIE['tema'] == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
                                     <li <?=(@$_COOKIE['tema'] == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
                                     <li <?=(@$_COOKIE['tema'] == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>

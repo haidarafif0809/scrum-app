@@ -31,9 +31,16 @@ class BackLogsController extends Controller
                     'edit_url' => route('backlog.edit', $backlog->id),
                     'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama . '?'
                 ]);
+            // })->addColumn('no_urut', function($backlog) {
+                // return view('datatable._noUrut', [
+                //     'angka' => $backlog->getKolomAttribute()
+                // ]);
+                // return $backlog->getKolomAttribute();
+          
             })->make(true);
         }
         $html = $htmlBuilder
+            // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
             ->addColumn(['data' => 'aplikasi', 'name' => 'aplikasi', 'title' => 'Aplikasi'])
             ->addColumn(['data' => 'nama', 'name' => 'nama', 'title' => 'Nama'])
             ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])

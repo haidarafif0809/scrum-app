@@ -23,7 +23,7 @@ class UsersSeeder extends Seeder
 
         // membuat sample admin 
         $admin = new User;
-        $admin->name = 'admin toko dasar';
+        $admin->name = 'Admin Aplikasi Scrum';
         $admin->email = 'admin@gmail.com';
         $admin->password = bcrypt('rahasiaku');
         $admin->save();
@@ -31,7 +31,7 @@ class UsersSeeder extends Seeder
 
         // membuat sample member
 		$member = new User;
-        $member->name = 'member toko dasar';
+        $member->name = 'Member Aplikasi Scrum';
         $member->email = 'member@gmail.com';
         $member->password = bcrypt('rahasiaku');
         $member->save();
