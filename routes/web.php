@@ -21,3 +21,7 @@ Route::get('/anu', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::group(['middleware' => ['auth']], function () {
+	Route::resource('backlog', 'BackLogController');
+});
