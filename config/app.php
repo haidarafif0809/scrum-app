@@ -143,6 +143,9 @@ return [
         // untuk membuat form dan html
         Collective\Html\HtmlServiceProvider::class,
 
+        // membuat role
+      
+
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -169,7 +172,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+  Laratrust\LaratrustServiceProvider::class,
         //
 
         /*
@@ -198,6 +201,8 @@ return [
         // untuk membuat form dan html 
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        // membuat role
+        'Laratrust' => Laratrust\LaratrustFacade::class,
 
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
