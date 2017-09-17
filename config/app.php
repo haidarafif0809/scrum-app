@@ -172,7 +172,6 @@ return [
         /*
          * Package Service Providers...
          */
-  Laratrust\LaratrustServiceProvider::class,
         //
 
         /*
@@ -183,6 +182,8 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Laratrust\LaratrustServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 
