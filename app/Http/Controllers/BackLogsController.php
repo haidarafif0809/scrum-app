@@ -3,17 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Yajra\Datatables\Html\Builder;
+use Yajra\Datatables\Datatables;
+use App\Backlog;
 
-class BackLogController extends Controller
+class BackLogsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    // public function index()
+    // {
+    //     return view('backlog.index');
+    // }
+
+    public function index(Request $request, Builder $htmlBuilder)
     {
-        return view('backlog.index');
+        if ($request->ajax()) {
+            $backlog = Backlog::select(['aplikasi', 'nama', 'demo', 'catatan'])->get();
+            return Datatables::of($backlog)->make(true);
+        }
+        $html = $htmlBuilder
+            ->addColumn(['data' => 'aplikasi', 'name' => 'aplikasi', 'title' => 'Aplikasi'])
+            ->addColumn(['data' => 'nama', 'name' => 'nama', 'title' => 'Nama'])
+            ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
+            ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan']);
+        return view('backlog.index')->with(compact('html'));
     }
 
     /**

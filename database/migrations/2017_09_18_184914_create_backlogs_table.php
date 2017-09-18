@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MasterDataBacklog extends Migration
+class CreateBacklogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class MasterDataBacklog extends Migration
      */
     public function up()
     {
-        Schema::create('backlog', function (Blueprint $table) {
+        Schema::create('backlogs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('aplikasi');
             $table->string('nama');
@@ -30,6 +30,6 @@ class MasterDataBacklog extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('backlog');
+        Schema::dropIfExists('backlogs');
     }
 }
