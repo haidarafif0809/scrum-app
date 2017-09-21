@@ -53,6 +53,7 @@
                         @if (Auth::check())
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
                             <li><a href="{{ route('backlog.index') }}">Backlog</a></li>
+                            <li><a href="{{ route('teams.index') }}">Team</a></li>
                         @endif
                     </ul>
 
@@ -88,6 +89,7 @@
             </div>
         </nav>
 
+        @include('layouts._flash')
         @yield('content')
     </div>
 
@@ -97,7 +99,7 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
-    
+    <script src="{{ asset('js/custom.js') }}"></script>
     @yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
