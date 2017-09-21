@@ -1,3 +1,8 @@
+<?php 
+// $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
+
+$url = (@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'];
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +21,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
-    <link href="{{ asset('css/bootstrap-lumen.css') }}" rel="stylesheet" type='text/css'>
+    <link href="<?=$url;?>/css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
 
@@ -52,8 +57,31 @@
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
-                            <li><a href="{{ route('backlog.index') }}">Backlog</a></li>
                             <li><a href="{{ route('teams.index') }}">Team</a></li>
+                            <li><a href="{{ url('/backlog') }}">Backlog</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li <?=(!isset(@$_COOKIE['tema']) || @$_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
+                                    <li <?=(@$_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
+                                </ul>
+                            </li>
                         @endif
                     </ul>
 
@@ -100,6 +128,7 @@
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
     @yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->

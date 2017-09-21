@@ -7,14 +7,14 @@
 				<ul class="breadcrumb">
 					<li><a href="{{ url('/home') }}">Dashboard</a></li>
 					<li><a href="{{ url('/backlog') }}">Backlog</a></li>
-					<li class="active">Tambah Backlog</li>
+					<li class="active">Ubah Backlog</li>
 				</ul>
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h2 class="panel-title">Tambah Backlog</h2>
+						<h2 class="panel-title">Ubah Backlog</h2>
 					</div>
 					<div class="panel-body">
-						{!! Form::open(['url' => route('backlog.store'), 'method' => 'post', 'files' => 'false', 'class' => 'form-horizontal']) !!}
+						{!! Form::model($backlog, ['url' => route('backlog.update', $backlog->id), 'method' => 'put', 'files' => 'false', 'class' => 'form-horizontal']) !!}
 							@include('backlog._form')
 						{!! Form::close() !!}
 					</div>

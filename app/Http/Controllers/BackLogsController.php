@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use App\Backlog;
+use Session;
 
 class BackLogsController extends Controller
 {
@@ -22,14 +23,22 @@ class BackLogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $backlog = Backlog::select(['aplikasi', 'nama', 'demo', 'catatan'])->get();
-            return Datatables::of($backlog)->make(true);
+            $backlog = Backlog::all();
+            return Datatables::of($backlog)->addColumn('action', function($backlog) {
+                return view('datatable._action', [
+                    'model' => $backlog,
+                    'form_url' => route('backlog.destroy', $backlog->id),
+                    'edit_url' => route('backlog.edit', $backlog->id),
+                    'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama . '?'
+                ]);
+            })->make(true);
         }
         $html = $htmlBuilder
             ->addColumn(['data' => 'aplikasi', 'name' => 'aplikasi', 'title' => 'Aplikasi'])
             ->addColumn(['data' => 'nama', 'name' => 'nama', 'title' => 'Nama'])
             ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
-            ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan']);
+            ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
+            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);;
         return view('backlog.index')->with(compact('html'));
     }
 
@@ -51,7 +60,18 @@ class BackLogsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'aplikasi' => 'required|unique:backlogs,aplikasi',
+            'nama' => 'required',
+            'demo' => 'required',
+            'catatan' => ''
+        ]);
+        $backlog = Backlog::create($request->all());
+        Session::flash("flash_notification", [
+            "level"=>"success", 
+            "message"=>"Berhasil menyimpan $backlog->nama"
+        ]);
+        return redirect()->route('backlog.index');
     }
 
     /**
@@ -73,7 +93,8 @@ class BackLogsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $backlog = Backlog::find($id);
+        return view('backlog.edit')->with(compact('backlog'));
     }
 
     /**
@@ -85,7 +106,19 @@ class BackLogsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'aplikasi' => 'required|unique:backlogs,aplikasi,' . $id,
+            'nama' => 'required',
+            'demo' => 'required',
+            'catatan' => ''
+        ]);
+        $backlog = Backlog::find($id);
+        $backlog->update($request->all());
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil menyimpan $backlog->nama"
+        ]);
+        return redirect()->route('backlog.index');
     }
 
     /**
@@ -96,6 +129,12 @@ class BackLogsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $backlog = Backlog::find($id);
+        $backlog->delete();
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Buku berhasil dihapus"
+        ]);
+        return redirect()->route('backlog.index');
     }
 }

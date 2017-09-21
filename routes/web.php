@@ -29,3 +29,5 @@ Route::group(['middleware' => ['auth']], function () {
 	route::resource('teams', 'TeamsController');
 
 });
+
+Route::get('/tema/{tema}', 'TemaController@AturTema');

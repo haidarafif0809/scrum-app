@@ -13,6 +13,7 @@
 						<h2 class="panel-title">Backlog</h2>
 					</div>
 					<div class="panel-body">
+						<p> <a class="btn btn-primary" href="{{ url('/backlog/create') }}">Tambah</a> </p>
 						{!! $html->table(['class'=>'table-striped']) !!}
 					</div>
 				</div>
