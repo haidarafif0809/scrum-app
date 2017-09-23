@@ -24,6 +24,8 @@ Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => ['auth']], function () {
 	Route::resource('backlog', 'BackLogsController');
+	Route::resource('sprints', 'SprintsController'); 
+	Route::resource('sprintbacklogs', 'SprintbacklogsController');
 
 	// route untuk membuat team
 	route::resource('teams', 'TeamsController');

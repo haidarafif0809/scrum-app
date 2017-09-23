@@ -54,6 +54,7 @@
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
                             <li><a href="{{ route('backlog.index') }}">Backlog</a></li>
                             <li><a href="{{ route('teams.index') }}">Team</a></li>
+                            <li><a href="{{ route('sprints.index') }}">Sprint</a></li> 
                         @endif
                     </ul>
 
