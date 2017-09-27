@@ -53,7 +53,8 @@
                         @if (Auth::check())
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
                             <li><a href="{{ route('backlog.index') }}">Backlog</a></li>
-                            <li><a href="{{ route('teams.index') }}">Team</a></li>
+                            <li><a href="{{ route('teams.index') }}">Team</a></li> 
+                            <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
                         @endif
                     </ul>
 
