@@ -59,9 +59,9 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
-<<<<<<< HEAD
                             <li><a href="{{ route('teams.index') }}">Team</a></li>
                             <li><a href="{{ url('/backlog') }}">Backlog</a></li>
+                            <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -85,11 +85,6 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                                     <li <?=(@$_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
                                 </ul>
                             </li>
-=======
-                            <li><a href="{{ route('backlog.index') }}">Backlog</a></li>
-                            <li><a href="{{ route('teams.index') }}">Team</a></li> 
-                            <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
->>>>>>> 6f1938d9071a31fb6044adbd632a8528e165040e
                         @endif
                     </ul>
 
