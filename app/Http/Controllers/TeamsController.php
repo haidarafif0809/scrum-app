@@ -67,7 +67,7 @@ class TeamsController extends Controller
     {
         $this->validate($request, [
             'kode_team' => 'required|unique:teams,kode_team',
-            'nama_team' => 'required'
+            'nama_team' => 'required|unique:teams,nama_team'
         ]);
         $team = Team::create($request->all());
         Session::flash("flash_notification", [
@@ -111,10 +111,10 @@ class TeamsController extends Controller
     {
         $this->validate($request, [
             'kode_team' => 'required|unique:teams,kode_team,' . $id,
-            'nama_team' => 'required'
+            'nama_team' => 'required|unique:teams,nama_team,' . $id
         ]);
         $team = Team::find($id);
-        $team->update($request->only('kode_team','nama_team'));
+        $team->update(['kode_team' => $request->kode_team,'nama_team' => $request->nama_team]);
         Session::flash("flash_notification", [
         "level"=>"success",
         "message"=>"Berhasil menyimpan  ".$team->nama_team.""
