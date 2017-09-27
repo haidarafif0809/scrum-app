@@ -72,7 +72,7 @@ class TeamsController extends Controller
         $team = Team::create($request->all());
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Berhasil menyimpan ".$team->kode_team." & ".$team->nama_team.""
+            "message"=>"Berhasil menyimpan" .$team->nama_team.""
         ]);
         return redirect()->route('teams.index');
     }
@@ -109,11 +109,15 @@ class TeamsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'kode_team' => 'required|unique:teams,kode_team,' . $id,
+            'nama_team' => 'required|unique:teams,nama_team,' . $id
+        ]);
         $team = Team::find($id);
-        $team->update($request->only('kode_team','nama_team'));
+        $team->update(['kode_team' => $request->kode_team,'nama_team' => $request->nama_team]);
         Session::flash("flash_notification", [
         "level"=>"success",
-        "message"=>"Berhasil menyimpan ".$team->kode_team." & ".$team->nama_team.""
+        "message"=>"Berhasil menyimpan  ".$team->nama_team.""
         ]);
         return redirect()->route('teams.index');
 
