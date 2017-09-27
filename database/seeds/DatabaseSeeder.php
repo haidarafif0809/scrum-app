@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Backlog;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
          $this->call(UsersSeeder::class);
          $this->call(BacklogsSeeder::class);
          $this->call(TeamsSeeder::class);
+         $this->call(AplicationsSeeder::class);
 
     }
 }

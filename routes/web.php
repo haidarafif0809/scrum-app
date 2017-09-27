@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	// route untuk membuat team
 	route::resource('teams', 'TeamsController');
+	route::resource('aplikasi', 'AplicationsController');
 
 });
 
