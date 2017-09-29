@@ -10,7 +10,8 @@
         "laravelcollective/html": "5.3",
         "santigarcor/laratrust": "3.0.*",
         "yajra/laravel-datatables-oracle": "~6.0",
-        "yajra/laravel-auditable": "^1.1"
+        "yajra/laravel-auditable": "^1.1",
+        "barryvdh/laravel-debugbar": "^2.4"
 
     },
     "require-dev": {

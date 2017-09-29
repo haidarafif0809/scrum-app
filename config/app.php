@@ -185,6 +185,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -240,6 +241,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Laratrust' => Laratrust\LaratrustFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
