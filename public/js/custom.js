@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+	$('.js-selectize').selectize({
+		sortField: 'text'
+	});
 	// confirm delete
 	$(document.body).on('submit', '.js-confirm', function () {
 		var $el = $(this)

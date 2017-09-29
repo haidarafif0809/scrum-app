@@ -18,7 +18,7 @@ class SprintbacklogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder) 
     { 
         if ($request->ajax()) { 
-            $sprintbacklogs = Sprintbacklog::select(['id','backlog', 'isi_kepentingan', 'perkiraan_waktu']); 
+            $sprintbacklogs = Sprintbacklog::select(['id','backlog_id', 'isi_kepentingan', 'perkiraan_waktu']); 
             return Datatables::of($sprintbacklogs) 
                 ->addColumn('action', function($sprintbacklog){ 
              
@@ -32,7 +32,7 @@ class SprintbacklogsController extends Controller
         } 
  
         $html = $htmlBuilder 
-            ->addColumn(['data' => 'backlog', 'name'=>'backlog', 'title'=>'Backlog']) 
+            ->addColumn(['data' => 'backlog_id', 'name'=>'backlog_id', 'title'=>'Backlog']) 
             ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
             ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
             ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 

@@ -26,6 +26,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <link href="<?=$url;?>/css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
+    <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/selectize.bootstrap3.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -62,6 +64,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                             <li><a href="{{ route('teams.index') }}">Team</a></li>
                             <li><a href="{{ url('/backlog') }}">Backlog</a></li>
                             <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
+                            <li><a href="{{ route('sprints.index') }}">Sprint</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -131,7 +134,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
-
+    <script src="{{ asset('js/selectize.min.js') }}"></script>
     @yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
