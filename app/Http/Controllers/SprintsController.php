@@ -13,7 +13,7 @@ class SprintsController extends Controller
     public function index(Request $request, Builder $htmlBuilder) 
   { 
     if ($request->ajax()) { 
-      $sprints = Sprint::select(['id','kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']); 
+      $sprints = Sprint::select(['id', 'nama_sprint', 'kode_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']); 
               return Datatables::of($sprints) 
                 ->addColumn('action', function($sprint) { 
                     return view('datatable._action', [ 
@@ -22,7 +22,7 @@ class SprintsController extends Controller
                         'edit_url'=>route('sprints.edit', $sprint->id), 
                         'confirm_message' => 'Yakin anda ingin menghapus' . $sprint->nama_sprint . '?'  
                     ]); 
-                })  
+                })
  
                 ->addColumn('backlog', function($sprint) { 
                     return view('datatable._backlog', [ 
@@ -36,7 +36,6 @@ class SprintsController extends Controller
     ->addColumn(['data' => 'durasi', 'name' =>  'durasi', 'title' =>  'Durasi']) 
     ->addColumn(['data' => 'waktu_mulai', 'name' =>  'waktu_mulai', 'title' =>  'Waktu Mulai']) 
     ->addColumn(['data' => 'team', 'name' =>  'team', 'title' =>  'Team']) 
-    ->addColumn(['data' => 'kode_sprint', 'name' =>  'kode_sprint', 'title' =>  'Kode Sprint']) 
     ->addColumn(['data' => 'nama_sprint', 'name' =>'nama_sprint', 'title'   =>'Nama Sprint']) 
     ->addColumn(['data' => 'backlog',      'name' =>  'backlog', 'title'      => 'Backlog', 'orderable' => false, 'searchable' => false]) 
             ->addColumn(['data' => 'action', 'name'      =>  'action', 'title'      => 'Aksi', 'orderable' => false, 'searchable' => false]); 
@@ -54,7 +53,7 @@ class SprintsController extends Controller
         'tanggal_mulai'=>'required|unique:sprints' , 
         'durasi'=>'required|unique:sprints' , 
         'waktu_mulai'=>'required|unique:sprints' , 
-        'team'=>'required|unique:sprints' , 
+        'team'=>'required', 
         'kode_sprint'=>'required|unique:sprints' , 
         'nama_sprint'=>'required|unique:sprints' 
       ]); 
@@ -78,7 +77,7 @@ class SprintsController extends Controller
     { 
             $this->validate($request, [ 
             'tanggal_mulai' => 'required|unique:sprints,kode_sprint', 
-            'durasi' => 'required|unique:sprints,kode_sprint', 
+            'durasi' => 'required', 
             'waktu_mulai' => 'required|unique:sprints,kode_sprint', 
             'team' => 'required|unique:sprints,kode_sprint', 
             'kode_sprint' => 'required|unique:sprints,kode_sprint', 

@@ -6,7 +6,7 @@
       <div class="col-md-12"> 
         <ul class="breadcrumb"> 
           <li><a href="{{ url('/home') }}">Aplikasi</a></li> 
-          <li><a href="{{ url('/admin/sprints') }}">Sprint</a></li> 
+          <li><a href="{{ url('/sprints') }}">Sprint</a></li> 
           <li class="active">Tambah Sprint</li> 
         </ul> 
    
@@ -26,3 +26,4 @@
     </div> 
   </div> 
 @endsection
+

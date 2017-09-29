@@ -15,7 +15,7 @@ class CreateSprintbacklogsTable extends Migration
     { 
         Schema::create('sprintbacklogs', function (Blueprint $table) { 
             $table->increments('id'); 
-            $table->string('backlog'); 
+            $table->integer('backlog'); 
             $table->string('isi_kepentingan'); 
             $table->string('perkiraan_waktu'); 
             $table->integer('created_by')->nullable()->index();
@@ -24,11 +24,6 @@ class CreateSprintbacklogsTable extends Migration
         }); 
     } 
  
-    /** 
-     * Reverse the migrations. 
-     * 
-     * @return void 
-     */ 
     public function down() 
     { 
         Schema::dropIfExists('sprintbacklogs'); 

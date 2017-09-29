@@ -20,7 +20,7 @@ class CreateSprintsTable extends Migration
             $table->string('tanggal_mulai')->nullable(); 
             $table->string('durasi')->nullable(); 
             $table->string('waktu_mulai')->nullable(); 
-            $table->string('team')->nullable(); 
+            $table->integer('team')->nullable(); 
             $table->integer('created_by')->nullable()->index();
             $table->integer('updated_by')->nullable()->index();
             $table->timestamps(); 

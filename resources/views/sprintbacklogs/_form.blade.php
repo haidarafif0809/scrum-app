@@ -1,9 +1,11 @@
  
-<div class="form-group{{ $errors->has('backlog_id') ? ' has-error' : '' }}"> 
-  {!! Form::label('backlog_id', 'Backlog', ['class'=>'col-md-2 control-label']) !!} 
+<div class="form-group{{ $errors->has('backlog') ? ' has-error' : '' }}"> 
+  {!! Form::label('backlog', 'Backlog', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::text('backlog_id', null, ['class'=>'form-control']) !!} 
-    {!! $errors->first('backlog_id', '<p class="help-block">:message</p>') !!} 
+{!! Form::select('backlog', [''=>'']+App\Backlog::pluck('nama','id')->all(), null, [
+'class'=>'js-selectize',
+'placeholder' => 'Pilih Team']) !!}
+    {!! $errors->first('backlog', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
  

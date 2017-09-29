@@ -28,6 +28,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.bootstrap3.css') }}" rel="stylesheet">
+    <link  href="{{ asset('css/themes.css') }}" rel="stylesheet">
+    <link  href="{{ asset('css/timepicker.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -135,7 +137,20 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/selectize.min.js') }}"></script>
-    @yield('scripts')
+    <script src="{{ asset('js/jquery-ui.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+    $( "#datepicker" ).datepicker({ dateFormat: 'dd-mm-yy',
+        changeMonth: true,
+        changeYear: true});
+        });
+
+    $(function() {
+  $('#timepicker').timepicker();
+});
+</script>
+@yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
 </body>

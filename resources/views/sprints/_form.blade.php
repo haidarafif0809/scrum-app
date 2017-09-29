@@ -1,10 +1,11 @@
 <div class="form-group{{ $errors->has('tanggal_mulai') ? ' has-error' : '' }}"> 
   {!! Form::label('tanggal_mulai', 'Tanggal Mulai', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::text('tanggal_mulai', null, ['class'=>'form-control']) !!} 
+    {!! Form::text('tanggal_mulai', null,  array('class' => 'form-control', 'id' => 'datepicker')) !!} 
     {!! $errors->first('tanggal_mulai', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
+
  
 <div class="form-group{{ $errors->has('durasi') ? ' has-error' : '' }}"> 
   {!! Form::label('durasi', 'Durasi', ['class'=>'col-md-2 control-label']) !!} 
@@ -17,12 +18,12 @@
 <div class="form-group{{ $errors->has('waktu_mulai') ? ' has-error' : '' }}"> 
   {!! Form::label('waktu_mulai', 'Waktu Mulai', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::text('waktu_mulai', null, ['class'=>'form-control']) !!} 
+    {!! Form::text('waktu_mulai', null,  array('class' => 'form-control', 'id' => 'timepicker')) !!} 
     {!! $errors->first('waktu_mulai', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
  
-<div class="form-group{{ $errors->has('team') ? ' has-error' : '' }}"> 
+ <div class="form-group{{ $errors->has('team') ? ' has-error' : '' }}"> 
   {!! Form::label('team', 'Team', ['class'=>'col-md-2 control-label' ]) !!} 
   <div class="col-md-4"> 
    {!! Form::select('team', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, [
@@ -32,6 +33,14 @@
   </div> 
 </div> 
  
+ <div class="form-group{{ $errors->has('kode_sprint') ? ' has-error' : '' }}"> 
+  {!! Form::label('kode_sprint', 'Kode Sprint', ['class'=>'col-md-2 control-label']) !!} 
+  <div class="col-md-4"> 
+    {!! Form::text('kode_sprint', null,  array('class' => 'form-control', 'id' => 'timepicker')) !!} 
+    {!! $errors->first('kode_sprint', '<p class="help-block">:message</p>') !!} 
+  </div> 
+</div> 
+
 <div class="form-group{{ $errors->has('nama_sprint') ? ' has-error' : '' }}"> 
   {!! Form::label('nama_sprint', 'Nama Sprint', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 

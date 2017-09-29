@@ -6,7 +6,7 @@
       <div class="col-md-12"> 
         <ul class="breadcrumb"> 
           <li><a href="{{ url('/home') }}">Dashboard</a></li> 
-          <li><a href="{{ url('/admin/sprintbacklogs') }}">Sprint Backlog</a></li> 
+          <li><a href="{{ url('/sprintbacklogs') }}">Sprint Backlog</a></li> 
           <li class="active">Tambah Sprint Backlog</li> 
         </ul> 
          
