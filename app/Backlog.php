@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Backlog extends Model
 {
-    protected $fillable = ['aplikasi', 'nama', 'demo', 'catatan'];
+    protected $fillable = ['aplikasi_id', 'aplikasi', 'nama', 'demo', 'catatan'];
 
     public function getKolomAttribute() {
     	$jumlahKolom = Backlog::all()->count();

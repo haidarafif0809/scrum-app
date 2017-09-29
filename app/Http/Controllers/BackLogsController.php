@@ -56,6 +56,7 @@ class BackLogsController extends Controller
         ]);
         $aplikasi = Aplication::find($request->aplikasi);
         $backlog = Backlog::create([
+            'aplikasi_id' => $request->aplikasi,
             'aplikasi' => $aplikasi->nama,
             'nama' => $request->nama,
             'demo' => $request->demo,
