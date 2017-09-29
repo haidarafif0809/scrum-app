@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use App\Backlog;
+use App\Aplication;
 use Session;
 
 class BackLogsController extends Controller
@@ -48,12 +49,18 @@ class BackLogsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'aplikasi' => 'required|unique:backlogs,aplikasi',
+            'aplikasi' => 'required|exists:aplications,id',
             'nama' => 'required',
             'demo' => 'required',
             'catatan' => ''
         ]);
-        $backlog = Backlog::create($request->all());
+        $aplikasi = Aplication::find($request->aplikasi);
+        $backlog = Backlog::create([
+            'aplikasi' => $aplikasi->nama,
+            'nama' => $request->nama,
+            'demo' => $request->demo,
+            'catatan' => $request->catatan
+        ]);
         Session::flash("flash_notification", [
             "level"=>"success", 
             "message"=>"Berhasil menyimpan $backlog->nama"

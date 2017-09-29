@@ -13,4 +13,8 @@ class Backlog extends Model
 
     	return $jumlahKolom;
     }
+
+    public function backlog() {
+    	return $this->belongsTo('App\Backlog');
+    }
 }
