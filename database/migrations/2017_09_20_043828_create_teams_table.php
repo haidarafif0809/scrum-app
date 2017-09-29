@@ -17,8 +17,8 @@ class CreateTeamsTable extends Migration
             $table->increments('id');
             $table->string('kode_team');
             $table->string('nama_team');
-            $table->integer('created_by')->index();
-            $table->integer('updated_by')->index();
+            $table->integer('created_by')->nullable()->index();
+            $table->integer('updated_by')->nullable()->index();
             $table->timestamps();
         });
     }

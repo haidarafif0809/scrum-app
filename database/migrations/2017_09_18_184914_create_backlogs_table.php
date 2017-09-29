@@ -19,6 +19,8 @@ class CreateBacklogsTable extends Migration
             $table->string('nama');
             $table->string('demo');
             $table->string('catatan');
+            $table->integer('created_by')->nullable()->index();
+            $table->integer('updated_by')->nullable()->index();
             $table->timestamps();
         });
     }

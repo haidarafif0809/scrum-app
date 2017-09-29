@@ -16,7 +16,13 @@ class CreateSprintsTable extends Migration
         Schema::create('sprints', function (Blueprint $table) { 
             $table->increments('id'); 
             $table->string('kode_sprint'); 
-            $table->string('nama_sprint'); 
+            $table->string('nama_sprint');
+            $table->string('tanggal_mulai')->nullable(); 
+            $table->string('durasi')->nullable(); 
+            $table->string('waktu_mulai')->nullable(); 
+            $table->string('team')->nullable(); 
+            $table->integer('created_by')->nullable()->index();
+            $table->integer('updated_by')->nullable()->index();
             $table->timestamps(); 
         }); 
     } 
