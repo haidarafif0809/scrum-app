@@ -12,7 +12,7 @@ class SprintbacklogsSeeder extends Seeder
      */ 
     public function run() 
     { 
-        $backlog1 = Sprintbacklog::create(['backlog' => 'data1',   'isi_kepentingan' => 'data1', 'perkiraan_waktu' => '100']); 
-        $backlog1 = Sprintbacklog::create(['backlog' => 'data2', 'isi_kepentingan' => 'data2', 'perkiraan_waktu' => '101']); 
+        $backlog1 = Sprintbacklog::create(['backlog' => '1',   'isi_kepentingan' => 'data1', 'perkiraan_waktu' => '100']); 
+        $backlog1 = Sprintbacklog::create(['backlog' => '1', 'isi_kepentingan' => 'data2', 'perkiraan_waktu' => '101']); 
     } 
 } 
