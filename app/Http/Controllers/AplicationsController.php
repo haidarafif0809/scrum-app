@@ -64,7 +64,7 @@ class AplicationsController extends Controller
         $aplikasi = Aplication::create($request->all());
         Session::flash("flash_notification", [
              "level"=>"success",
-            "message"=>"Berhasil menyimpan Kode Aplikasi ".$aplikasi->kode." & Nama ".$aplikasi->nama.""
+            "message"=>"Berhasil Menambahkan ".$aplikasi->nama.""
         ]);
             return redirect()->route('aplikasi.index');
     }
@@ -111,7 +111,7 @@ class AplicationsController extends Controller
         $aplication->update($request->all());
         Session::flash("flash_notification", [
         "level"=>"success",
-        "message"=>"Berhasil Menyimpan Kode Aplikasi ".$aplication->kode." & Nama ".$aplication->nama.""
+        "message"=>"Berhasil Mengubah ".$aplication->nama.""
          ]);
         return redirect()->route('aplikasi.index');
          }
