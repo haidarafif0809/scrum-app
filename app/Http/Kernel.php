@@ -46,8 +46,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-
-
+        // membuat middleware agar user login hasur terverifikasi
+        'user-should-verified' => \App\Http\Middleware\UserShouldVerified::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

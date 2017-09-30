@@ -63,6 +63,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
+                            <li><a href="{{ route('users.index') }}">Data User</a></li>
                             <li><a href="{{ route('teams.index') }}">Team</a></li>
                             <li><a href="{{ url('/backlog') }}">Backlog</a></li>
                             <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>

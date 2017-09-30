@@ -5,13 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
-use Yajra\Auditable\AuditableTrait;
+use Illuminate\Support\Facades\Session;
 
 class User extends Authenticatable
 {
     use LaratrustUserTrait;
     use Notifiable;
-    use AuditableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'otoritas', 'is_verified',
     ];
 
     /**
@@ -28,6 +27,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 
     ];
+
+    protected $casts = [
+        'is_verified' => 'boolean',
+    ];
+
+    // mengambil data roleUser dari model RoleUser (Proses Relasi)
+    // berdasarkan foreign key User->'id', reference 'RoleUser'('role_id')
+   public function roleUser()
+    {
+        return $this->belongsTo('App\RoleUser', 'id','user_id');
+    }
 }

@@ -26,6 +26,7 @@ class UsersSeeder extends Seeder
         $admin->name = 'Admin Aplikasi Scrum';
         $admin->email = 'admin@gmail.com';
         $admin->password = bcrypt('rahasiaku');
+        $admin->is_verified = 1;
         $admin->save();
         $admin->attachRole($adminRole);
 
@@ -34,6 +35,7 @@ class UsersSeeder extends Seeder
         $member->name = 'Member Aplikasi Scrum';
         $member->email = 'member@gmail.com';
         $member->password = bcrypt('rahasiaku');
+        $member->is_verified = 1;
         $member->save();
         $member->attachRole($memberRole);
 
