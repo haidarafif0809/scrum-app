@@ -9,7 +9,7 @@ use App\RoleUser;
 use App\User;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Facades\Datatables;
-// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
@@ -30,15 +30,15 @@ class UsersController extends Controller
                 'model' => $member,
                 'form_url' => route('users.destroy', $member->id),
                 'edit_url' => route('users.edit', $member->id),
-                'confirm_message' => 'Yakin mau menghapus ' . $member->name . ' ?'
+                'confirm_message' => 'Yakin akan menghapus ' . $member->name . ' ?'
             ]);
          })
         ->addColumn('konfirmasi', function($member){
             return view('datatable._konfirmasi', [
                 'model' => $member, 
                 'konfirmasi_url' => route('users.konfirmasi', $member->id),
-                'confirm_message' => 'Apakah Anda Yakin mau mengkonfimasi ' . $member->name . ' ?',
-                'confirm_messages' => 'Apakah Anda Yakin mau membatalkan konfirmasi ' . $member->name . ' ?'
+                'confirm_message' => 'Apakah Anda Yakin akan mengkonfimasi ' . $member->name . ' ?',
+                'confirm_messages' => 'Apakah Anda Yakin akan membatalkan konfirmasi ' . $member->name . ' ?'
             ]);
         })
         ->addColumn('otoritas', function($member){
@@ -83,7 +83,8 @@ class UsersController extends Controller
         ]);
         $Role = Role::where('id', $request->otoritas)->first();
         $password =  bcrypt('rahasiaku');
-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password]);
+        $is_verified = 1;
+        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified]);
         $user->attachRole($Role);
 
         Session::flash("flash_notification", [

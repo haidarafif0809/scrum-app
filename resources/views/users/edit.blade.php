@@ -5,7 +5,7 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/users') }}">Data User</a></li>
+				<li><a href="{{ url('/users') }}">Data User</a></li>
 				<li class="active">Ubah Data User</li>
 			</ul>
 
