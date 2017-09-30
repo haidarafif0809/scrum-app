@@ -21,7 +21,7 @@ class TeamsController extends Controller
                         'model' => $team,
                         'form_url' => route('teams.destroy', $team->id),
                         'edit_url' => route('teams.edit', $team->id),
-                        'confirm_message' => 'Yakin mau menghapus ' . $team->nama_team . '?'
+                        'confirm_message' => 'Apakah anda yakin akan menghapus ' . $team->nama_team . '?'
                     ]);
                 })->make(true);
 
