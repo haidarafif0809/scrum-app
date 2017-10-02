@@ -77,7 +77,7 @@ class TeamsController extends Controller
         $team->update(['kode_team' => $request->kode_team,'nama_team' => $request->nama_team]);
         Session::flash("flash_notification", [
         "level"=>"success",
-        "message"=>"Berhasil menyimpan  ".$team->nama_team.""
+        "message"=>"Berhasil Mengedit  ".$team->nama_team.""
         ]);
         return redirect()->route('teams.index');
 
