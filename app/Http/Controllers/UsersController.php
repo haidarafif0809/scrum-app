@@ -41,6 +41,13 @@ class UsersController extends Controller
                 'confirm_message' => 'Apakah Anda Yakin akan mengkonfimasi ' . $member->name . ' ?',
                 'confirm_messages' => 'Apakah Anda Yakin akan membatalkan konfirmasi ' . $member->name . ' ?'
             ]);
+        })        
+        ->addColumn('re_pass', function($member){
+            return view('datatable.re_pass', [
+                'model' => $member, 
+                're_pass_url' => route('users.repass', $member->id),
+                'confirm_message' => 'Apakah Anda Yakin akan me-reset password ' . $member->name . ' ?',
+            ]);
         })
         ->addColumn('otoritas', function($member){
                return $member->roleUser->role->name;
@@ -53,6 +60,7 @@ class UsersController extends Controller
         ->addColumn(['data' => 'team.nama_team', 'name'=>'team.nama_team', 'title'=>'Nama Team'])
         ->addColumn(['data' => 'otoritas', 'name'=>'otoritas', 'title'=>'Otoritas', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'konfirmasi', 'name'=>'konfirmasi', 'title'=>'Konfirmasi', 'orderable'=>false, 'searchable'=>false])
+        ->addColumn(['data' => 're_pass', 'name'=>'re_pass', 'title'=>'Reset password', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
         return view('users.index', compact('html'));
     }
@@ -78,7 +86,7 @@ class UsersController extends Controller
        
 
         $this->validate($request, [
-        'name' => 'required|unique:users',
+        'name' => 'required:users',
         'email' => 'required|unique:users',
         'otoritas' => 'required|exists:roles,id',
         'team_id' => 'required|exists:teams,id'
@@ -92,7 +100,7 @@ class UsersController extends Controller
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"<p>Berhasil menyimpan user <h4 style'font-color:red'>" . $user->name . " !</h4></p>"
+            "message"=>"<p>Berhasil menyimpan user <h4 style'font-color:red'>" . $user->name . "</h4></p>"
         ]);
         return redirect()->route('users.index');
 
@@ -131,7 +139,7 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|unique:users,name,'. $id,
+            'name' => 'required:users,name',
             'email' => 'required|unique:users,email,'. $id,
             'otoritas' => 'required|exists:roles,id',
             'team_id' => 'required|exists:teams,id'
@@ -187,4 +195,14 @@ class UsersController extends Controller
 
         return redirect()->route('users.index');
     }
+
+    public function repass($id) {
+        $user = User::find($id);
+        $password = bcrypt('rahasiaku');
+        if ($user->password == true) {
+            $user->update(['password' => $password]);
+        }
+        return redirect()->route('users.index');
+    }
+
 }

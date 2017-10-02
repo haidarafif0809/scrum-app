@@ -79,7 +79,7 @@ return [
     ],
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => 'Data :attribute sudah tersedia.',
+    'unique'               => 'Data :attribute sudah terpakai.',
     'url'                  => 'The :attribute format is invalid.',
 
     /*
