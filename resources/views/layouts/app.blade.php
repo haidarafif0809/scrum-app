@@ -1,3 +1,4 @@
+ <pre>
 <?php 
 // $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
 
@@ -7,7 +8,9 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
     
 }
 $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
+// print_r($_SERVER);
  ?>
+ </pre>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,11 +72,11 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ url('/users') }}">Users</a></li>
-                                    <li><a href="{{ url('/teams') }}">Team</a></li>
-                                    <li><a href="{{ url('/backlog') }}">Backlog</a></li>
-                                    <li><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
-                                    <li><a href="{{ url('/sprints') }}">Sprint</a></li>
+                                    <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
+                                    <li<?=(preg_match("/teams/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
+                                    <li<?=(preg_match("/backlog/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
+                                    <li<?=(preg_match("/aplikasi/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
+                                    <li<?=(preg_match("/sprints/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
