@@ -15,18 +15,18 @@ class BackLogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $backlogs = Backlog::with('aplikasi');
+            $backlogs = Backlog::with('aplikasi')->get();
             return Datatables::of($backlogs)
             ->addColumn('action', function($backlog) {
                 return view('datatable._action', [
                     'model' => $backlog,
-                    'form_url' => route('backlog.destroy', $backlog->id),
-                    'edit_url' => route('backlog.edit', $backlog->id),
+                    'form_url' => route('backlog.destroy', $backlog->id_backlog),
+                    'edit_url' => route('backlog.edit', $backlog->id_backlog),
                     'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama_backlog . '?'
                 ]);
             })
             ->addColumn('nama_backlog', function($backlog) {
-                return '<a href="'.route('backlog.show', $backlog->id).'">'.$backlog->nama_backlog.'</a>';
+                return '<a href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
 
             // })->addColumn('no_urut', function($backlog) {
                 // return view('datatable._noUrut', [
@@ -83,7 +83,7 @@ class BackLogsController extends Controller
     {
         $this->validate($request, [
             'aplikasi_id' => 'required|exists:aplications,id',
-            'nama' => 'required',
+            'nama_backlog' => 'required',
             'demo' => 'required',
             'catatan' => ''
         ]);

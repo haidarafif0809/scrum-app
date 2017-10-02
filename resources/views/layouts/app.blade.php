@@ -1,9 +1,11 @@
 <?php 
 // $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
 
-
-$pathApp = explode('/', $_SERVER['PHP_SELF']);
-$pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
+if ($_SERVER['HTTP_HOST'] == 'localhost') {
+    $pathApp = explode('/', $_SERVER['PHP_SELF']);
+    $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
+    
+}
 $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
  ?>
 <!DOCTYPE html>
@@ -64,11 +66,16 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                             <li><a href="{{ url('/home') }}">Dashboard</a></li>
-                            <li><a href="{{ route('users.index') }}">Data User</a></li>
-                            <li><a href="{{ route('teams.index') }}">Team</a></li>
-                            <li><a href="{{ url('/backlog') }}">Backlog</a></li>
-                            <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
-                            <li><a href="{{ route('sprints.index') }}">Sprint</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url('/users') }}">Users</a></li>
+                                    <li><a href="{{ url('/teams') }}">Team</a></li>
+                                    <li><a href="{{ url('/backlog') }}">Backlog</a></li>
+                                    <li><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
+                                    <li><a href="{{ url('/sprints') }}">Sprint</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
