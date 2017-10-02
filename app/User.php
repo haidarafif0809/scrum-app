@@ -6,11 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
 use Illuminate\Support\Facades\Session;
+use Yajra\Auditable\AuditableTrait;
 
 class User extends Authenticatable
 {
     use LaratrustUserTrait;
     use Notifiable;
+    use AuditableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'otoritas', 'is_verified',
+        'name', 'email', 'password', 'otoritas', 'is_verified', 'team_id',
     ];
 
     /**
@@ -39,5 +41,9 @@ class User extends Authenticatable
    public function roleUser()
     {
         return $this->belongsTo('App\RoleUser', 'id','user_id');
+    }
+
+    public function team() {
+        return $this->belongsTo('App\Team');
     }
 }

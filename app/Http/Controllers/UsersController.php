@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Role;
 use App\RoleUser;
 use App\User;
+use App\Team;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class UsersController extends Controller
    public function index(Request $request, Builder $htmlBuilder)
     {
     if ($request->ajax()) {
-        $members = User::all();
+        $members = User::with('team');
         return Datatables::of($members)
         // ->addColumn($member->role_user->role)
         ->addColumn('action', function($member){
@@ -44,14 +45,14 @@ class UsersController extends Controller
         ->addColumn('otoritas', function($member){
                return $member->roleUser->role->name;
         })->make(true);
-
     }
     
     $html = $htmlBuilder
         ->addColumn(['data' => 'name', 'name'=>'name', 'title'=>'Nama'])
         ->addColumn(['data' => 'email', 'name'=>'email', 'title'=>'Email'])
+        ->addColumn(['data' => 'team.nama_team', 'name'=>'team.nama_team', 'title'=>'Nama Team'])
         ->addColumn(['data' => 'otoritas', 'name'=>'otoritas', 'title'=>'Otoritas', 'orderable'=>false, 'searchable'=>false])
-         ->addColumn(['data' => 'konfirmasi', 'name'=>'konfirmasi', 'title'=>'Konfirmasi', 'orderable'=>false, 'searchable'=>false])
+        ->addColumn(['data' => 'konfirmasi', 'name'=>'konfirmasi', 'title'=>'Konfirmasi', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
         return view('users.index', compact('html'));
     }
@@ -79,12 +80,14 @@ class UsersController extends Controller
         $this->validate($request, [
         'name' => 'required|unique:users',
         'email' => 'required|unique:users',
-        'otoritas' => 'required|exists:roles,id'
+        'otoritas' => 'required|exists:roles,id',
+        'team_id' => 'required|exists:teams,id'
         ]);
+        $team = Team::where('id', $request->team_id)->first();
         $Role = Role::where('id', $request->otoritas)->first();
         $password =  bcrypt('rahasiaku');
         $is_verified = 1;
-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified]);
+        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified, 'team_id' => $team->id]);
         $user->attachRole($Role);
 
         Session::flash("flash_notification", [
@@ -130,14 +133,16 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:users,name,'. $id,
             'email' => 'required|unique:users,email,'. $id,
-            'otoritas' => 'required|exists:roles,id'
+            'otoritas' => 'required|exists:roles,id',
+            'team_id' => 'required|exists:teams,id'
         ]);
 
         //update untuk di data user 
         $roleLama = RoleUser::where('user_id', $id)->delete();
+        $team_id = Team::where('id', $request->team_id, $id)->first();
         $role = Role::where('id', $request->otoritas, $id)->first();
         $user = User::find($id);
-        $user->update(['name' => $request->name, 'email' => $request->email]);
+        $user->update(['name' => $request->name, 'email' => $request->email, 'team_id' => $team_id->id]);
         $user->attachRole($role);
         session::flash('flash_notification', [
             "level" => "success",
