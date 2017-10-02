@@ -15,6 +15,7 @@ class CreateBacklogsTable extends Migration
     {
         Schema::create('backlogs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('aplikasi_id');
             $table->string('aplikasi');
             $table->string('nama');
             $table->string('demo');

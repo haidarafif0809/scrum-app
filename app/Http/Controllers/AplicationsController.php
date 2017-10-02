@@ -25,7 +25,7 @@ class AplicationsController extends Controller
                 'model'    => $aplications,
                 'form_url' => route('aplikasi.destroy', $aplications->id),
                 'edit_url' => route('aplikasi.edit', $aplications->id),
-                'confirm_message' => 'Yakin mau menghapus '." '$aplications->kode', '$aplications->nama'.?'"
+                'confirm_message' => 'Yakin mau menghapus '."$aplications->nama.?"
         ]);
            })->make(true);
         }

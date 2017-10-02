@@ -27,6 +27,7 @@ class UsersSeeder extends Seeder
         $admin->email = 'admin@gmail.com';
         $admin->password = bcrypt('rahasiaku');
         $admin->is_verified = 1;
+        $admin->team_id = 1;
         $admin->save();
         $admin->attachRole($adminRole);
 
@@ -36,6 +37,7 @@ class UsersSeeder extends Seeder
         $member->email = 'member@gmail.com';
         $member->password = bcrypt('rahasiaku');
         $member->is_verified = 1;
+        $member->team_id = 2;
         $member->save();
         $member->attachRole($memberRole);
 
