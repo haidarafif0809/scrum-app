@@ -14,15 +14,16 @@
 						<h2 class="panel-title">Detail {{ $backlog->nama_backlog }}</h2>
 					</div>
 					<div class="panel-body">
-						<p>
-							Demo:
+						<div class="col-md-6">
+							<b>Demo:</b>
 							<br>
 							{{ $backlog->demo }}
-						</p>
-						<p>
-							Catatan:
+						</div>
+						<div class="col-md-6">
+							<b>Catatan:</b>
 							<br>
 							{{ $backlog->catatan }}
+						</div>
 						</p>
 					</div>
 				</div>
