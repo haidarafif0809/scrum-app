@@ -85,10 +85,11 @@ class TeamsController extends Controller
 
     public function destroy($id)
     {
-        Team::destroy($id);
+        $team = Team::find($id);
+        if(!$team->delete()) return redirect()->back();
 
         Session::flash("flash_notification", [
-            "level"=>"danger",
+            "level"=>"success",
             "message"=>"Team berhasil dihapus"
         ]);
 
