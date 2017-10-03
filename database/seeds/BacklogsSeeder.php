@@ -13,8 +13,23 @@ class BacklogsSeeder extends Seeder
     public function run()
     {
         // Sample Backlog
-		$backlog1 = Backlog::create(['aplikasi_id' => 4, 'aplikasi' => 'Aplikasi Scrum', 'nama' => 'Nama1', 'demo' => 'Tes demo', 'catatan' => 'Tes catatan']);
-		$backlog2 = Backlog::create(['aplikasi_id' => 5, 'aplikasi' => 'Aplikasi Unila', 'nama' => 'Nama2', 'demo' => 'Tes demo', 'catatan' => 'Tes catatan']);
-		$backlog3 = Backlog::create(['aplikasi_id' => 6, 'aplikasi' => 'Aplikasi Larapus', 'nama' => 'Nama3', 'demo' => 'Tes demo', 'catatan' => 'Tes catatan']);
+		$backlog1 = Backlog::create(['aplikasi_id' => 1, 'nama_backlog' => 'Nama1', 'demo' => 'Tes demo', 'catatan' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.']);
+		$backlog2 = Backlog::create(['aplikasi_id' => 5, 'nama_backlog' => 'Nama2', 'demo' => 'Tes demo', 'catatan' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.']);
+		$backlog3 = Backlog::create(['aplikasi_id' => 6, 'nama_backlog' => 'Nama3', 'demo' => 'Tes demo', 'catatan' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.']);
     }
 }
