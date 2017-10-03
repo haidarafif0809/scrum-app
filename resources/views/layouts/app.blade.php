@@ -2,8 +2,9 @@
 // $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
 
 
-
-$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] .'/scrum_app/public' : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
+$pathApp = explode('/', $_SERVER['PHP_SELF']);
+$pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
+$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +24,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
-    <link href="<?=$url;?>/css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
+    <link href="<?=$url;?>css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
