@@ -51,7 +51,7 @@ class TeamsController extends Controller
         $team = Team::create($request->all());
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Berhasil menyimpan" .$team->nama_team.""
+            "message"=>"Berhasil menyimpan " .$team->nama_team.""
         ]);
         return redirect()->route('teams.index');
     }
@@ -88,7 +88,7 @@ class TeamsController extends Controller
         Team::destroy($id);
 
         Session::flash("flash_notification", [
-            "level"=>"success",
+            "level"=>"danger",
             "message"=>"Team berhasil dihapus"
         ]);
 
