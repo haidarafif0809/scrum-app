@@ -17,7 +17,7 @@ class CreateSprintsTable extends Migration
             $table->increments('id'); 
             $table->string('kode_sprint'); 
             $table->string('nama_sprint');
-            $table->string('tanggal_mulai')->nullable(); 
+            $table->date('tanggal_mulai')->nullable(); 
             $table->string('durasi')->nullable(); 
             $table->string('waktu_mulai')->nullable(); 
             $table->integer('team')->nullable(); 

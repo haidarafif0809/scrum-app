@@ -1,7 +1,7 @@
 <div class="form-group{{ $errors->has('tanggal_mulai') ? ' has-error' : '' }}"> 
   {!! Form::label('tanggal_mulai', 'Tanggal Mulai', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::text('tanggal_mulai', null,  array('class' => 'form-control', 'id' => 'datepicker')) !!} 
+    {!! Form::text('tanggal_mulai', (isset($tanggalMulai) ? $tanggalMulai : ''),  array('class' => 'form-control', 'id' => 'datepicker')) !!} 
     {!! $errors->first('tanggal_mulai', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
@@ -27,8 +27,8 @@
   {!! Form::label('team', 'Team', ['class'=>'col-md-2 control-label' ]) !!} 
   <div class="col-md-4"> 
    {!! Form::select('team', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, [
-'class'=>'js-selectize',
-'placeholder' => 'Pilih Team']) !!}
+      'class'=>'js-selectize',
+      'placeholder' => 'Pilih Team']) !!}
     {!! $errors->first('team', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
@@ -44,7 +44,7 @@
 <div class="form-group{{ $errors->has('nama_sprint') ? ' has-error' : '' }}"> 
   {!! Form::label('nama_sprint', 'Nama Sprint', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::number('nama_sprint', null, ['class'=>'form-control']) !!} 
+    {!! Form::text('nama_sprint', null, ['class'=>'form-control']) !!} 
     {!! $errors->first('nama_sprint', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
