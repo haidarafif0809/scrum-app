@@ -1,7 +1,7 @@
 <div class="form-group{{ $errors->has('tanggal_mulai') ? ' has-error' : '' }}"> 
   {!! Form::label('tanggal_mulai', 'Tanggal Mulai', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::text('tanggal_mulai', (isset($tanggalMulai) ? $tanggalMulai : ''),  array('class' => 'form-control', 'id' => 'datepicker')) !!} 
+    {!! Form::text('tanggal_mulai', null,  array('class' => 'form-control', 'id' => 'datepicker')) !!} 
     {!! $errors->first('tanggal_mulai', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 

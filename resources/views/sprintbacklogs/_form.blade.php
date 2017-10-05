@@ -2,7 +2,7 @@
 <div class="form-group{{ $errors->has('backlog') ? ' has-error' : '' }}"> 
   {!! Form::label('backlog', 'Backlog', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-{!! Form::select('backlog', [''=>'']+App\Backlog::pluck('nama','id')->all(), null, [
+{!! Form::select('backlog', [''=>'']+App\Backlog::pluck('nama_backlog','id_backlog')->all(), null, [  
 'class'=>'js-selectize',
 'placeholder' => 'Pilih Team']) !!}
     {!! $errors->first('backlog', '<p class="help-block">:message</p>') !!} 
