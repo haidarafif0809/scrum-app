@@ -1,4 +1,3 @@
- <pre>
 <?php 
 // $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
 
@@ -10,7 +9,6 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
 $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
 // print_r($_SERVER);
  ?>
- </pre>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +66,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
-                            <li><a href="{{ url('/home') }}">Dashboard</a></li>
+                            <li<?=(preg_match("/home/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -109,8 +107,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Masuk</a></li>
-                            <li><a href="{{ url('/register') }}">Mendaftar</a></li>
+                            <li<?=(preg_match("/login/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
+                            <li<?=(preg_match("/register/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
