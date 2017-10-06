@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Team;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
+use App\TeamUser;
 use Session;
 
 class TeamsController extends Controller
@@ -85,14 +86,31 @@ class TeamsController extends Controller
 
     public function destroy($id)
     {
-        Team::destroy($id);
+         $data_teamuser = TeamUser::where('team_id', $id)->count();
 
-        Session::flash("flash_notification", [
+        //JIKA TEAM SUDAH TERPAKAI
+        if ($data_teamuser > 0) {
+
+            //PERINGTAN TIDAK BISA DIHAPUS
+            Session::flash("flash_notification", [
             "level"=>"danger",
-            "message"=>"Team berhasil dihapus"
-        ]);
+            "message"=>"Team Tidak Bisa Dihapus. Karena Sudah Terpakai."
+            ]);
 
-        return redirect()->route('teams.index');
+            return redirect()->route('teams.index');
+
+        }
+        else{
+
+            //membuat proses hapus
+            Team::destroy($id);
+            Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Team berhasil dihapus"
+            ]);
+            return redirect()->route('teams.index');
+
+        }
 
     }
 }

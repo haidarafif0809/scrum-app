@@ -40,5 +40,11 @@ Route::get('/users/konfirmasi/{id}', [
 	'uses' => 'UsersController@konfirmasi'
 ]);
 
+// untuk membuat reset password
+Route::get('/users/repass/{id}', [
+	'middleware' => ['auth'],
+	'as' => 'users.repass',
+	'uses' => 'UsersController@repass'
+]);
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');

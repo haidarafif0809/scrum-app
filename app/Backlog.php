@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Backlog extends Model
 {
-    protected $fillable = ['aplikasi_id', 'aplikasi', 'nama', 'demo', 'catatan'];
+    protected $fillable = ['aplikasi_id', 'nama_backlog', 'demo', 'catatan'];
+	protected $primaryKey = 'id_backlog';
 
     public function getKolomAttribute() {
     	$jumlahKolom = Backlog::all()->count();
@@ -14,7 +15,7 @@ class Backlog extends Model
     	return $jumlahKolom;
     }
 
-    public function backlog() {
-    	return $this->belongsTo('App\Backlog');
+    public function aplikasi() {
+    	return $this->hasOne('App\Aplication','id','aplikasi_id');
     }
 }

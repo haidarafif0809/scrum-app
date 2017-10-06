@@ -17,17 +17,17 @@
 <div class="form-group {!! $errors->has('otoritas') ? 'has-error' : '' !!}">
 	{!! Form::label('otoritas', 'Otoritas', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::select('otoritas', [''=>'']+App\Role::pluck('name', 'id')->all(), null, [ 'class'=>'form-control js-selectize', 'placeholder' => '--PILIH  OTORITAS--']) !!}
+		{!! Form::select('otoritas', [''=>'']+App\Role::pluck('name', 'id')->all(), null, [ 'class'=>'form-control js-selectize-reguler', 'placeholder' => '--PILIH  OTORITAS--']) !!}
 		
 		{!! $errors->first('otoritas', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
-<div class="form-group {!! $errors->has('team_id') ? 'has-error' : '' !!}">
-	{!! Form::label('team_id', 'Team', ['class'=>'col-md-2 control-label']) !!}
+<div class="form-group {!! $errors->has('team_id[]') ? 'has-error' : '' !!}">
+	{!! Form::label('team_id[]', 'Nama Team', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::select('team_id', App\Team::pluck('nama_team','id')->all(), null, ['class'=>'form-control js-selectize', 'placeholder' => '--PILIH TEAM--']) !!}
-		{!! $errors->first('team_id', '<p class="help-block">:message</p>') !!}
+		{!! Form::select('team_id[]', App\Team::pluck('nama_team','id')->all(), null, ['class'=>'form-control js-selectize-multi', 'placeholder' => '--PILIH TEAM--']) !!}
+		{!! $errors->first('team_id[]', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 

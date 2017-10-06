@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Aplication;
+use App\Backlog;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use Session;
@@ -124,12 +125,31 @@ class AplicationsController extends Controller
      */
     public function destroy($id)
     {
-        //membuat proses hapus
+
+        $data_backlog = Backlog::where('aplikasi_id', $id)->count();
+
+//JIKA APLIKASI SUDAH TERPAKAI
+        if ($data_backlog > 0) {
+
+            //PERINGTAN TIDAK BISA DIHAPUS
+            Session::flash("flash_notification", [
+            "level"=>"danger",
+            "message"=>"Aplikasi Tidak Bisa Dihapus. Karena Sudah Terpakai."
+            ]);
+
+            return redirect()->route('aplikasi.index');
+
+        }
+        else{
+
+            //membuat proses hapus
             Aplication::destroy($id);
-        Session::flash("flash_notification", [
-        "level"=>"success",
-        "message"=>"Aplikasi berhasil dihapus"
-        ]);
-        return redirect()->route('aplikasi.index');
+            Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Aplikasi berhasil dihapus"
+            ]);
+            return redirect()->route('aplikasi.index');
+
+        }
     }
 }

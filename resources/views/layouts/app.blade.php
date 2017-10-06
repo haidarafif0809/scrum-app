@@ -1,10 +1,14 @@
 <?php 
 // $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
 
-
-
-$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] .'/scrum_app/public' : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST']);
- ?>
+if ($_SERVER['HTTP_HOST'] == 'localhost') {
+    $pathApp = explode('/', $_SERVER['PHP_SELF']);
+    $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
+    
+}
+$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
+// print_r($_SERVER);
+ ?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +27,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
-    <link href="<?=$url;?>/css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
+    <link href="<?=$url;?>css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
@@ -62,12 +66,17 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
-                            <li><a href="{{ url('/home') }}">Dashboard</a></li>
-                            <li><a href="{{ route('users.index') }}">Data User</a></li>
-                            <li><a href="{{ route('teams.index') }}">Team</a></li>
-                            <li><a href="{{ url('/backlog') }}">Backlog</a></li>
-                            <li><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
-                            <li><a href="{{ route('sprints.index') }}">Sprint</a></li>
+                            <li<?=(preg_match("/home/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
+                            <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $_SERVER['REQUEST_URI']) ? 'active' : '');?>">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
+                                    <li<?=(preg_match("/teams/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
+                                    <li<?=(preg_match("/backlog/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
+                                    <li<?=(preg_match("/aplikasi/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
+                                    <li<?=(preg_match("/sprints/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -98,8 +107,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Masuk</a></li>
-                            <li><a href="{{ url('/register') }}">Mendaftar</a></li>
+                            <li<?=(preg_match("/login/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
+                            <li<?=(preg_match("/register/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

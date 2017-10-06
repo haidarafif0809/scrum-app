@@ -15,14 +15,19 @@ class BackLogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $backlog = Backlog::all();
-            return Datatables::of($backlog)->addColumn('action', function($backlog) {
+            $backlogs = Backlog::with('aplikasi')->get();
+            return Datatables::of($backlogs)
+            ->addColumn('action', function($backlog) {
                 return view('datatable._action', [
                     'model' => $backlog,
-                    'form_url' => route('backlog.destroy', $backlog->id),
-                    'edit_url' => route('backlog.edit', $backlog->id),
-                    'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama . '?'
+                    'form_url' => route('backlog.destroy', $backlog->id_backlog),
+                    'edit_url' => route('backlog.edit', $backlog->id_backlog),
+                    'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama_backlog . '?'
                 ]);
+            })
+            ->addColumn('nama_backlog', function($backlog) {
+                return '<a href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
+
             // })->addColumn('no_urut', function($backlog) {
                 // return view('datatable._noUrut', [
                 //     'angka' => $backlog->getKolomAttribute()
@@ -33,11 +38,11 @@ class BackLogsController extends Controller
         }
         $html = $htmlBuilder
             // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
-            ->addColumn(['data' => 'aplikasi', 'name' => 'aplikasi', 'title' => 'Aplikasi'])
-            ->addColumn(['data' => 'nama', 'name' => 'nama', 'title' => 'Nama'])
-            ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
-            ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
-            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);;
+            ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
+            ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
+            // ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
+            // ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
+            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
     }
 
@@ -49,29 +54,23 @@ class BackLogsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'aplikasi' => 'required|exists:aplications,id',
-            'nama' => 'required',
+            'aplikasi_id' => 'required|exists:aplications,id',
+            'nama_backlog' => 'required',
             'demo' => 'required',
             'catatan' => ''
         ]);
-        $aplikasi = Aplication::find($request->aplikasi);
-        $backlog = Backlog::create([
-            'aplikasi_id' => $request->aplikasi,
-            'aplikasi' => $aplikasi->nama,
-            'nama' => $request->nama,
-            'demo' => $request->demo,
-            'catatan' => $request->catatan
-        ]);
+        $backlog = Backlog::create($request->all());
         Session::flash("flash_notification", [
             "level"=>"success", 
-            "message"=>"Berhasil menyimpan $backlog->nama"
+            "message"=>"Berhasil menyimpan " . $backlog->nama . " !"
         ]);
         return redirect()->route('backlog.index');
     }
 
     public function show($id)
     {
-        //
+        $backlog = Backlog::find($id);
+        return view('backlog.show', compact('backlog'));
     }
 
     public function edit($id)
@@ -83,8 +82,8 @@ class BackLogsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'aplikasi' => 'required|unique:backlogs,aplikasi,' . $id,
-            'nama' => 'required',
+            'aplikasi_id' => 'required|exists:aplications,id',
+            'nama_backlog' => 'required',
             'demo' => 'required',
             'catatan' => ''
         ]);
@@ -103,7 +102,7 @@ class BackLogsController extends Controller
         $backlog->delete();
         Session::flash("flash_notification", [
             "level" => "success",
-            "message" => "Buku berhasil dihapus"
+            "message" => "Backlog berhasil dihapus"
         ]);
         return redirect()->route('backlog.index');
     }

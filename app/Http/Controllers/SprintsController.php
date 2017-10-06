@@ -7,14 +7,17 @@ use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables; 
 use App\Sprint; 
 use Session; 
+use App\Team; 
  
 class SprintsController extends Controller 
 { 
     public function index(Request $request, Builder $htmlBuilder) 
   { 
     if ($request->ajax()) { 
-      $sprints = Sprint::select(['id', 'nama_sprint', 'kode_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']); 
-              return Datatables::of($sprints) 
+        
+        $sprints = Sprint::with('team');
+
+              return Datatables::of($sprints)
                 ->addColumn('action', function($sprint) { 
                     return view('datatable._action', [ 
                         'model' => $sprint, 
@@ -32,10 +35,10 @@ class SprintsController extends Controller
                 })->make(true); 
     } 
     $html = $htmlBuilder 
-    ->addColumn(['data' => 'tanggal_mulai', 'name' =>  'tanggal_mulai', 'title' =>  'Tanggal Mulai']) 
+    ->addColumn(['data' => 'tanggal_mulai', 'name' =>  'tanggal_mulai', 'title' =>  'Tanggal Mulai'])
     ->addColumn(['data' => 'durasi', 'name' =>  'durasi', 'title' =>  'Durasi']) 
     ->addColumn(['data' => 'waktu_mulai', 'name' =>  'waktu_mulai', 'title' =>  'Waktu Mulai']) 
-    ->addColumn(['data' => 'team', 'name' =>  'team', 'title' =>  'Team']) 
+    ->addColumn(['data' => 'team.nama_team', 'name' =>  'team.nama_team', 'title' =>  'Teamku']) 
     ->addColumn(['data' => 'nama_sprint', 'name' =>'nama_sprint', 'title'   =>'Nama Sprint']) 
     ->addColumn(['data' => 'backlog',      'name' =>  'backlog', 'title'      => 'Backlog', 'orderable' => false, 'searchable' => false]) 
             ->addColumn(['data' => 'action', 'name'      =>  'action', 'title'      => 'Aksi', 'orderable' => false, 'searchable' => false]); 
@@ -47,22 +50,37 @@ class SprintsController extends Controller
         return view('sprints.create'); 
     } 
  
-    public function store(Request $request) 
+    public function store(Request $request, Sprint $sfrint) 
     { 
         $this->validate($request, [ 
-        'tanggal_mulai'=>'required|unique:sprints' , 
-        'durasi'=>'required|unique:sprints' , 
-        'waktu_mulai'=>'required|unique:sprints' , 
-        'team'=>'required', 
-        'kode_sprint'=>'required|unique:sprints' , 
-        'nama_sprint'=>'required|unique:sprints' 
-      ]); 
-      $sprint = Sprint::create($request->all()); 
+            'tanggal_mulai' => 'required', 
+            'durasi' => 'required',
+            'waktu_mulai' => 'required' , 
+            'team' => 'required|exists:teams,id', 
+            'kode_sprint' => 'required|unique:sprints' , 
+            'nama_sprint' => 'required|unique:sprints'
+
+        ]); 
+
+        // $tanggalMulai = $request->tanggal_mulai;
+        // $tanggalMulai = explode("-", $tanggalMulai);
+        // $tanggalMulai = $tanggalMulai[2] .'-'. $tanggalMulai[1] .'-'. $tanggalMulai[0];
+
+        $sprint = Sprint::create([
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'durasi' => $request->durasi,
+            'waktu_mulai' => $request->waktu_mulai,
+            'team' => $request->team,
+            'kode_sprint' => $request->kode_sprint,
+            'nama_sprint' => $request->nama_sprint
+        ]); 
         Session::flash("flash_notification", [ 
             "level" => "success", 
-            "message" => "Berhasil menyimpan Sprint ".$sprint->kode_sprint." & ".$sprint->nama_sprint.""]); 
-      return redirect()->route('sprints.index'); 
- 
+            "message" => "Berhasil menyimpan Sprint "
+        ]);
+
+        return redirect()->route('sprints.index'); 
+
     } 
     public function show($id) 
     { 
@@ -71,20 +89,40 @@ class SprintsController extends Controller
     public function edit($id) 
     { 
         $sprint = Sprint::find($id); 
-        return view('sprints.edit')->with(compact('sprint')); 
+         return view('sprints.edit')->with(compact('sprint')); 
+        // $tanggalMulai = $sprint->tanggal_mulai;
+        // $tanggalMulai = explode("-", $tanggalMulai);
+        // $tanggalMulai = $tanggalMulai[2] .'-'. $tanggalMulai[1] .'-'. $tanggalMulai[0];
+
+        // return view('sprints.edit')->with(compact('sprint')); 
     } 
     public function update(Request $request, $id) 
     { 
             $this->validate($request, [ 
-            'tanggal_mulai' => 'required|unique:sprints,kode_sprint', 
-            'durasi' => 'required', 
-            'waktu_mulai' => 'required|unique:sprints,kode_sprint', 
-            'team' => 'required|unique:sprints,kode_sprint', 
-            'kode_sprint' => 'required|unique:sprints,kode_sprint', 
-            'nama_sprint' => 'required|unique:sprints,nama_sprint,' 
-            . $id]); 
+                'tanggal_mulai' => 'required', 
+                'durasi' => 'required', 
+                'waktu_mulai' => 'required', 
+                'team' => 'required', 
+                'kode_sprint' => 'required|unique:sprints,kode_sprint,'. $id,
+                'nama_sprint' => 'required|unique:sprints,nama_sprint,'. $id
+            ]); 
+  
             $sprint = Sprint::find($id); 
-            $sprint->update($request->only('kode_sprint', 'nama_sprint')); 
+            // $tanggalMulai = $request->tanggal_mulai;
+            // $tanggalMulai = explode("-", $tanggalMulai);
+            // $tanggalMulai = $tanggalMulai[2] .'-'. $tanggalMulai[1] .'-'. $tanggalMulai[0];
+
+            $sprint->update($request->all());
+
+            // $sprint->update([
+            //     'tanggal_mulai' => $request->tanggal_mulai,                
+            //     'durasi' => $request->durasi,
+            //     'waktu_mulai' => $request->waktu_mulai,
+            //     'team' => $request->team,
+            //     'kode_sprint' => $request->kode_sprint,
+            //     'nama_sprint' => $request->nama_sprint
+
+            // ]); 
              
             Session::flash("flash_notification", [ 
                 "level"=>"success", 
