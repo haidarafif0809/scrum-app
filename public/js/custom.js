@@ -1,7 +1,12 @@
 $(document).ready(function () {
 
-	$('.js-selectize').selectize({
-		sortField: 'text'
+	$('.js-selectize-reguler').selectize({
+		sortField: 'text',
+	});
+	$('.js-selectize-multi').selectize({
+		sortField: 'text',
+		delimiter: ',',
+		maxItems: null 
 	});
 	// confirm delete
 	$(document.body).on('submit', '.js-confirm', function () {

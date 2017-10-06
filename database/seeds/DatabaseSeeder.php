@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
          $this->call(SprintsSeeder::class); 
          $this->call(SprintbacklogsSeeder::class); 
          $this->call(AplicationsSeeder::class);
+         $this->call(TeamUsersSeeder::class);
 
     }
 }

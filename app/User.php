@@ -43,7 +43,12 @@ class User extends Authenticatable
         return $this->belongsTo('App\RoleUser', 'id','user_id');
     }
 
+    public function teamUser() {
+        return $this->belongsTo('App\TeamUser', 'id','user_id');
+    } 
+
     public function team() {
         return $this->belongsTo('App\Team');
     }
+
 }

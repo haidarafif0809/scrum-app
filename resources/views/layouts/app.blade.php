@@ -8,7 +8,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
 }
 $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
 // print_r($_SERVER);
- ?>
+ ?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>

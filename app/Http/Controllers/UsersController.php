@@ -8,6 +8,7 @@ use App\Role;
 use App\RoleUser;
 use App\User;
 use App\Team;
+use App\TeamUser;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Facades\Datatables;
 use Illuminate\Support\Facades\DB;
@@ -51,13 +52,30 @@ class UsersController extends Controller
         })
         ->addColumn('otoritas', function($member){
                return $member->roleUser->role->name;
+        })
+        ->addColumn('team', function($member){
+
+            $teams = TeamUser::where('user_id', $member->id)->get();
+            $data_team = '';
+            foreach($teams as $team) {
+                if ($data_team == '') {
+                    $data_team .= $team->team->nama_team;
+                }
+                else {
+                    $data_team .= ', ' . $team->team->nama_team;
+
+                }
+
+            }
+               return $data_team;
+            
         })->make(true);
     }
     
     $html = $htmlBuilder
         ->addColumn(['data' => 'name', 'name'=>'name', 'title'=>'Nama'])
         ->addColumn(['data' => 'email', 'name'=>'email', 'title'=>'Email'])
-        ->addColumn(['data' => 'team.nama_team', 'name'=>'team.nama_team', 'title'=>'Nama Team'])
+        ->addColumn(['data' => 'team', 'name'=>'team', 'title'=>'Team', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'otoritas', 'name'=>'otoritas', 'title'=>'Otoritas', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'konfirmasi', 'name'=>'konfirmasi', 'title'=>'Konfirmasi', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 're_pass', 'name'=>'re_pass', 'title'=>'Reset password', 'orderable'=>false, 'searchable'=>false])
@@ -72,7 +90,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $team = User::with('team')->first()->get();
+        return view('users.create')->with(compact('team'));
     }
 
     /**
@@ -89,14 +108,20 @@ class UsersController extends Controller
         'name' => 'required:users',
         'email' => 'required|unique:users',
         'otoritas' => 'required|exists:roles,id',
-        'team_id' => 'required|exists:teams,id'
+        'team_id' => 'required'
         ]);
-        $team = Team::where('id', $request->team_id)->first();
+        // $team_id = Team::where('id', $request->team_id)->first();
         $Role = Role::where('id', $request->otoritas)->first();
         $password =  bcrypt('rahasiaku');
         $is_verified = 1;
-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified, 'team_id' => $team->id]);
+        ($request->team_id);
+      
+        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified]);
         $user->attachRole($Role);
+        foreach($request->team_id as $team_id){
+            TeamUser::create(['user_id' => $user->id, 'team_id' => $team_id]);
+        }
+
 
         Session::flash("flash_notification", [
             "level"=>"success",
