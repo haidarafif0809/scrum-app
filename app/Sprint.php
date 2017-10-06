@@ -18,4 +18,8 @@ class Sprint extends Model
 		return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d-m-Y');
 	}
 
+	public function team() {
+		$this->belongsTo('App\Team');
+	}
+
 } 

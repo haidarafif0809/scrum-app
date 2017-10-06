@@ -7,23 +7,17 @@ use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables; 
 use App\Sprint; 
 use Session; 
+use App\Team; 
  
 class SprintsController extends Controller 
 { 
     public function index(Request $request, Builder $htmlBuilder) 
   { 
     if ($request->ajax()) { 
-        $sprints = Sprint::select(['id', 'nama_sprint', 'kode_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']); 
         
+        $sprints = Sprint::with('team');
 
               return Datatables::of($sprints)
-                // ->addColumn('tanggal_mulai', function($sprint) {
-                //     $tanggalMulai = $sprint->tanggal_mulai;
-                //     $tanggalMulai = explode("-", $tanggalMulai);
-                //     $tanggalMulai = $tanggalMulai[2] .'-'. $tanggalMulai[1] .'-'. $tanggalMulai[0];
-
-                //     return $tanggalMulai;
-                // })
                 ->addColumn('action', function($sprint) { 
                     return view('datatable._action', [ 
                         'model' => $sprint, 
@@ -41,10 +35,10 @@ class SprintsController extends Controller
                 })->make(true); 
     } 
     $html = $htmlBuilder 
-    ->addColumn(['data' => 'tanggal_mulai', 'name' =>  'tanggal_mulai', 'title' =>  'Tanggal Mulai']) 
+    ->addColumn(['data' => 'tanggal_mulai', 'name' =>  'tanggal_mulai', 'title' =>  'Tanggal Mulai'])
     ->addColumn(['data' => 'durasi', 'name' =>  'durasi', 'title' =>  'Durasi']) 
     ->addColumn(['data' => 'waktu_mulai', 'name' =>  'waktu_mulai', 'title' =>  'Waktu Mulai']) 
-    ->addColumn(['data' => 'team', 'name' =>  'team', 'title' =>  'Team']) 
+    ->addColumn(['data' => 'team.nama_team', 'name' =>  'team.nama_team', 'title' =>  'Teamku']) 
     ->addColumn(['data' => 'nama_sprint', 'name' =>'nama_sprint', 'title'   =>'Nama Sprint']) 
     ->addColumn(['data' => 'backlog',      'name' =>  'backlog', 'title'      => 'Backlog', 'orderable' => false, 'searchable' => false]) 
             ->addColumn(['data' => 'action', 'name'      =>  'action', 'title'      => 'Aksi', 'orderable' => false, 'searchable' => false]); 
