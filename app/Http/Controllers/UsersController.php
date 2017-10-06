@@ -90,8 +90,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $team = User::with('team')->first()->get();
-        return view('users.create')->with(compact('team'));
+       return view('users.create');
     }
 
     /**
@@ -113,9 +112,7 @@ class UsersController extends Controller
         // $team_id = Team::where('id', $request->team_id)->first();
         $Role = Role::where('id', $request->otoritas)->first();
         $password =  bcrypt('rahasiaku');
-        $is_verified = 1;
-        ($request->team_id);
-      
+        $is_verified = 1;      
         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified]);
         $user->attachRole($Role);
         foreach($request->team_id as $team_id){
@@ -150,8 +147,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::with('roleUser')->find($id);
-        return view('users.edit')->with(compact('user'));   
+        $user = User::with('roleUser')->with('teamUser')->find($id);
+        return view('users.edit')->with(compact('user'));
     }
 
     /**
@@ -172,11 +169,18 @@ class UsersController extends Controller
 
         //update untuk di data user 
         $roleLama = RoleUser::where('user_id', $id)->delete();
-        $team_id = Team::where('id', $request->team_id, $id)->first();
+        $teamLama = TeamUser::where('user_id', $id)->delete();
+        // $team_id = Team::where('id', $request->team_id, $id)->first();
         $role = Role::where('id', $request->otoritas, $id)->first();
         $user = User::find($id);
-        $user->update(['name' => $request->name, 'email' => $request->email, 'team_id' => $team_id->id]);
+        $user->update(['name' => $request->name, 'email' => $request->email]);
         $user->attachRole($role);
+        // $team = TeamUser::where('user_id', $id)->where('team_id', $id);
+
+        foreach($request->team_id as $team_id){
+            TeamUser::create(['user_id' => $user->id, 'team_id' => $team_id]);
+        }
+
         session::flash('flash_notification', [
             "level" => "success",
             "message" => "Anda Berhasil mengedit " . $user->name . " !"
