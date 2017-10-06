@@ -67,7 +67,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                             <li<?=(preg_match("/home/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
-                            <li class="dropdown">
+                            <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $_SERVER['REQUEST_URI']) ? 'active' : '');?>">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
