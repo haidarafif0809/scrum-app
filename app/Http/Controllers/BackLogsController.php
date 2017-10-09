@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use App\Backlog;
+use App\Sprintbacklog;
 use App\Aplication;
 use Session;
 
@@ -49,7 +50,7 @@ class BackLogsController extends Controller
     public function create()
     {
         return view('backlog.create');
-    }
+     }
 
     public function store(Request $request)
     {
@@ -98,12 +99,29 @@ class BackLogsController extends Controller
 
     public function destroy($id)
     {
-        $backlog = Backlog::find($id);
-        $backlog->delete();
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Backlog berhasil dihapus"
-        ]);
-        return redirect()->route('backlog.index');
+
+        $sprintBacklog = Sprintbacklog::where('backlog', $id)->count();
+        if ($sprintBacklog > 0) {
+
+            Session::flash("flash_notification", [
+                "level"=>"danger",
+                "message"=>"Backlog Tidak Bisa Dihapus. Karena Sudah Terpakai."
+            ]);
+
+            return redirect()->route('backlog.index');
+        }
+        else {
+
+            $backlog = Backlog::find($id);
+            $backlog->delete();
+            Session::flash("flash_notification", [
+                "level" => "success",
+                "message" => "Backlog berhasil dihapus"
+            ]);
+
+            return redirect()->route('backlog.index');
+            
+        }
+
     }
 }
