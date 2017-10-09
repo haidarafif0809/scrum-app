@@ -8,7 +8,8 @@
 					<div class="panel-heading">
 						<h2 class="panel-title">Dashboard</h2>
 					<div class="panel-body">
-						Selamat datang di Menu Aplikasi Scrum Silahkan pilih menu yang diinginkan.
+						<h2>Selamat datang di menu aplikasi scrum</h2>
+						<h3>Pilih menu yang anda inginkan.</h3>
 						</div>
 					</div>
 				</div>
