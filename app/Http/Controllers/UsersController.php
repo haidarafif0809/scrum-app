@@ -147,8 +147,15 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::with('roleUser')->with('teamUser')->find($id);
-        return view('users.edit')->with(compact('user'));
+        $user = User::with('roleUser')->find($id);
+        $team = TeamUser::where('user_id', $id)->get();
+        $data_team = '';
+        foreach ($team as $teams) {
+            $data_team .= "'" . $teams->team_id . "', "; 
+        }
+        return view('users.edit')->with(compact('user', 'data_team'));
+
+        // return $data_team;
     }
 
     /**
