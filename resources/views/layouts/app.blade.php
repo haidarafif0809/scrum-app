@@ -25,6 +25,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <link rel="icon" type="img" href="favicon.ico">
 
     <!-- Styles -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
     <link href="<?=$url;?>css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
@@ -140,6 +141,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     </div>
 
     <!-- Scripts -->
+
     <!-- <script src="{{ asset('js/app.js') }}"></script> -->
     <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -163,6 +165,9 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
 @yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
+
+    <script src="/js/app.js"></script>
+
 </body>
 </html>
 

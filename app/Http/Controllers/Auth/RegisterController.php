@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Role;
 use App\Team;
+use App\TeamUser;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -71,8 +72,12 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'team_id' => $data['team_id'],
+            // 'team_id' => $data['team_id'],
         ]);
+        foreach ($data['team_id'] as $team_id) {
+            $teamUser = TeamUser::create(['user_id' => $user->id, 'team_id' => $team_id]);
+        }
+
         $member = Role::where('name', 'member')->first();
         $user->attachRole($member);
         return $user;
