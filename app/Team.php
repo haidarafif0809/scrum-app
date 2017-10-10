@@ -20,5 +20,10 @@ class Team extends Model
         	return $this->hasMany('App\Sprint');
         }
 
+        public function teamUser() {
+        	return $this->belongsTo('App\TeamUser', 'id', 'team_id');
+        }
+
+
 
 }

@@ -17,6 +17,10 @@ class TeamsController extends Controller
         if ($request->ajax()) {
             $teams = Team::select(['id', 'kode_team', 'nama_team']);
             return Datatables::of($teams)
+                ->addColumn('nama_team', function($team) {
+                    return '<a href="'.route('teams.show', $team->id).'">'.$team->nama_team.'</a>';
+                })
+
                 ->addColumn('action', function($team){
                     return view('datatable._action', [
                         'model' => $team,
@@ -24,14 +28,25 @@ class TeamsController extends Controller
                         'edit_url' => route('teams.edit', $team->id),
                         'confirm_message' => 'Apakah anda yakin akan menghapus ' . $team->nama_team . '?'
                     ]);
+
                 })->make(true);
 
+                 // ->addColumn('lists', function($team){
+                 //    return view('datatable.lists', [
+                 //        'model' => $team, 
+                 //        'lists_url' => route('teams.lists', $team->id),
+                 //        'confirm_message' => 'Apakah Anda Yakin akan me-reset password ' . $team->nama_team . ' ?',
+                 //    ]);
+                    
+                // })
         }
 
         $html = $htmlBuilder
             ->addColumn(['data' => 'kode_team', 'kode_team'=>'kode_team', 'title'=>'Kode Team'])
             ->addColumn(['data' => 'nama_team', 'nama_team'=>'nama_team', 'title'=>'Nama Team'])
             ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
+            // ->addColumn(['data' => 'lists', 'name'=>'lists', 'title'=>'Anggota', 'orderable'=>false, 'searchable'=>false]);
+
            
         return view('teams.index')->with(compact('html'));
     }
@@ -59,7 +74,9 @@ class TeamsController extends Controller
 
     public function show($id)
     {
-        //
+         $team = Team::find($id);
+         $anggotaTeam = TeamUser::where('team_id', $id)->get();
+        return view('teams.show')->with(compact('team', 'anggotaTeam'));
     }
 
     public function edit($id)
@@ -113,4 +130,9 @@ class TeamsController extends Controller
         }
 
     }
+
+    //  public function lists($id) {
+        
+    //     return redirect()->route('teams.index');
+    // }
 }

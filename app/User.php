@@ -51,4 +51,8 @@ class User extends Authenticatable
         return $this->belongsTo('App\Team');
     }
 
+    public function teams() {
+            return $this->hasMany('App\Team');
+        }
+
 }

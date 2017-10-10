@@ -1,13 +1,14 @@
 <?php 
  
-namespace App; 
+namespace App;
+Use App\Team; 
  
 use Illuminate\Database\Eloquent\Model;
 
  
 class Sprint extends Model 
 { 
-   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']; 
+   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id']; 
 
   	public function setTanggalMulaiAttribute($date) {
   		$date = date_create($date);
