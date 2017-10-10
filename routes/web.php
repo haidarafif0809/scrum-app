@@ -47,5 +47,10 @@ Route::get('/users/repass/{id}', [
 	'as' => 'users.repass',
 	'uses' => 'UsersController@repass'
 ]);
+Route::get('/teams/lists/{id}', [
+	'middleware' => ['auth'],
+	'as' => 'teams.lists',
+	'uses' => 'TeamsController@lists'
+]);
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
