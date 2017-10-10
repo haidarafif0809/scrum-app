@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+
 Route::group(['middleware' => ['auth']], function () {
 	Route::resource('backlog', 'BackLogsController');
 	Route::resource('sprints', 'SprintsController'); 
