@@ -111,7 +111,7 @@ class UsersController extends Controller
         ]);
         // $team_id = Team::where('id', $request->team_id)->first();
         $Role = Role::where('id', $request->otoritas)->first();
-        $password =  bcrypt('rahasiaku');
+        $password = 'rahasiaku';
         $is_verified = 1;      
         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => $password, 'is_verified' => $is_verified]);
         $user->attachRole($Role);
@@ -234,7 +234,7 @@ class UsersController extends Controller
 
     public function repass($id) {
         $user = User::find($id);
-        $password = bcrypt('rahasiaku');
+        $password = 'rahasiaku';
         if ($user->password == true) {
             $user->update(['password' => $password]);
         }

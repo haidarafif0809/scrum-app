@@ -51,8 +51,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Team');
     }
 
-    public function teams() {
-            return $this->hasMany('App\Team');
-        }
-
+    // untuk melakukan hashing
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }
