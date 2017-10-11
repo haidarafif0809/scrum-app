@@ -54,3 +54,6 @@ Route::get('/teams/lists/{id}', [
 ]);
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
+
+Route::get('/settings/password', 'SettingsController@editPassword');
+Route::post('/settings/password', 'SettingsController@updatePassword');
