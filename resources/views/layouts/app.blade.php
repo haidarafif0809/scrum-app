@@ -118,6 +118,9 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
+                                        <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
+                                    </li>
+                                    <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
