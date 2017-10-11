@@ -21,6 +21,9 @@ class AplicationsController extends Controller
         if ($request->ajax()) {
          $aplications = Aplication::select(['id', 'kode', 'nama']);
           return Datatables::of($aplications)
+          ->addColumn('nama', function($aplication) {
+                    return '<a href="'.route('aplikasi.show', $aplication->id).'">'.$aplication->nama.'</a>';
+                })
           ->addColumn('action', function($aplications){
          return view('datatable._action', [
                 'model'    => $aplications,
@@ -78,7 +81,9 @@ class AplicationsController extends Controller
      */
     public function show($id)
     {
-        //
+        $aplikasi = Aplication::find($id);
+        $listBacklog = Backlog::where('aplikasi_id', $id)->get();
+        return view('aplikasi.show', compact('aplikasi', 'listBacklog'));
     }
 
     /**
