@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Setel Ulang Kata Sandi')
+
 <!-- Main Content -->
 @section('content')
 <div class="container">
