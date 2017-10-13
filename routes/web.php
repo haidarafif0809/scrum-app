@@ -40,6 +40,12 @@ Route::group(['middleware' => ['auth']], function () {
 		'uses' => 'SprintbacklogsController@create_sprintbacklog'
 	]);
 
+	Route::get('/sprintbacklogs/destroy/{id}', [
+		'middleware' => ['auth'], 
+		'as' => 'sprintbacklogs.destroy_sprintbacklog', 
+		'uses' => 'SprintbacklogsController@destroy_sprintbacklog'
+	]);
+
 });
 // route konfirmasi user
 Route::get('/users/konfirmasi/{id}', [

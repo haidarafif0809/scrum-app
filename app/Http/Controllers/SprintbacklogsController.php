@@ -95,7 +95,7 @@ class SprintbacklogsController extends Controller
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
         if ($request->ajax()) { 
-        $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint',$id);
+        $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id);
             return Datatables::of($sprintbacklogs)
             ->addColumn('action', function($sprintbacklog){ 
                 return view('datatable._action', [ 
@@ -148,7 +148,17 @@ class SprintbacklogsController extends Controller
          
         return redirect()->route('sprintbacklogs.show'); 
     } 
- 
+    
+    public function destroy_sprintbacklog($id) 
+    { 
+        $sprintbacklog = Sprintbacklog::find($id);
+        Sprintbacklog::destroy($id);
+        Session::flash("flash_notification", [ 
+            "level" => "success", 
+            "message" => "Data Berhasil Di Hapus" 
+            ]); 
+        return redirect()->route('sprintbacklogs.show');  
+    } 
  
     public function destroy($id) 
     { 

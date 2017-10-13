@@ -9,12 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sprint extends Model 
 { 
    	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id']; 
-   	protected $primaryKey = 'id';
-   	public function getKolomAttribute() {
-    	$jumlahKolom = Sprint::all()->count();
-
-    	return $jumlahKolom;
-    }
+   
 
     public function team() {
       return $this->belongsTO('App\Team');
