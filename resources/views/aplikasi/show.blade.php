@@ -13,10 +13,9 @@
 				</ul>
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h2 class="panel-title">List Backlog {{ $aplikasi->nama }}</h2>
+						<h2 class="panel-title">List Backlog <b>{{ $aplikasi->nama }} :</b></h2>
 					</div>
 					<div class="panel-body">
-						<p>List Backlog{{ $aplikasi->nama }} :</p>
 						<table class="table table-condensed table-striped">
 							
 							@foreach ($listBacklog as $backlog) 
@@ -26,6 +25,9 @@
 									</li>
 								</ul>
 							@endforeach
+							@if ($listBacklog->count() == 0)
+								<h4 >"<strong>{{$aplikasi->nama}}</strong>" belum memiliki backlog!.</h4>
+							@endif
 						</table>
 					</div>
 				</div>

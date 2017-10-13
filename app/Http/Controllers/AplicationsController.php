@@ -67,7 +67,7 @@ class AplicationsController extends Controller
         ]);
         $aplikasi = Aplication::create($request->all());
         Session::flash("flash_notification", [
-             "level"=>"success",
+            "level"=>"success",
             "message"=>"Berhasil Menambahkan ".$aplikasi->nama.""
         ]);
             return redirect()->route('aplikasi.index');
@@ -110,14 +110,14 @@ class AplicationsController extends Controller
     {
         //
         $this->validate($request, [
-        'kode' => 'required|unique:aplications,kode,' . $id,
-                'nama' => 'required|unique:aplications,nama,'. $id 
+            'kode' => 'required|unique:aplications,kode,' . $id,
+            'nama' => 'required|unique:aplications,nama,'. $id 
         ]);
         $aplication = Aplication::find($id);
         $aplication->update($request->all());
         Session::flash("flash_notification", [
-        "level"=>"success",
-        "message"=>"Berhasil Mengubah ".$aplication->nama.""
+            "level"=>"success",
+            "message"=>"Berhasil Mengubah ".$aplication->nama.""
          ]);
         return redirect()->route('aplikasi.index');
          }
@@ -138,8 +138,8 @@ class AplicationsController extends Controller
 
             //PERINGTAN TIDAK BISA DIHAPUS
             Session::flash("flash_notification", [
-            "level"=>"danger",
-            "message"=>"Aplikasi Tidak Bisa Dihapus. Karena Sudah Terpakai."
+                "level"=>"danger",
+                "message"=>"Aplikasi Tidak Bisa Dihapus. Karena Sudah Terpakai."
             ]);
 
             return redirect()->route('aplikasi.index');
@@ -150,8 +150,8 @@ class AplicationsController extends Controller
             //membuat proses hapus
             Aplication::destroy($id);
             Session::flash("flash_notification", [
-            "level"=>"success",
-            "message"=>"Aplikasi berhasil dihapus"
+                "level"=>"success",
+                "message"=>"Aplikasi berhasil dihapus"
             ]);
             return redirect()->route('aplikasi.index');
 
