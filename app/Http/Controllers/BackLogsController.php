@@ -27,7 +27,7 @@ class BackLogsController extends Controller
                 ]);
             })
             ->addColumn('nama_backlog', function($backlog) {
-                return '<a href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
+                return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
 
             // })->addColumn('no_urut', function($backlog) {
                 // return view('datatable._noUrut', [

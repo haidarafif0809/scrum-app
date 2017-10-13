@@ -21,4 +21,10 @@ class Team extends Model
         }
         
 
+        public function teamUser() {
+        	return $this->belongsTo('App\TeamUser', 'id', 'team_id');
+        }
+
+
+
 }

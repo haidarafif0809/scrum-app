@@ -54,7 +54,7 @@ class SprintsController extends Controller
             'tanggal_mulai' => 'required', 
             'durasi' => 'required',
             'waktu_mulai' => 'required' , 
-            'team_id' => 'required',
+            'team' => 'required|exists:teams,id', 
             'kode_sprint' => 'required|unique:sprints' , 
             'nama_sprint' => 'required|unique:sprints'
 

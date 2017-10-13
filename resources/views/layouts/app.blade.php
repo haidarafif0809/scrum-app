@@ -19,12 +19,13 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
 
     <!-- Favicon -->
     <link rel="icon" type="img" href="favicon.ico">
 
     <!-- Styles -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
     <link href="<?=$url;?>css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
@@ -70,8 +71,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                             <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $_SERVER['REQUEST_URI']) ? 'active' : '');?>">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
-                                    <li<?=(preg_match("/teams/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
+                                    <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Member</a></li>
+                                    <li<?=(preg_match("/teams/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Tim</a></li>
                                     <li<?=(preg_match("/backlog/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
                                     <li<?=(preg_match("/aplikasi/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
                                     <li<?=(preg_match("/sprints/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
@@ -117,10 +118,13 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
+                                        <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
+                                    </li>
+                                    <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                           <i class="glyphicon glyphicon-log-out"></i> Logout
                                         </a>
 
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
@@ -140,6 +144,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     </div>
 
     <!-- Scripts -->
+
     <!-- <script src="{{ asset('js/app.js') }}"></script> -->
     <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -169,6 +174,9 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
 @yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
+
+    <script src="/js/app.js"></script>
+
 </body>
 </html>
 
