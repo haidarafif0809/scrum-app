@@ -1,29 +1,30 @@
 @extends('layouts.app') 
- 
+
 @section('content') 
   <div class="container"> 
     <div class="row"> 
       <div class="col-md-12"> 
         <ul class="breadcrumb"> 
           <li><a href="{{ url('/home') }}">Dashboard</a></li> 
-          <li><a href="{{ url('/sprints') }}">Sprint</a></li> 
-          <li class="active">Tambah Sprint</li> 
+          <li class="active">Sprint Backlog</li> 
         </ul> 
-   
+ 
         <div class="panel panel-default"> 
           <div class="panel-heading"> 
-            <h2 class="panel-title">Tambah Sprint</h2> 
+            <h2 class="panel-title">Sprint Backlog </h2> 
           </div> 
- 
+            
           <div class="panel-body"> 
-            {!! Form::open(['url' => route('sprints.store'), 
-              'method' => 'post', 'class'=>'form-horizontal']) !!} 
-                @include('sprints._form') 
-            {!! Form::close() !!} 
+          <p> <a class="btn btn-primary" href="{{ route('sprintbacklogs.create_sprintbacklog',$sprint) }}">Tambah</a> </p> 
+            {!! $html->table(['class'=>'table-striped']) !!} 
           </div> 
         </div> 
       </div> 
     </div> 
   </div> 
+@endsection 
+ 
+@section('scripts') 
+  {!! $html->scripts() !!} 
 @endsection
 

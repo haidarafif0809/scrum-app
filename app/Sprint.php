@@ -7,19 +7,35 @@ use Illuminate\Database\Eloquent\Model;
  
 class Sprint extends Model 
 { 
-   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']; 
+   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id']; 
+   	protected $primaryKey = 'id';
+   	public function getKolomAttribute() {
+    	$jumlahKolom = Sprint::all()->count();
 
-  	public function setTanggalMulaiAttribute($date) {
-  		$date = date_create($date);
+    	return $jumlahKolom;
+    }
 
-		$this->attributes['tanggal_mulai'] = date_format($date, 'Y-m-d');
-	}
-	public function getTanggalMulaiAttribute($date) {
-		return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d-m-Y');
-	}
+    public function team() {
+      return $this->belongsTO('App\Team');
+    }
+    public function sprintbacklog() {
+    	return $this->belongsTo('App\Sprintbacklog');
+    }
+}	
 
-	public function team() {
-		return $this->belongsTo('App\Team');
-	}
+//   	public function setTanggalMulaiAttribute($date) {
+//   		$date = date_create($date);
 
-} 
+// 		$this->attributes['tanggal_mulai'] = date_format($date, 'Y-m-d');
+// 	}
+// 	public function getTanggalMulaiAttribute($date) {
+// 		return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d-m-Y');
+// 	}
+
+// 	public function team() {
+// 		return $this->belongsTo('App\Team');
+// 	}
+
+// } 
+	
+

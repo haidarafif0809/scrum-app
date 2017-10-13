@@ -17,8 +17,8 @@ class Team extends Model
         }
 
         public function sprint() {
-        	return $this->hasMany('App\Sprint');
+        	return $this->hasMany('App\Sprint', 'id', 'team_id');
         }
-
+        
 
 }

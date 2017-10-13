@@ -32,6 +32,13 @@ Route::group(['middleware' => ['auth']], function () {
 	route::resource('teams', 'TeamsController');
 	route::resource('aplikasi', 'AplicationsController');
 
+	// route konfirmasi user
+	Route::get('/sprintbacklogs/create/{id}', [
+		'middleware' => ['auth'], 
+		'as' => 'sprintbacklogs.create_sprintbacklog', 
+		'uses' => 'SprintbacklogsController@create_sprintbacklog'
+	]);
+
 });
 // route konfirmasi user
 Route::get('/users/konfirmasi/{id}', [

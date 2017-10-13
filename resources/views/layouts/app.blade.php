@@ -149,13 +149,19 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
-    <script type="text/javascript">
-    $(function() {
-    $( "#datepicker" ).datepicker({ dateFormat: 'dd-mm-yy',
+       <script type="text/javascript">
+    $(document).ready(function() {
+    $("#datepicker").datepicker({
+        dateFormat: "yy/mm/dd",
         changeMonth: true,
-        changeYear: true});
-        });
-
+        changeYear: true ,
+        yearRange: "-100:+0",
+        minDate: new Date()
+    });
+});
+[removed] 
+</script>
+<script type="text/javascript">
     $(function() {
   $('#timepicker').timepicker();
 });
