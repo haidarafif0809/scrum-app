@@ -100,6 +100,7 @@ class BackLogsController extends Controller
     public function destroy($id)
     {
 
+        // Mengecek apakah backlog sedang digunakan
         $sprintBacklog = Sprintbacklog::where('id_backlog', $id)->count();
         if ($sprintBacklog > 0) {
 
