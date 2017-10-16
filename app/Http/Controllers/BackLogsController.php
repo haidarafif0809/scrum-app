@@ -100,7 +100,8 @@ class BackLogsController extends Controller
     public function destroy($id)
     {
 
-        $sprintBacklog = Sprintbacklog::where('backlog', $id)->count();
+        // Mengecek apakah backlog sedang digunakan
+        $sprintBacklog = Sprintbacklog::where('id_backlog', $id)->count();
         if ($sprintBacklog > 0) {
 
             Session::flash("flash_notification", [
