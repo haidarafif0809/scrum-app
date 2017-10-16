@@ -1,18 +1,58 @@
 @extends('layouts.app')
 
+@section('title', 'Dasboard Admin')
+
 @section('content')
-	<div class="container">
-		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h2 class="panel-title">Dashboard</h2>
-					</div>
-					<div class="panel-body">
-						Selamat datang di menu aplikasi scrum <br>
-							Pilih menu yang anda inginkan..
-					</div>
-				</div>
-			</div>
-		</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><span class="glyphicon glyphicon-retweet"></span>
+                    <strong>Backlog</strong>
+                </div>
+                    <div class="panel-body">
+                    Jumlah                      
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="panel panel-danger">
+                <div class="panel-heading"><span class="glyphicon glyphicon-credit-card"></span>
+                    <strong>Team</strong>
+                </div>
+                    <div class="panel-body">
+                    Jumlah 
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading"><span class="glyphicon glyphicon-object-align-left"></span>
+                    <strong>Sprint</strong>
+                </div>
+                    <div class="panel-body">
+                    Jumlah Sprint
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="col-md-3">
+            <div class="panel panel-warning">
+                <div class="panel-heading"><span class="glyphicon glyphicon-edit"></span>
+                    <strong>Member</strong>
+                </div>
+                    <div class="panel-body">
+                    Jumlah Member
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 @endsection
