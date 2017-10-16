@@ -66,9 +66,9 @@ class SprintbacklogsController extends Controller
      */ 
     public function store(Request $request) 
     { 
+
         $this->validate($request, [
-            'id_backlog' => 'required', 
-            'id_sprint' => 'required', 
+            'id_backlog' => 'required|exists:backlogs,id_backlog', 
             'isi_kepentingan' => 'required', 
             'perkiraan_waktu' => 'required']); 
     
@@ -98,12 +98,15 @@ class SprintbacklogsController extends Controller
         $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id);
             return Datatables::of($sprintbacklogs)
             ->addColumn('action', function($sprintbacklog){ 
-                return view('datatable._action', [ 
+                return view('datatable._actionSprintBacklog', [ 
                     'model' => $sprintbacklog, 
                     'form_url'=> route('sprintbacklogs.destroy', $sprintbacklog->id), 
                     'edit_url' => route('sprintbacklogs.edit', $sprintbacklog->id), 
                     'confirm_message' => 'Yakin mau menghapus ' . $sprintbacklog->backlog . '?' 
-                ]);             
+                ]);   
+                })    
+                ->addColumn('nama_backlog', function($backlog) {
+                return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';      
             })->make(true);
         } 
  
@@ -117,37 +120,29 @@ class SprintbacklogsController extends Controller
         return view('Sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
     } 
 
- 
-    /** 
-     * Show the form for editing the specified resource. 
-     * 
-     * @param  int  $id 
-     * @return \Illuminate\Http\Response 
-     */ 
     public function edit($id) 
     { 
         $sprintbacklog = Sprintbacklog::find($id); 
         return view('sprintbacklogs.edit')->with(compact('sprintbacklog')); 
     } 
  
-    /** 
-     * Update the specified resource in storage. 
-     * 
-     * @param  \Illuminate\Http\Request  $request 
-     * @param  int  $id 
-     * @return \Illuminate\Http\Response 
-     */ 
     public function update(Request $request, $id) 
     { 
+        $this->validate($request, [
+            'id_backlog' => 'required|exists:backlogs,id_backlog',
+            'isi_kepentingan' => 'required',
+            'perkiraan_waktu' => 'required'
+        ]);
         $sprintbacklog = Sprintbacklog::find($id); 
-        $sprintbacklog->update($request->only( 'id_backlog', 'isi_kepentingan', 'perkiraan_waktu')); 
+        $sprintbacklog->update($request->all());
         Session::flash("flash_notification", [ 
             "level"=>"success", 
             "message"=>"Berhasil menyimpan $sprintbacklog->backlog" 
         ]); 
          
-        return redirect()->route('sprintbacklogs.show'); 
-    } 
+        return redirect()->route('sprintbacklogs.show',['sprint'=>$request->id_sprint])->with(compact('sprints')); 
+    }
+
     
     public function destroy_sprintbacklog($id) 
     { 
@@ -160,14 +155,14 @@ class SprintbacklogsController extends Controller
         return redirect()->route('sprintbacklogs.show');  
     } 
  
-    public function destroy($id) 
+    public function destroy(Request $request, $id) 
     { 
+        $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
         Sprintbacklog::destroy($id); 
- 
         Session::flash("flash_notification", [ 
             "level" => "success", 
             "message" => "Data Berhasil Di Hapus" 
             ]); 
-        return redirect()->route('sprintbacklogs.show'); 
+        return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
     } 
 }

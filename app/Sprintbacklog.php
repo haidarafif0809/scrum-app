@@ -10,10 +10,10 @@ class Sprintbacklog extends Model
 
 	public function sprint()
 	{
-	return $this->belongsTo('App\Sprint','id','id_sprint');
+	return $this->belongsTo('App\Sprint','id_sprint', 'id');
 	}
 	public function backlog()
 	{
-	return $this->belongsTo('App\backlog','id','id_backlog');
+	return $this->belongsTo('App\backlog','id_backlog', 'id_backlog');
 	}
 }

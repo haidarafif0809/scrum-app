@@ -22,8 +22,12 @@
     {!! Form::number('perkiraan_waktu', null, ['class'=>'form-control']) !!} 
     {!! $errors->first('perkiraan_waktu', '<p class="help-block">:message</p>') !!} 
   </div> 
-</div> 
- 
+</div>
+
+@if(isset($sprintbacklog)) 
+
+{!! Form::hidden('id_sprint', $sprintbacklog->id_sprint, ['class'=>'form-control']) !!} 
+@endif
 <div class="form-group"> 
   <div class="col-md-4 col-md-offset-2"> 
     {!! Form::submit('Simpan', ['class'=>'btn btn-primary']) !!} 
