@@ -70,13 +70,22 @@ class SprintbacklogsController extends Controller
         $this->validate($request, [
             'id_backlog' => 'required|exists:backlogs,id_backlog', 
             'isi_kepentingan' => 'required', 
-            'perkiraan_waktu' => 'required']); 
-    
+            'perkiraan_waktu' => 'required'
+        ]);  
+        
+        $angka = $request->perkiraan_waktu;
+        $sliceAngka = explode(',', trim($angka));
+        $array_angka = [];
+        foreach ($sliceAngka as $num) {
+            array_push($array_angka, $num);
+        }
+        $hasil = array_sum($array_angka);
+        $hasil = $hasil / count($sliceAngka);
         $sprintbacklogs = Sprintbacklog::create([
             'id_sprint' => $request->id_sprint,
             'id_backlog' => $request->id_backlog,
             'isi_kepentingan' => $request->isi_kepentingan,
-            'perkiraan_waktu' => $request->perkiraan_waktu,
+            'perkiraan_waktu' => $hasil
     ]);
     
         Session::flash("flash_notification", [ 
@@ -102,7 +111,7 @@ class SprintbacklogsController extends Controller
                     'model' => $sprintbacklog, 
                     'form_url'=> route('sprintbacklogs.destroy', $sprintbacklog->id), 
                     'edit_url' => route('sprintbacklogs.edit', $sprintbacklog->id), 
-                    'confirm_message' => 'Yakin mau menghapus ' . $sprintbacklog->backlog . '?' 
+                    'confirm_message' => 'Apakah anda yakin ingin menghapus ?' 
                 ]);   
                 })    
                 ->addColumn('nama_backlog', function($backlog) {
@@ -137,23 +146,11 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update($request->all());
         Session::flash("flash_notification", [ 
             "level"=>"success", 
-            "message"=>"Berhasil menyimpan $sprintbacklog->backlog" 
+            "message"=>"Berhasil menyimpan data" 
         ]); 
          
         return redirect()->route('sprintbacklogs.show',['sprint'=>$request->id_sprint])->with(compact('sprints')); 
     }
-
-    
-    public function destroy_sprintbacklog($id) 
-    { 
-        $sprintbacklog = Sprintbacklog::find($id);
-        Sprintbacklog::destroy($id);
-        Session::flash("flash_notification", [ 
-            "level" => "success", 
-            "message" => "Data Berhasil Di Hapus" 
-            ]); 
-        return redirect()->route('sprintbacklogs.show');  
-    } 
  
     public function destroy(Request $request, $id) 
     { 
