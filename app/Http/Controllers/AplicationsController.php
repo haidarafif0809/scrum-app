@@ -37,6 +37,7 @@ class AplicationsController extends Controller
         ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
         ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'', 'orderable'=>false,'searchable'=>false]);
+        $jumlah_backlog = Sprintbacklog::where('id_backlog', $id)->count();
         
         return view('aplikasi.index')->with(compact('html'));
     }

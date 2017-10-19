@@ -11,7 +11,9 @@
                     <strong>Backlog</strong>
                 </div>
                     <div class="panel-body">
-                    Jumlah                      
+                    <strong>
+                        Jumlah Backlog {{ $jumlah_backlog }}  
+                    </strong>           
                 </div>
             </div>
         </div>
@@ -23,7 +25,9 @@
                     <strong>Team</strong>
                 </div>
                     <div class="panel-body">
-                    Jumlah 
+                    <strong>
+                           Jumlah Team {{ $jumlah_team }}
+                    </strong>
                 </div>
             </div>
         </div>
@@ -36,7 +40,9 @@
                     <strong>Sprint</strong>
                 </div>
                     <div class="panel-body">
-                    Jumlah Sprint
+                    <strong>
+                        Jumlah Sprint {{ $jumlah_sprint }}
+                    </strong>
                 </div>
             </div>
         </div>
@@ -48,7 +54,9 @@
                     <strong>Member</strong>
                 </div>
                     <div class="panel-body">
-                    Jumlah Member
+                    <strong>
+                    Jumlah Member {{ $jumlah_member }}
+                    </strong>
                 </div>
             </div>
         </div>
