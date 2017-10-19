@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laratrust\LaratrustFacade as Laratrust;
-
+use App\Backlog;
+use App\Sprint;
+use App\Team;
+use App\Role;
 class HomeController extends Controller
 {
     /**
@@ -29,8 +32,19 @@ class HomeController extends Controller
         return view('home');
     }
     protected function adminDashboard()
-    {
-        return view('dashboard.admin');
+    {   
+        $jumlah_member = Role::count();
+        $jumlah_team = Team::count();
+        $jumlah_sprint = Sprint::count();
+        $jumlah_backlog = Backlog::count();
+        return view('dashboard.admin',[
+            'jumlah_member' => $jumlah_member,
+            'jumlah_team' => $jumlah_team,
+            'jumlah_sprint' => $jumlah_sprint,
+            'jumlah_backlog' => $jumlah_backlog
+            
+        ]);
+        
     }
 
     protected function memberDashboard()
