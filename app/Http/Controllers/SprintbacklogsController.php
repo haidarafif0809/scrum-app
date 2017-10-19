@@ -35,17 +35,7 @@ class SprintbacklogsController extends Controller
  
         return view('Sprintbacklogs.show')->with(compact('html')); 
     } 
- 
-    /** 
-     * Show the form for creating a new resource. 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
-    // public function create() 
-    // {
 
-    //     return view('Sprintbacklogs.create'); 
-    // } 
     public function create() 
     { 
         
@@ -58,12 +48,7 @@ class SprintbacklogsController extends Controller
         $sprint = $id;
         return view('sprintbacklogs.create',['sprint'=>$sprint]); 
     } 
-    /** 
-     * Store a newly created resource in storage. 
-     * 
-     * @param  \Illuminate\Http\Request  $request 
-     * @return \Illuminate\Http\Response 
-     */ 
+
     public function store(Request $request) 
     { 
 
@@ -84,6 +69,7 @@ class SprintbacklogsController extends Controller
         $sprintbacklogs = Sprintbacklog::create([
             'id_sprint' => $request->id_sprint,
             'id_backlog' => $request->id_backlog,
+            'asign' => $request->asign,
             'isi_kepentingan' => $request->isi_kepentingan,
             'perkiraan_waktu' => $hasil
     ]);
@@ -95,12 +81,6 @@ class SprintbacklogsController extends Controller
         return redirect()->route('sprintbacklogs.show',$request->id_sprint); 
     } 
  
-    /** 
-     * Display the specified resource. 
-     * 
-     * @param  int  $id 
-     * @return \Illuminate\Http\Response 
-     */ 
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
         if ($request->ajax()) { 
@@ -113,8 +93,8 @@ class SprintbacklogsController extends Controller
                     'edit_url' => route('sprintbacklogs.edit', $sprintbacklog->id), 
                     'confirm_message' => 'Apakah anda yakin ingin menghapus ?' 
                 ]);   
-                })    
-                ->addColumn('nama_backlog', function($backlog) {
+                })
+                ->addColumn('detail', function($backlog) {
                 return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';      
             })->make(true);
         } 
@@ -124,6 +104,8 @@ class SprintbacklogsController extends Controller
             ->addColumn(['data' => 'backlog.nama_backlog', 'name'=>'backlog.nama_backlog', 'title'=>'Nama Backlog']) 
             ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
             ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
+            ->addColumn(['data' => 'detail', 'name'=>'detail', 'title'=>'Detail']) 
+            ->addColumn(['data' => 'asign', 'name'=>'asign', 'title'=>'Asign']) 
             ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
  
         return view('Sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 

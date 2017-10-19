@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
  
 class Sprintbacklog extends Model 
 { 
-    protected $fillable = ['isi_kepentingan','perkiraan_waktu', 'id_backlog', 'id_sprint']; 
+    protected $fillable = ['isi_kepentingan','perkiraan_waktu', 'id_backlog', 'id_sprint', 'asign']; 
 
 	public function sprint()
 	{

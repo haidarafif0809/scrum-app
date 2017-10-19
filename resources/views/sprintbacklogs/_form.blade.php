@@ -24,6 +24,13 @@
   </div> 
 </div> 
 
+<div class="form-group{{ $errors->has('asign') ? ' has-error' : '' }}"> 
+  {!! Form::label('asign', 'Asign', ['class'=>'col-md-2 control-label']) !!} 
+  <div class="col-md-4"> 
+    {!! Form::text('asign', null, ['class'=>'form-control']) !!} 
+    {!! $errors->first('asign', '<p class="help-block">:message</p>') !!} 
+  </div> 
+</div>
    {!! Form::hidden('id_sprint', $sprint, ['class'=>'form-control']) !!} 
  
 <div class="form-group"> 
