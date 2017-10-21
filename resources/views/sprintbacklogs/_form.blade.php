@@ -19,7 +19,7 @@
 <div class="form-group{{ $errors->has('perkiraan_waktu') ? ' has-error' : '' }}"> 
   {!! Form::label('perkiraan_waktu', 'Perkiraan Waktu', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::select('perkiraan_waktu',  ['1' => '1', '2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'] ,  null, ['class'=>'form-control js-selectize-multi', 'placeholder' => 'Jumlah Hari' ]) !!} 
+    {!! Form::text('perkiraan_waktu', null, ['class'=>'form-control', 'placeholder' => 'Jumlah Hari' ]) !!} 
     {!! $errors->first('perkiraan_waktu', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
@@ -31,6 +31,7 @@
     {!! $errors->first('asign', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div>
+
    {!! Form::hidden('id_sprint', $sprint, ['class'=>'form-control']) !!} 
  
 <div class="form-group"> 

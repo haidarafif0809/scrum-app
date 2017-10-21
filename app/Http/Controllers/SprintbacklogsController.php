@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use App\Sprintbacklog; 
-use App\Sprint; 
+use App\Sprint;
 use Session; 
  
 class SprintbacklogsController extends Controller 
@@ -33,20 +33,22 @@ class SprintbacklogsController extends Controller
             ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
             ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
  
-        return view('Sprintbacklogs.show')->with(compact('html')); 
+        return view('Sprintbacklogs.show')->with(compact('html'));
     } 
 
     public function create() 
     { 
         
-        return view('sprintbacklogs.create'); 
+         return view('sprintbacklogs.create'); 
+
     } 
 
 
     public function create_sprintbacklog($id) 
     { 
-        $sprint = $id;
-        return view('sprintbacklogs.create',['sprint'=>$sprint]); 
+        return view('sprintbacklogs.create',['sprint'=>$id]); 
+
+  
     } 
 
     public function store(Request $request) 
@@ -60,12 +62,14 @@ class SprintbacklogsController extends Controller
         
         $angka = $request->perkiraan_waktu;
         $sliceAngka = explode(',', trim($angka));
-        $array_angka = [];
+        $array_angka = array();
         foreach ($sliceAngka as $num) {
             array_push($array_angka, $num);
         }
         $hasil = array_sum($array_angka);
         $hasil = $hasil / count($sliceAngka);
+
+
         $sprintbacklogs = Sprintbacklog::create([
             'id_sprint' => $request->id_sprint,
             'id_backlog' => $request->id_backlog,
@@ -101,10 +105,9 @@ class SprintbacklogsController extends Controller
  
         $html = $htmlBuilder 
             // ->addColumn(['data' => 'aplikasi_id', 'name'=>'aplikasi_id', 'title'=>'Aplikasi']) 
-            ->addColumn(['data' => 'backlog.nama_backlog', 'name'=>'backlog.nama_backlog', 'title'=>'Nama Backlog']) 
+            ->addColumn(['data' => 'detail', 'name'=>'backlog.nama_backlog', 'title'=>'Nama Backlog']) 
             ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
             ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
-            ->addColumn(['data' => 'detail', 'name'=>'detail', 'title'=>'Detail']) 
             ->addColumn(['data' => 'asign', 'name'=>'asign', 'title'=>'Asign']) 
             ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
  
