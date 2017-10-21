@@ -1,6 +1,4 @@
-<?php 
-// $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
-
+<?php
 if ($_SERVER['HTTP_HOST'] == 'localhost') {
     $pathApp = explode('/', $_SERVER['PHP_SELF']);
     $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
