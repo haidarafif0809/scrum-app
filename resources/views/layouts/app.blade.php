@@ -1,10 +1,14 @@
 <?php
-if ($_SERVER['HTTP_HOST'] == 'localhost') {
+$httpHost = @$_SERVER['HTTP_HOST'];
+$https = @$_SERVER['HTTPS'];
+$requestURI = @$_SERVER['REQUEST_URI'];
+
+if ($httpHost == 'localhost') {
     $pathApp = explode('/', $_SERVER['PHP_SELF']);
     $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
     
 }
-$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
+$url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
 // print_r($_SERVER);
  ?> 
 <!DOCTYPE html>
@@ -71,17 +75,17 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
-                            <li<?=(preg_match("/home/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
-                            <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $_SERVER['REQUEST_URI']) ? 'active' : '');?>">
+                            <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
+                            <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $requestURI) ? 'active' : '');?>">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     @role('admin')
-                                    <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
+                                    <li<?=(preg_match("/users/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
                                     @endrole
-                                    <li<?=(preg_match("/teams/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
-                                    <li<?=(preg_match("/backlog/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
-                                    <li<?=(preg_match("/aplikasi/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
-                                    <li<?=(preg_match("/sprints/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
+                                    <li<?=(preg_match("/teams/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
+                                    <li<?=(preg_match("/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
+                                    <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
+                                    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -114,8 +118,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li<?=(preg_match("/login/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
-                            <li<?=(preg_match("/register/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
+                            <li<?=(preg_match("/login/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
+                            <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

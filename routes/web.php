@@ -41,6 +41,12 @@ Route::get('/users/konfirmasi/{id}', [
 	'uses' => 'UsersController@konfirmasi'
 ]);
 
+Route::get('/sprintbacklogs/create/{id}', [
+	'middleware' => ['auth'], 
+	'as' => 'sprintbacklogs.create_sprintbacklog', 
+	'uses' => 'SprintbacklogsController@create_sprintbacklog'
+]);
+
 // untuk membuat reset password
 Route::get('/users/repass/{id}', [
 	'middleware' => ['auth'],

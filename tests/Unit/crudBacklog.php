@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Backlog;
 
 class crudBacklog extends TestCase
 {
@@ -25,7 +26,7 @@ class crudBacklog extends TestCase
     			"catatan" => "tes catatan"
     		]
     	);
-		$this->seeInDatabase('backlogs', [
+		$this->assertDatabaseHas('backlogs', [
     			"aplikasi_id" => 5,
     			"nama_backlog" => "tes nama backlog",
     			"demo" => "tes demo",
@@ -39,13 +40,18 @@ class crudBacklog extends TestCase
     			"catatan" => "tes catatan update"
 			]
 		);
-		$this->seeInDatabase('backlogs', [
+		$this->assertDatabaseHas('backlogs', [
     			"aplikasi_id" => 6,
     			"nama_backlog" => "tes nama backlog update",
     			"demo" => "tes demo update",
     			"catatan" => "tes catatan update"
 		      ]);
 		$hapus_backlog = Backlog::destroy($backlog->id_backlog);
-		$this->assertEquals('1', $hapus_backlog);
+		$this->assertDatabaseMissing('backlogs', [
+                "aplikasi_id" => 6,
+                "nama_backlog" => "tes nama backlog update",
+                "demo" => "tes demo update",
+                "catatan" => "tes catatan update"
+              ]);
     }
 }

@@ -6,17 +6,17 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.4.*",
+        "laravel/framework": "5.5.*",
         "santigarcor/laratrust": "3.0.*",
         "yajra/laravel-datatables-oracle": "~6.0",
         "yajra/laravel-auditable": "^1.1",
         "barryvdh/laravel-debugbar": "^2.4",
-        "laravelcollective/html": "5.4"
+        "laravelcollective/html": "^5.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*"
     },
