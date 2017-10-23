@@ -24,7 +24,7 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
     <title>@yield('title')</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="img" href="favicon.ico">
+    <link rel="icon" type="img" href="to-do-list.ico">
 
     <!-- Styles -->
 
