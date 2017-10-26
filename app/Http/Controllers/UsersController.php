@@ -122,7 +122,7 @@ class UsersController extends Controller
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"<p>Berhasil menyimpan user <h4 style'font-color:red'>" . $user->name . "</h4></p>"
+            "message"=>"<p>Berhasil menyimpan user " . $user->name . "</p>"
         ]);
         return redirect()->route('users.index');
 
