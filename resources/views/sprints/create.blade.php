@@ -1,11 +1,13 @@
 @extends('layouts.app') 
+
+@section('title', 'Tambah Sprint')
  
 @section('content') 
   <div class="container"> 
     <div class="row"> 
       <div class="col-md-12"> 
         <ul class="breadcrumb"> 
-          <li><a href="{{ url('/home') }}">Aplikasi</a></li> 
+          <li><a href="{{ url('/home') }}">Dashboard</a></li> 
           <li><a href="{{ url('/sprints') }}">Sprint</a></li> 
           <li class="active">Tambah Sprint</li> 
         </ul> 

@@ -1,4 +1,6 @@
 @extends('layouts.app') 
+
+@section('title', 'Ubah Sprint Backlog')
  
 @section('content') 
   <div class="container"> 
@@ -18,7 +20,7 @@
         <div class="panel-body"> 
           {!! Form::model($sprintbacklog, ['url' => route('sprintbacklogs.update', $sprintbacklog->id), 
             'method'=>'put', 'class'=>'form-horizontal']) !!} 
-            @include('sprintbacklogs._form') 
+            @include('sprintbacklogs._formedit') 
           {!! Form::close() !!} 
         </div> 
       </div> 

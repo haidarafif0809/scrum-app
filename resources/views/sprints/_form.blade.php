@@ -10,7 +10,7 @@
 <div class="form-group{{ $errors->has('durasi') ? ' has-error' : '' }}"> 
   {!! Form::label('durasi', 'Durasi', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::select('durasi',  ['1 Minggu' => '1 Minggu', '2 Minggu'=>'2 Minggu', '3 Minggu'=>'3 Minggu'] ,  null, ['class'=>'js-selectize' ]) !!} 
+    {!! Form::select('durasi',  ['1 Minggu' => '1 Minggu', '2 Minggu'=>'2 Minggu', '3 Minggu'=>'3 Minggu'] ,  null, ['class'=>'form-control js-selectize' ]) !!} 
     {!! $errors->first('durasi', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
@@ -23,15 +23,13 @@
   </div> 
 </div> 
  
- <div class="form-group{{ $errors->has('team') ? ' has-error' : '' }}"> 
-  {!! Form::label('team', 'Team', ['class'=>'col-md-2 control-label' ]) !!} 
-  <div class="col-md-4"> 
-   {!! Form::select('team', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, [
-      'class'=>'js-selectize',
-      'placeholder' => 'Pilih Team']) !!}
-    {!! $errors->first('team', '<p class="help-block">:message</p>') !!} 
-  </div> 
-</div> 
+<div class="form-group {!! $errors->has('team_id') ? 'has-error' : '' !!}">
+  {!! Form::label('team_id', 'Team', ['class'=>'col-md-2 control-label']) !!}
+  <div class="col-md-4">
+    {!! Form::select('team_id', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, ['class'=>'form-control js-selectize-reguler', 'placeholder' => '--PILIH TEAM--']) !!}
+    {!! $errors->first('team_id', '<p class="help-block">:message</p>') !!}
+  </div>
+</div>
  
  <div class="form-group{{ $errors->has('kode_sprint') ? ' has-error' : '' }}"> 
   {!! Form::label('kode_sprint', 'Kode Sprint', ['class'=>'col-md-2 control-label']) !!} 

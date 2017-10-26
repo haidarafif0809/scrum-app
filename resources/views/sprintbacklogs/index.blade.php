@@ -1,4 +1,6 @@
 @extends('layouts.app') 
+
+@section('title', 'Daftar Sprint Backlog')
  
 @section('content') 
   <div class="container"> 
@@ -13,9 +15,9 @@
           <div class="panel-heading"> 
             <h2 class="panel-title">Sprint Backlog</h2> 
           </div> 
-           
+            
           <div class="panel-body"> 
-          <p> <a class="btn btn-primary" href="{{ route('sprintbacklogs.create') }}">Tambah</a> </p> 
+          <p> <a class="btn btn-primary" href="{{ route('sprintbacklogs.create', $sprintbacklogs->id) }}">Tambah</a> </p> 
             {!! $html->table(['class'=>'table-striped']) !!} 
           </div> 
         </div> 

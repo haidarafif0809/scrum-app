@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
  
 class Sprintbacklog extends Model 
 { 
-    protected $fillable = ['backlog', 'isi_kepentingan','perkiraan_waktu']; 
-} 
+    protected $fillable = ['isi_kepentingan','perkiraan_waktu', 'id_backlog', 'id_sprint']; 
+
+	public function sprint()
+	{
+	return $this->belongsTo('App\Sprint','id_sprint', 'id');
+	}
+	public function backlog()
+	{
+	return $this->belongsTo('App\backlog','id_backlog', 'id_backlog');
+	}
+}

@@ -1,12 +1,14 @@
-<?php 
-// $url = ((@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://'). ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']) : 'http://'. ($_SERVER['SERVER_NAME'] == '192.168.1.123' ? $_SERVER['SERVER_NAME'] .'/scrum_app/public' : $_SERVER['SERVER_NAME']));
+<?php
+$httpHost = @$_SERVER['HTTP_HOST'];
+$https = @$_SERVER['HTTPS'];
+$requestURI = @$_SERVER['REQUEST_URI'];
 
-if ($_SERVER['HTTP_HOST'] == 'localhost') {
+if ($httpHost == 'localhost') {
     $pathApp = explode('/', $_SERVER['PHP_SELF']);
     $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
     
 }
-$url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] . $pathApp : (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] .'/');
+$url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
 // print_r($_SERVER);
  ?> 
 <!DOCTYPE html>
@@ -19,12 +21,13 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title')</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="img" href="favicon.ico">
+    <link rel="icon" type="img" href="to-do-list.ico">
 
     <!-- Styles -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
     <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
     <link href="<?=$url;?>css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
@@ -43,6 +46,12 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     </script>
 </head>
 <body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var title = $('title').val();
+            document.write(title);
+        });
+    </script>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -66,15 +75,17 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
-                            <li<?=(preg_match("/home/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
-                            <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $_SERVER['REQUEST_URI']) ? 'active' : '');?>">
+                            <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
+                            <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $requestURI) ? 'active' : '');?>">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li<?=(preg_match("/users/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
-                                    <li<?=(preg_match("/teams/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
-                                    <li<?=(preg_match("/backlog/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
-                                    <li<?=(preg_match("/aplikasi/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
-                                    <li<?=(preg_match("/sprints/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
+                                    @role('admin')
+                                    <li<?=(preg_match("/users/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
+                                    @endrole
+                                    <li<?=(preg_match("/teams/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
+                                    <li<?=(preg_match("/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
+                                    <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
+                                    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -107,8 +118,8 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li<?=(preg_match("/login/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
-                            <li<?=(preg_match("/register/", $_SERVER['REQUEST_URI']) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
+                            <li<?=(preg_match("/login/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
+                            <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -117,10 +128,13 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
+                                        <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
+                                    </li>
+                                    <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                           <i class="glyphicon glyphicon-log-out"></i> Logout
                                         </a>
 
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
@@ -140,6 +154,7 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     </div>
 
     <!-- Scripts -->
+
     <!-- <script src="{{ asset('js/app.js') }}"></script> -->
     <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -149,13 +164,19 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
-    <script type="text/javascript">
-    $(function() {
-    $( "#datepicker" ).datepicker({ dateFormat: 'dd-mm-yy',
+       <script type="text/javascript">
+    $(document).ready(function() {
+    $("#datepicker").datepicker({
+        dateFormat: "yy/mm/dd",
         changeMonth: true,
-        changeYear: true});
-        });
-
+        changeYear: true ,
+        yearRange: "-100:+0",
+        minDate: new Date()
+    });
+});
+[removed] 
+</script>
+<script type="text/javascript">
     $(function() {
   $('#timepicker').timepicker();
 });
@@ -163,6 +184,9 @@ $url = ($_SERVER['HTTP_HOST'] == 'localhost' ? 'http://'. $_SERVER['HTTP_HOST'] 
 @yield('scripts')
 
     <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
+
+    <script src="/js/app.js"></script>
+
 </body>
 </html>
 

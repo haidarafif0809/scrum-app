@@ -15,4 +15,11 @@ $(document).ready(function () {
 		var c = confirm(text);
 		return c;
 	});
+	var title = $('title');
+	if (title.text() == "" || title.text() == " ") {
+		title.text("Aplikasi Scrum");
+	}
+	else {
+		title.text(title.text() + " | Aplikasi Scrum");
+	}
 });

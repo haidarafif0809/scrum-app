@@ -1,4 +1,6 @@
 @extends('layouts.app') 
+
+@section('title', 'Tambah Sprint Backlog')
  
 @section('content') 
   <div class="container"> 

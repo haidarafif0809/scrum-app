@@ -3,7 +3,7 @@
 	<div class="col-md-4">
 		<!-- {!! Form::text('aplikasi', null, ['class'=>'form-control']) !!}
 		{!! $errors->first('aplikasi', '<p class="help-block">:message</p>') !!} -->
-		{!! Form::select('aplikasi_id', [''=>'']+App\Aplication::pluck('nama','id')->all(), null, ['class' => 'form-control js-selectize', 'placeholder' => 'Pilih Aplikasi']) !!}
+		{!! Form::select('aplikasi_id', [''=>'']+App\Aplication::pluck('nama','id')->all(), null, ['class' => 'form-control js-selectize-reguler', 'placeholder' => 'Pilih Aplikasi']) !!}
 		{!! $errors->first('author_id', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>

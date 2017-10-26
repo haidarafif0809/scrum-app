@@ -1,25 +1,37 @@
 <?php 
  
-namespace App; 
+namespace App;
+Use App\Team; 
  
 use Illuminate\Database\Eloquent\Model;
 
  
 class Sprint extends Model 
 { 
-   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team']; 
+   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id']; 
+   
 
-  	public function setTanggalMulaiAttribute($date) {
-  		$date = date_create($date);
+    public function team() {
+      return $this->belongsTO('App\Team');
+    }
+    public function sprintbacklog() {
+    	return $this->belongsTo('App\Sprintbacklog');
+    }
+}	
 
-		$this->attributes['tanggal_mulai'] = date_format($date, 'Y-m-d');
-	}
-	public function getTanggalMulaiAttribute($date) {
-		return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d-m-Y');
-	}
+//   	public function setTanggalMulaiAttribute($date) {
+//   		$date = date_create($date);
 
-	public function team() {
-		return $this->belongsTo('App\Team');
-	}
+// 		$this->attributes['tanggal_mulai'] = date_format($date, 'Y-m-d');
+// 	}
+// 	public function getTanggalMulaiAttribute($date) {
+// 		return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d-m-Y');
+// 	}
 
-} 
+// 	public function team() {
+// 		return $this->belongsTo('App\Team');
+// 	}
+
+// } 
+	
+

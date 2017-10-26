@@ -18,4 +18,7 @@ class Backlog extends Model
     public function aplikasi() {
     	return $this->hasOne('App\Aplication','id','aplikasi_id');
     }
+    public function sprintBacklog() {
+    	return $this->hasMany('App\SprintBacklog','id','backlog_id');
+    }
 }

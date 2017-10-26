@@ -27,7 +27,7 @@ class BackLogsController extends Controller
                 ]);
             })
             ->addColumn('nama_backlog', function($backlog) {
-                return '<a href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
+                return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
 
             // })->addColumn('no_urut', function($backlog) {
                 // return view('datatable._noUrut', [
@@ -63,7 +63,7 @@ class BackLogsController extends Controller
         $backlog = Backlog::create($request->all());
         Session::flash("flash_notification", [
             "level"=>"success", 
-            "message"=>"Berhasil menyimpan " . $backlog->nama . " !"
+            "message"=>'Berhasil menyimpan "' . $backlog->nama_backlog . '" !'
         ]);
         return redirect()->route('backlog.index');
     }
@@ -92,7 +92,7 @@ class BackLogsController extends Controller
         $backlog->update($request->all());
         Session::flash("flash_notification", [
             "level" => "success",
-            "message" => "Berhasil menyimpan $backlog->nama"
+            "message" => 'Berhasil menyimpan "'. $backlog->nama_backlog .'"'
         ]);
         return redirect()->route('backlog.index');
     }
@@ -100,7 +100,8 @@ class BackLogsController extends Controller
     public function destroy($id)
     {
 
-        $sprintBacklog = Sprintbacklog::where('backlog', $id)->count();
+        // Mengecek apakah backlog sedang digunakan
+        $sprintBacklog = Sprintbacklog::where('id_backlog', $id)->count();
         if ($sprintBacklog > 0) {
 
             Session::flash("flash_notification", [
@@ -116,7 +117,7 @@ class BackLogsController extends Controller
             $backlog->delete();
             Session::flash("flash_notification", [
                 "level" => "success",
-                "message" => "Backlog berhasil dihapus"
+                "message" => 'Backlog "'. $backlog->nama_backlog .'" berhasil dihapus'
             ]);
 
             return redirect()->route('backlog.index');
