@@ -19,7 +19,7 @@ class Sprint extends Model
 	}
 
 	public function team() {
-		$this->belongsTo('App\Team');
+		return $this->belongsTo('App\Team');
 	}
 
 } 
