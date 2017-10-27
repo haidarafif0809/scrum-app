@@ -11,6 +11,19 @@
 |
 */
 
+Route::get('export/aplikasi', [
+'as' => 'export.aplikasi',
+'uses' => 'AplicationsController@export'
+]);
+Route::post('export/aplikasi', [
+'as' => 'export.aplikasi.post',
+'uses' => 'AplicationsController@exportPost'
+]);
+
+
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
