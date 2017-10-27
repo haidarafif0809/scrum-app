@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
-class CrudUser extends TestCase
+class CrudUserTest extends TestCase
 {
 	use DatabaseTransactions;
 

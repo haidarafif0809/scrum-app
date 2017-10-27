@@ -9,7 +9,7 @@ use App\Team;
 use App\User;
 use URL;
 
-class CrudTeam extends TestCase
+class CrudTeamTest extends TestCase
 {
 	use DatabaseTransactions;
 
