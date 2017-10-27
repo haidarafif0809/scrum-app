@@ -187,6 +187,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        
+        Yajra\Datatables\ButtonsServiceProvider::class,
 
     ],
 
