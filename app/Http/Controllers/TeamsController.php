@@ -95,8 +95,8 @@ class TeamsController extends Controller
         $team->update(['kode_team' => $request->kode_team,'nama_team' => $request->nama_team]);
         Session::flash("flash_notification", [
         "level"=>"success",
-        "message"=>"Berhasil Mengedit  ".$team->nama_team.""
-        ]);
+        "message"=>"Berhasil Mengedit ".$team->nama_team.""
+        ]);                             
         return redirect()->route('teams.index');
 
     }
@@ -111,7 +111,7 @@ class TeamsController extends Controller
             //PERINGTAN TIDAK BISA DIHAPUS
             Session::flash("flash_notification", [
             "level"=>"danger",
-            "message"=>"Team Tidak Bisa Dihapus. Karena Sudah Terpakai."
+            "message"=>"Team Tidak Bisa dihapus. Karena Sudah Terpakai."
             ]);
 
             return redirect()->route('teams.index');
