@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Backlog;
 
-class crudBacklog extends TestCase
+class CrudBacklogTest extends TestCase
 {
 	use DatabaseTransactions;
     /**

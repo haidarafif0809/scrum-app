@@ -13,7 +13,10 @@
 	<h2 class="panel-title">Aplikasi</h2>
 		</div>
 			<div class="panel-body">
-				<p> <a class="btn btn-primary" href="{{ route('aplikasi.create') }}">Tambah</a> </p>
+				<p> 
+					<a class="btn btn-primary" href="{{ route('aplikasi.create') }}">Tambah</a>
+					<a class="btn btn-primary" href="{{ route('export.aplikasi') }}">Export</a>
+				 </p>
 				{!! $html->table(['class'=>'table-striped']) !!}
 			</div>
 		</div>
