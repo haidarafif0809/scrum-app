@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
+
 use App\Backlog;
 use App\Sprintbacklog;
 use App\Aplication;
@@ -125,4 +126,5 @@ class BackLogsController extends Controller
         }
 
     }
+
 }
