@@ -9,12 +9,14 @@ use App\RoleUser;
 use App\User;
 use App\Team;
 use App\TeamUser;
-use Yajra\DataTables\Html\Builder;
+use Illuminate\Support\Facades\Auth;
 // use Yajra\Datatables\Facades\Datatables;
+use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Datatables;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+// mengunakan Exel
+use Excel;
 
 class UsersController extends Controller
 {
@@ -250,6 +252,36 @@ class UsersController extends Controller
         return view('users.export');
     }
     public function exportPost(Request $request) {
+        // validasi
+        $this->validate($request, [
+            'name'=>'required',
+        ], [
+                'name.required'=>'Anda belum memilih penulis. Pilih minimal 1 penulis.'
+        ]);
 
+        $users = User::whereIn('id', $request->get('name'))->get();
+        Excel::create('Data User Scrum-App', function($excel) use ($users) {
+            // Set property
+            $excel->setTitle('Data User Scrum-App')
+            ->setCreator(Auth::user()->name);
+                // ->setCreator(Auth::user()->name);
+            $excel->sheet('Data User', function($sheet) use ($users) {
+                $row = 1;
+                $sheet->row($row, [
+                    'Nama',
+                    'Email',
+                    'Password',
+                    'Konfirmasi'
+                ]);
+                foreach ($users as $user) {
+                        $sheet->row(++$row, [
+                        $user->name,
+                        $user->email,
+                        $user->pasword,
+                        $user->is_verified
+                    ]);
+                }
+            });
+        })->export('xls');
     }
 }
