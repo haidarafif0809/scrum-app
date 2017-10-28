@@ -160,32 +160,12 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{ asset('js/customize.js') }}"></script>
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
-    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
-       <script type="text/javascript">
-    $(document).ready(function() {
-    $("#datepicker").datepicker({
-        dateFormat: "yy/mm/dd",
-        changeMonth: true,
-        changeYear: true ,
-        yearRange: "-100:+0",
-        minDate: new Date()
-    });
-});
-[removed] 
-</script>
-<script type="text/javascript">
-    $(function() {
-  $('#timepicker').timepicker();
-});
-</script>
-@yield('scripts')
-
-    <!-- <script src="{{ asset('js/bootstrap.min.js') }}"></script> -->
-
-    <script src="/js/app.js"></script>
+    <script src="{{ asset('js/jquery-ui-timepicker-addon.min.js') }}"></script>
+	
+	@yield('scripts')
 
 </body>
 </html>
