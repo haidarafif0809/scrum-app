@@ -20,6 +20,25 @@ Route::post('export/aplikasi', [
 'uses' => 'AplicationsController@exportPost'
 ]);
 
+// export team ke excel
+Route::get('export/teams', [
+'as' => 'export.teams',
+'uses' => 'teamsController@export'
+]);
+Route::post('export/teams', [
+'as' => 'export.teams.post',
+'uses' => 'teamsController@exportPost'
+]);
+
+// import team ke excel
+Route::get('template/teams', [
+'as' => 'template.teams',
+'uses' => 'TeamsController@generateExcelTemplate'
+]);
+Route::post('import/teams', [
+'as' => 'import.teams',
+'uses' => 'TeamsController@importExcel'
+]);
 
 
 
