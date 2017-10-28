@@ -9,9 +9,10 @@ use App\RoleUser;
 use App\User;
 use App\Team;
 use App\TeamUser;
-use Yajra\Datatables\Html\Builder;
+use Yajra\DataTables\Html\Builder;
 // use Yajra\Datatables\Facades\Datatables;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Datatables;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -212,6 +213,7 @@ class UsersController extends Controller
         return redirect()->route('users.index');
     }
 
+    // untuk proses verivikasi user
     public function konfirmasi($id){                                                      
         $user = User::find($id);
 
@@ -233,6 +235,7 @@ class UsersController extends Controller
         return redirect()->route('users.index');
     }
 
+    // untuk proses reset password
     public function repass($id) {
         $user = User::find($id);
         $password = 'rahasiaku';
@@ -242,4 +245,11 @@ class UsersController extends Controller
         return redirect()->route('users.index');
     }
 
+    // untuk proses export
+    public function export() {
+        return view('users.export');
+    }
+    public function exportPost(Request $request) {
+
+    }
 }

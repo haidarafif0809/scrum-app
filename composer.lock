@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "acc513a9d2e2868474cefbfc7a9ec17c",
+    "content-hash": "1daeae49fac2b05ff76d3c013356f593",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -2497,24 +2497,24 @@
         },
         {
             "name": "yajra/laravel-datatables-buttons",
-            "version": "v2.0.4",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables-buttons.git",
-                "reference": "83cf5c2b00b14e0011c518503303874414f5aa48"
+                "reference": "bdac3a82432388381bab6d83a3ea5fe4f4b3ace3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables-buttons/zipball/83cf5c2b00b14e0011c518503303874414f5aa48",
-                "reference": "83cf5c2b00b14e0011c518503303874414f5aa48",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-buttons/zipball/bdac3a82432388381bab6d83a3ea5fe4f4b3ace3",
+                "reference": "bdac3a82432388381bab6d83a3ea5fe4f4b3ace3",
                 "shasum": ""
             },
             "require": {
                 "illuminate/console": "5.4.*|5.5.*",
                 "maatwebsite/excel": "^2.0",
                 "php": ">=7.0",
-                "yajra/laravel-datatables-html": "^2.0",
-                "yajra/laravel-datatables-oracle": "7.*|8.*"
+                "yajra/laravel-datatables-html": "3.*",
+                "yajra/laravel-datatables-oracle": "8.*"
             },
             "require-dev": {
                 "mockery/mockery": "0.9.*",
@@ -2527,17 +2527,17 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 },
                 "laravel": {
                     "providers": [
-                        "Yajra\\Datatables\\ButtonsServiceProvider"
+                        "Yajra\\DataTables\\ButtonsServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Yajra\\Datatables\\": "src/"
+                    "Yajra\\DataTables\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2550,33 +2550,33 @@
                     "email": "aqangeles@gmail.com"
                 }
             ],
-            "description": "jQuery DataTables Buttons Plugin for Laravel.",
+            "description": "Laravel DataTables Buttons Plugin.",
             "keywords": [
                 "buttons",
                 "datatables",
                 "jquery",
                 "laravel"
             ],
-            "time": "2017-08-13T00:30:51+00:00"
+            "time": "2017-10-27T07:50:56+00:00"
         },
         {
             "name": "yajra/laravel-datatables-html",
-            "version": "v2.0.6",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables-html.git",
-                "reference": "eb3d18ed9f70c6a9ac3c08fa9bd443fb22d7fc1c"
+                "reference": "4e1604f6e4b092c2c0205da8e2d23e98bbe80a86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables-html/zipball/eb3d18ed9f70c6a9ac3c08fa9bd443fb22d7fc1c",
-                "reference": "eb3d18ed9f70c6a9ac3c08fa9bd443fb22d7fc1c",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-html/zipball/4e1604f6e4b092c2c0205da8e2d23e98bbe80a86",
+                "reference": "4e1604f6e4b092c2c0205da8e2d23e98bbe80a86",
                 "shasum": ""
             },
             "require": {
                 "laravelcollective/html": "5.4.*|5.5.*",
-                "php": ">=5.6.4",
-                "yajra/laravel-datatables-oracle": "7.*|8.*"
+                "php": ">=7.0",
+                "yajra/laravel-datatables-oracle": "8.*"
             },
             "require-dev": {
                 "mockery/mockery": "0.9.*",
@@ -2585,17 +2585,17 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 },
                 "laravel": {
                     "providers": [
-                        "Yajra\\Datatables\\HtmlServiceProvider"
+                        "Yajra\\DataTables\\HtmlServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Yajra\\Datatables\\": "src/"
+                    "Yajra\\DataTables\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2616,7 +2616,7 @@
                 "jquery",
                 "laravel"
             ],
-            "time": "2017-07-29T03:11:53+00:00"
+            "time": "2017-10-17T03:32:26+00:00"
         },
         {
             "name": "yajra/laravel-datatables-oracle",

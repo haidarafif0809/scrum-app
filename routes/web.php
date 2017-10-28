@@ -30,6 +30,26 @@ Route::post('export/sprintbacklogs', [
 'uses' => 'SprintbacklogsController@exportPost'
 ]);
 
+// export user ke excel
+Route::get('export/users', [
+'as' => 'export.users',
+'uses' => 'UsersController@export'
+]);
+Route::post('export/users', [
+'as' => 'export.users.post',
+'uses' => 'UsersController@exportPost'
+]);
+
+// import user ke excel
+Route::get('template/users', [
+'as' => 'template.users',
+'uses' => 'UsersController@generateExcelTemplate'
+]);
+Route::post('import/users', [
+'as' => 'import.users',
+'uses' => 'UsersController@importExcel'
+]);
+
 // export team ke excel
 Route::get('export/teams', [
 'as' => 'export.teams',

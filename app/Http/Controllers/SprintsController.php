@@ -3,8 +3,8 @@
 namespace App\Http\Controllers; 
  
 use Illuminate\Http\Request; 
-use Yajra\Datatables\Html\Builder; 
-use Yajra\Datatables\Datatables; 
+use Yajra\DataTables\Html\Builder; 
+use Yajra\DataTables\Datatables; 
 use App\Sprint; 
 use Session; 
 use App\Team; 
