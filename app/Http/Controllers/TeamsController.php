@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Team;
-use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Datatables;
+use Yajra\Datatables\Html\Builder;
+use Yajra\Datatables\Datatables;
 use App\TeamUser;
 use Session;
 use Excel; 
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use Validator;
+
 
 class TeamsController extends Controller
 {
@@ -163,9 +165,166 @@ class TeamsController extends Controller
     } 
 
     public function generateExcelTemplate() { 
-        
+        Excel::create('Template Import Team', function($excel) {
+        // Set the properties
+            $excel->setTitle('Template Import Team')
+                ->setCreator('Team')
+                ->setCompany('Team')
+                ->setDescription('Template import buku untuk Team');
+
+        $excel->sheet('Data Team', function($sheet) {
+            $row = 1;
+            $sheet->row($row, [
+                'Kode Team',
+                'Nama Team',
+            ]);
+        });
+
+        })->export('xlsx');
     }
 
-    public function importExcel(Request $request) { }
+    // public function importExcel(Request $request) {
+    //     // validasi untuk memastikan file yang diupload adalah excel
+    //     $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
+
+    //     // ambil file yang baru diupload
+    //     $excel = $request->file('excel');
+        
+    //     // baca sheet pertama
+    //     $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
+        
+    //     // options, jika ada
+    //     })->get();
+        
+    //     // rule untuk validasi setiap row pada file excel
+    //     $rowRules = [
+    //         'Kode Team' => 'required',
+    //         'Nama Team' => 'required',
+    //     ];
+        
+    //     // Catat semua id buku baru
+    //     // ID ini kita butuhkan untuk menghitung total buku yang berhasil diimport
+    //     $teams_id = [];
+        
+    //     // looping setiap baris, mulai dari baris ke 2 (karena baris ke 1 adalah nama kolom)
+    //     foreach ($excels as $row) {
+        
+    //     // Membuat validasi untuk row di excel
+    //     // Disini kita ubah baris yang sedang di proses menjadi array
+    //     $validator = Validator::make($row->toArray(), $rowRules);
+        
+    //     // Skip baris ini jika tidak valid, langsung ke baris selanjutnya
+    //     if ($validator->fails()) continue;
+        
+    //     // buat buku baru
+    //     $team = Team::create([
+    //         'kode_team' => $row['Kode Team'],
+    //         'nama_team' => $row['Nama Team']
+    //     ]);
+
+    //     // catat id dari buku yang baru dibuat
+    //     array_push($teams_id, $team->id);
+    //     }
+        
+    //     // Ambil semua buku yang baru dibuat
+    //     $teams = Team::whereIn('id', $teams_id)->get();
+        
+    //     // redirect ke form jika tidak ada buku yang berhasil diimport
+    //     if ($teams->count() == 0) {
+    //         Session::flash("flash_notification", [
+    //             "level" => "danger",
+    //             "message" => "Tidak ada team yang berhasil diimport."
+    //         ]);
+    //         return redirect()->back();
+    //     }
+
+    //     // set feedback
+    //     Session::flash("flash_notification", [
+    //         "level" => "success",
+    //         "message" => "Berhasil mengimport " . $teams->count() . " buku."
+    //     ]);
+
+    //     // Tampilkan index buku
+    //     return redirect()->route('teams.index');
+    // }
+
+
+    public function importExcel(Request $request) {
+      //validasi untuk memastikan file yang diupload adalah excel
+    $this->validate($request, ['excel'=>'required|mimes:xls,xlsx']);
+    //ambil file yang baru di upload
+    $excel = $request->file('excel');
+    //baca sheet pertama
+    $excels = Excel::selectSheetsByIndex(0)->load($excel,function($reader){
+      //option ,jika ada
+    })->get();
+
+
+   //rule untuk validasi setiap row pada file excel
+    $rowRules = [
+      'kode team' => 'required',
+      'nama team'  => 'required',
+    ];
+
+   //Catat semua id stok awal baru
+    //ID ini kita butuhkan untuk menghitung total stokawal yang berhasil di import
+    $teams_id = [];
+
+   //looping setiap baris ,mulai dari baris ke 2 (karena baris ke 1 adlah nama kolom )
+    foreach ($excels as $row) {
+      //membuat validasi untuk row di excel
+      //Dsini kita ubah baris yang sedang di proses menjadi array
+      $validator = Validator::make($row->toArray(),$rowRules);
+
+     //Skip baris ini jadi tidak valid , langsung ke baris selajutnya
+      if ($validator->fails()) continue;
+
+     //Sintax di bawah di eksekusi jika baris excel ini valid
+
+     // //Cek apakah produk sudah terdaftar di database
+     //  $team = Team::where('kode_team',$row['kode_team'])->first();
+     //  //buat penulis jika belum ada
+     //  if (!$team){
+     //    $team = Team::create([
+     //        'kode_team',$row['kode_team'
+     //    ]]);
+     //  }
+
+     //buat stok wal baru
+      $team = Team::create([
+          'kode_team' => $row['Kode Team'],
+         'nama_team' => $row['Nama Team'],
+
+     ]);
+
+     //catat id dari stokawal yang baru dibuat
+      array_push($teams_id, $team->id);
+
+   }
+
+   //ambil semua stokawal yang baru dibuat
+    $teams = Team::whereIn('id',$teams_id)->get();
+
+   //redirect ke form jika tidak ada stokawal yang berhasil di import
+    if($teams->count() == 0){
+      Session::flash('flash_notification',[
+        'level' =>'danger',
+        'message'=>'Tidak ada Team yang diimport'
+
+     ]);
+      return redirect()->back();
+    }
+
+   //set feedback
+    Session::flash('flash_notification',[
+        'level' =>'success',
+        'message'=>"Berhasil mengimport ".$teams->count()." Stok awal"
+
+   ]);
+
+   //Tampilkan index stokawal
+    return redirect()->route('teams.index');
+    }
 
 }
+
