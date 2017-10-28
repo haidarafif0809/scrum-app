@@ -7,7 +7,7 @@ use Laratrust\LaratrustFacade as Laratrust;
 use App\Backlog;
 use App\Sprint;
 use App\Team;
-use App\Role;
+use App\RoleUser;
 class HomeController extends Controller
 {
     /**
@@ -33,7 +33,7 @@ class HomeController extends Controller
     }
     protected function adminDashboard()
     {   
-        $jumlah_member = Role::count();
+        $jumlah_member = RoleUser::where('role_id',2)->count();
         $jumlah_team = Team::count();
         $jumlah_sprint = Sprint::count();
         $jumlah_backlog = Backlog::count();
