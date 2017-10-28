@@ -7,8 +7,8 @@ use App\Aplication;
 use App\Backlog;
 use Excel;
 use Illuminate\Support\Facades\Auth;
-use Yajra\Datatables\Html\Builder;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Html\Builder;
+use Yajra\DataTables\Datatables;
 use Session;
 
 class AplicationsController extends Controller

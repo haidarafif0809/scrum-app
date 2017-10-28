@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Team;
-use Yajra\Datatables\Html\Builder;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\Html\Builder;
+use Yajra\DataTables\Datatables;
 use App\TeamUser;
 use Session;
 use Excel; 
