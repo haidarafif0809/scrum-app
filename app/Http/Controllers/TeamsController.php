@@ -8,6 +8,8 @@ use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use App\TeamUser;
 use Session;
+use Excel; 
+use Illuminate\Support\Facades\Auth; 
 
 class TeamsController extends Controller
 {
@@ -95,8 +97,8 @@ class TeamsController extends Controller
         $team->update(['kode_team' => $request->kode_team,'nama_team' => $request->nama_team]);
         Session::flash("flash_notification", [
         "level"=>"success",
-        "message"=>"Berhasil Mengedit  ".$team->nama_team.""
-        ]);
+        "message"=>"Berhasil Mengedit ".$team->nama_team.""
+        ]);                             
         return redirect()->route('teams.index');
 
     }
@@ -111,7 +113,7 @@ class TeamsController extends Controller
             //PERINGTAN TIDAK BISA DIHAPUS
             Session::flash("flash_notification", [
             "level"=>"danger",
-            "message"=>"Team Tidak Bisa Dihapus. Karena Sudah Terpakai."
+            "message"=>"Team Tidak Bisa dihapus. Karena Sudah Terpakai."
             ]);
 
             return redirect()->route('teams.index');
@@ -131,8 +133,39 @@ class TeamsController extends Controller
 
     }
 
-    //  public function lists($id) {
+    public function export() { 
+        return view('teams.export');
+    }
+     public function exportPost(Request $request){ 
+        $request->validate([ 
+            'team_id' => 'required', 
+        ], [ 
+            'team_id.required' => 'Silahkan pilih minimal satu aplikasi.' 
+        ]); 
+        $team = Team::whereIn('id', $request->get('team_id'))->get(); 
+        Excel::create('Data Master Data Team', function($excel) use ($team){ 
+            $excel->setTitle('Data Master Data Team') 
+            ->setCreator(Auth::user()->name); 
+            $excel->sheet('Data Team', function($sheet) use ($team){ 
+                $row = 1; 
+                $sheet->row($row,[ 
+                    'Kode Team', 
+                    'Nama Team' 
+                ]); 
+            foreach ($team as $app) { 
+                $sheet->row(++$row, [ 
+                    $app->kode_team, 
+                    $app->nama_team 
+                ]); 
+            } 
+            }); 
+        })->export('xls'); 
+    } 
+
+    public function generateExcelTemplate() { 
         
-    //     return redirect()->route('teams.index');
-    // }
+    }
+
+    public function importExcel(Request $request) { }
+
 }

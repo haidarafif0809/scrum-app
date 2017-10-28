@@ -11,6 +11,48 @@
 |
 */
 
+Route::get('export/aplikasi', [
+'as' => 'export.aplikasi',
+'uses' => 'Aplicat/ionsController@export'
+]);
+Route::post('export/aplikasi', [
+'as' => 'export.aplikasi.post',
+'uses' => 'AplicationsController@exportPost'
+]);
+
+Route::get('export/sprintbacklogs/{id}', [
+		'middleware' => ['auth'], 
+'as' => 'export.sprintbacklogs',
+'uses' => 'SprintbacklogsController@export'
+]);
+Route::post('export/sprintbacklogs', [
+'as' => 'export.sprintbacklogs.post',
+'uses' => 'SprintbacklogsController@exportPost'
+]);
+
+// export team ke excel
+Route::get('export/teams', [
+'as' => 'export.teams',
+'uses' => 'teamsController@export'
+]);
+Route::post('export/teams', [
+'as' => 'export.teams.post',
+'uses' => 'teamsController@exportPost'
+]);
+
+// import team ke excel
+Route::get('template/teams', [
+'as' => 'template.teams',
+'uses' => 'TeamsController@generateExcelTemplate'
+]);
+Route::post('import/teams', [
+'as' => 'import.teams',
+'uses' => 'TeamsController@importExcel'
+]);
+
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -46,6 +88,12 @@ Route::get('/users/konfirmasi/{id}', [
 	'middleware' => ['auth'], 
 	'as' => 'users.konfirmasi', 
 	'uses' => 'UsersController@konfirmasi'
+]);
+
+Route::get('/sprintbacklogs/create/{id}', [
+	'middleware' => ['auth'], 
+	'as' => 'sprintbacklogs.create_sprintbacklog', 
+	'uses' => 'SprintbacklogsController@create_sprintbacklog'
 ]);
 
 // untuk membuat reset password

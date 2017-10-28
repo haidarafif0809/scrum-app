@@ -8,6 +8,7 @@ use Yajra\Datatables\Datatables;
 use App\Sprintbacklog; 
 use App\Sprint;
 use Session; 
+use Excel;
  
 class SprintbacklogsController extends Controller 
 { 
@@ -147,4 +148,10 @@ class SprintbacklogsController extends Controller
             ]); 
         return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
     } 
+
+    public function export($id)
+    {
+    return view('sprintbacklogs.export',['sprint'=>$id]);
+    }
+
 }

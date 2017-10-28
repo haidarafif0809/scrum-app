@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Aplication;
 use App\Backlog;
+use Excel;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
 use Session;
@@ -37,6 +39,10 @@ class AplicationsController extends Controller
         ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
         ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'', 'orderable'=>false,'searchable'=>false]);
+<<<<<<< HEAD
+=======
+      
+>>>>>>> master
         
         return view('aplikasi.index')->with(compact('html'));
     }
@@ -156,5 +162,33 @@ class AplicationsController extends Controller
             return redirect()->route('aplikasi.index');
 
         }
+    }
+
+    public function export (){ return view ('aplikasi.export'); }
+
+    public function exportPost(Request $request){
+        $request->validate([
+            'aplikasi_id' => 'required',
+        ], [
+            'aplikasi_id.required' => 'Silahkan pilih minimal satu aplikasi.'
+        ]);
+        $aplikasi = Aplication::whereIn('id', $request->get('aplikasi_id'))->get();
+        Excel::create('Data Master Data Aplikasi', function($excel) use ($aplikasi){
+            $excel->setTitle('Data Master Data Aplikasi')
+            ->setCreator(Auth::user()->name);
+            $excel->sheet('Data Aplikasi', function($sheet) use ($aplikasi){
+                $row = 1;
+                $sheet->row($row,[
+                    'Kode Aplikasi',
+                    'Nama Aplikasi'
+                ]);
+            foreach ($aplikasi as $app) {
+                $sheet->row(++$row, [
+                    $app->kode,
+                    $app->nama
+                ]);
+            }
+            });
+        })->export('xls');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Html\Builder;
 use Yajra\Datatables\Datatables;
+
 use App\Backlog;
 use App\Sprintbacklog;
 use App\Aplication;
@@ -63,7 +64,7 @@ class BackLogsController extends Controller
         $backlog = Backlog::create($request->all());
         Session::flash("flash_notification", [
             "level"=>"success", 
-            "message"=>"Berhasil menyimpan " . $backlog->nama . " !"
+            "message"=>'Berhasil menyimpan "' . $backlog->nama_backlog . '" !'
         ]);
         return redirect()->route('backlog.index');
     }
@@ -92,7 +93,7 @@ class BackLogsController extends Controller
         $backlog->update($request->all());
         Session::flash("flash_notification", [
             "level" => "success",
-            "message" => "Berhasil menyimpan $backlog->nama"
+            "message" => 'Berhasil menyimpan "'. $backlog->nama_backlog .'"'
         ]);
         return redirect()->route('backlog.index');
     }
@@ -117,7 +118,7 @@ class BackLogsController extends Controller
             $backlog->delete();
             Session::flash("flash_notification", [
                 "level" => "success",
-                "message" => "Backlog berhasil dihapus"
+                "message" => 'Backlog "'. $backlog->nama_backlog .'" berhasil dihapus'
             ]);
 
             return redirect()->route('backlog.index');
@@ -125,4 +126,5 @@ class BackLogsController extends Controller
         }
 
     }
+
 }
