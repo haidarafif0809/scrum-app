@@ -56,8 +56,8 @@ class UsersController extends Controller
                 ]);
             })
             ->addColumn('otoritas', function($member){
-             return $member->roleUser->role->name;
-         })
+               return $member->roleUser->role->name;
+           })
             ->addColumn('team', function($member){
 
                 $teams = TeamUser::where('user_id', $member->id)->get();
@@ -95,8 +95,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-     return view('users.create');
- }
+       return view('users.create');
+   }
 
     /**
      * Store a newly created resource in storage.
@@ -106,7 +106,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-     
+
 
         $this->validate($request, [
             'name' => 'required:users',
@@ -284,5 +284,15 @@ class UsersController extends Controller
                 }
             });
         })->export('xls');
+    }
+    public function exportAllPost() {
+        $data = User::select('name', 'email', 'password', 'is_verified')->get();
+        Excel::create('Semua Data User', function($excel) use ($data) {
+            $excel->sheet('Data User', function($sheet) use ($data) {
+                $sheet->fromArray($data);
+
+            });
+
+        })->download('xls');
     }
 }
