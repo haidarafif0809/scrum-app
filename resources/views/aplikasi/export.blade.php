@@ -5,7 +5,7 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
+				<li><a href="{{ url('/admin/aplikasi') }}">Aplikasi</a></li>
 				<li class="active">Export Data Aplikasi</li>
 			</ul>
 			<div class="panel panel-default">
@@ -19,22 +19,22 @@
 						{!! Form::label('aplikasi_id', 'Aplikasi', ['class'=>'col-md-2 control-label']) !!}
 						<div class="col-md-4">
 							{!! Form::select('aplikasi_id[]', [''=>'']+App\Aplication::pluck('nama','id')->all(),\
-								null, [
-									'class'=>'js-selectize-reguler',
-									'multiple',
-									'placeholder' => 'Pilih Aplikasi']) !!}
-									{!! $errors->first('aplikasi_id', '<p class="help-block">:message</p>') !!}
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-md-4 col-md-offset-2">
-									{!! Form::submit('Download', ['class'=>'btn btn-primary']) !!}
-								</div>
-							</div>
-							{!! Form::close() !!}
+							null, [
+							'class'=>'js-selectize-reguler',
+							'multiple',
+							'placeholder' => 'Pilih Aplikasi']) !!}
+							{!! $errors->first('aplikasi_id', '<p class="help-block">:message</p>') !!}
 						</div>
 					</div>
+					<div class="form-group">
+						<div class="col-md-4 col-md-offset-2">
+							{!! Form::submit('Download', ['class'=>'btn btn-primary']) !!}
+						</div>
+					</div>
+					{!! Form::close() !!}
 				</div>
 			</div>
 		</div>
-		@endsection
+	</div>
+</div>
+@endsection

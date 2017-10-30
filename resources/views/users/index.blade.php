@@ -17,8 +17,8 @@
 				<div class="panel-body">
 
 					<p>
-						<a class="btn btn-info" href="{{ url('users/create') }}">Tambah Member</a>
-						<a class="btn btn-info" href="{{ url('export/users') }}">Export</a>
+						<a class="btn btn-info" href="{{ url('/admin/users/create') }}">Tambah Member</a>
+						<a class="btn btn-info" href="{{ url('/admin/export/users') }}">Export</a>
 						<a class="btn btn-info" href="{{ route('exportAll.users.post') }}">Export All</a>
 					</p>
 
