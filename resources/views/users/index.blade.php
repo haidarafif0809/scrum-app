@@ -16,10 +16,11 @@
 				</div>
 				<div class="panel-body">
 
-				<p>
-					<a class="btn btn-info" href="{{ url('users/create') }}">Tambah Member</a>
-					<a class="btn btn-info" href="{{ url('export/users') }}">Export</a>
-				</p>
+					<p>
+						<a class="btn btn-info" href="{{ url('users/create') }}">Tambah Member</a>
+						<a class="btn btn-info" href="{{ url('export/users') }}">Export</a>
+						<a class="btn btn-info" href="{{ route('exportAll.users.post') }}">Export All</a>
+					</p>
 
 					{!! $html->table(['class'=>'table-striped']) !!}
 				</div>
@@ -31,6 +32,6 @@
 @endsection
 
 @section('scripts')
-	{!! $html->scripts() !!}
+{!! $html->scripts() !!}
 @endsection
 

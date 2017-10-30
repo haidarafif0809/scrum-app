@@ -39,6 +39,10 @@ Route::get('export/users', [
 	'as' => 'export.users',
 	'uses' => 'UsersController@export'
 ]);
+Route::get('exportAll/users', [
+	'as' => 'exportAll.users.post',
+	'uses' => 'UsersController@exportAllPost'
+]);
 Route::post('export/users', [
 	'as' => 'export.users.post',
 	'uses' => 'UsersController@exportPost'
