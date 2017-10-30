@@ -21,29 +21,29 @@ class AplicationsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-           $aplications = Aplication::select(['id', 'kode', 'nama']);
-           return Datatables::of($aplications)
-           ->escapeColumns([])
-           ->addColumn('nama', function($aplication) {
+         $aplications = Aplication::select(['id', 'kode', 'nama']);
+         return Datatables::of($aplications)
+         ->escapeColumns([])
+         ->addColumn('nama', function($aplication) {
             return '<a href="'.route('aplikasi.show', $aplication->id).'">'.$aplication->nama.'</a>';
         })
-           ->addColumn('action', function($aplications){
-               return view('datatable._action', [
+         ->addColumn('action', function($aplications){
+             return view('datatable._action', [
                 'model'    => $aplications,
                 'form_url' => route('aplikasi.destroy', $aplications->id),
                 'edit_url' => route('aplikasi.edit', $aplications->id),
                 'confirm_message' => 'Yakin mau menghapus '."$aplications->nama.?"
             ]);
-           })->make(true);
-       }
-       $html = $htmlBuilder
-       ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
-       ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
-       ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'', 'orderable'=>false,'searchable'=>false]);
-       
-       
-       return view('aplikasi.index')->with(compact('html'));
-   }
+         })->make(true);
+     }
+     $html = $htmlBuilder
+     ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
+     ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
+     ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false,'searchable'=>false]);
+
+
+     return view('aplikasi.index')->with(compact('html'));
+ }
 
     /**
      * Show the form for creating a new resource.
@@ -164,21 +164,23 @@ class AplicationsController extends Controller
 
     public function export (){ return view ('aplikasi.export'); }
 
-    public function exportPost(Request $request){
-        $request->validate([
-            'aplikasi_id' => 'required',
+    public function exportPost(Request $request) { 
+        // validasi
+        $this->validate($request, [
+            'aplikasi_id'=>'required',
         ], [
-            'aplikasi_id.required' => 'Silahkan pilih minimal satu aplikasi.'
+            'aplikasi_id.required'=>'Pilih minimal 1 Aplikasi.'
         ]);
         $aplikasi = Aplication::whereIn('id', $request->get('aplikasi_id'))->get();
-        Excel::create('Data Master Data Aplikasi', function($excel) use ($aplikasi){
-            $excel->setTitle('Data Master Data Aplikasi')
+        Excel::create('Data Aplikasi', function($excel) use ($aplikasi) {
+        // Set property
+            $excel->setTitle('Data Aplikasi')
             ->setCreator(Auth::user()->name);
-            $excel->sheet('Data Aplikasi', function($sheet) use ($aplikasi){
+            $excel->sheet('Data Aplikasi', function($sheet) use ($aplikasi) {
                 $row = 1;
-                $sheet->row($row,[
-                    'Kode Aplikasi',
-                    'Nama Aplikasi'
+                $sheet->row($row, [
+                    'kode',
+                    'nama'
                 ]);
                 foreach ($aplikasi as $app) {
                     $sheet->row(++$row, [
@@ -188,5 +190,16 @@ class AplicationsController extends Controller
                 }
             });
         })->export('xls');
+    }
+
+    public function exportAll()
+    {
+        $data = Aplication::select('kode', 'nama')->get()->toArray();
+        return Excel::create('Data Aplikasi', function($excel) use ($data) {
+            $excel->sheet('Data Aplikasi', function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download('xls');
     }
 }
