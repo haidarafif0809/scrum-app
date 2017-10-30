@@ -16,6 +16,7 @@
 					<p> 
 						<a class="btn btn-primary" href="{{ route('aplikasi.create') }}">Tambah</a>
 						<a class="btn btn-primary" href="{{ route('export.aplikasi') }}">Export</a>
+						<a class="btn btn-primary" href="{{ route('export.aplikasi.all') }}">Export All</a>
 					</p>
 					{!! $html->table(['class'=>'table-striped']) !!}
 				</div>

@@ -10,7 +10,6 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
 Route::get('export/aplikasi', [
 	'as' => 'export.aplikasi',
 	'uses' => 'AplicationsController@export'
@@ -18,6 +17,11 @@ Route::get('export/aplikasi', [
 Route::post('export/aplikasi', [
 	'as' => 'export.aplikasi.post',
 	'uses' => 'AplicationsController@exportPost'
+]);
+
+Route::get('export/semua_aplikasi', [
+	'as' => 'export.aplikasi.all',
+	'uses' => 'AplicationsController@exportAll'
 ]);
 
 Route::get('export/sprintbacklogs/{id}', [
