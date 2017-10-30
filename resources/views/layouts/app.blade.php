@@ -10,7 +10,7 @@ if ($httpHost == 'localhost') {
 }
 $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
 // print_r($_SERVER);
- ?> 
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,39 +42,39 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
-        ]); ?>
-    </script>
-</head>
-<body>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var title = $('title').val();
-            document.write(title);
-        });
-    </script>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+            ]); ?>
+        </script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var title = $('title').val();
+                document.write(title);
+            });
+        </script>
+        <div id="app">
+            <nav class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                        <!-- Collapsed Hamburger -->
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                            <span class="sr-only">Toggle Navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
+                        <!-- Branding Image -->
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                    </div>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        @if (Auth::check())
+                    <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="nav navbar-nav">
+                            @if (Auth::check())
                             <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
                             <li class="dropdown <?=(preg_match("/users|teams|backlog|aplikasi|sprints/", $requestURI) ? 'active' : '');?>">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
@@ -83,11 +83,11 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
                                     <li<?=(preg_match("/users/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/users') }}">Users</a></li>
                                     @endrole
                                     <li<?=(preg_match("/teams/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/teams') }}">Team</a></li>
-                                    <li<?=(preg_match("/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
                                     <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
-                                    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
                                 </ul>
                             </li>
+                            <li<?=(preg_match("/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
+                            <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -111,16 +111,16 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
                                     <li <?=(@$_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
                                 </ul>
                             </li>
-                        @endif
-                    </ul>
+                            @endif
+                        </ul>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
+                        <!-- Right Side Of Navbar -->
+                        <ul class="nav navbar-nav navbar-right">
+                            <!-- Authentication Links -->
+                            @if (Auth::guest())
                             <li<?=(preg_match("/login/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
                             <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
-                        @else
+                            @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -132,17 +132,17 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
                                     </li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                           <i class="glyphicon glyphicon-log-out"></i> Logout
-                                        </a>
+                                        onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                        <i class="glyphicon glyphicon-log-out"></i> Logout
+                                    </a>
 
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
+                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
                         @endif
                     </ul>
                 </div>
@@ -164,8 +164,8 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-timepicker-addon.min.js') }}"></script>
-	
-	@yield('scripts')
+
+    @yield('scripts')
 
 </body>
 </html>

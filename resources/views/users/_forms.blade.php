@@ -24,7 +24,7 @@
 </div>
 
 <div class="form-group {!! $errors->has('team_id') ? 'has-error' : '' !!}">
-	{!! Form::label('team_id[]', 'Nama Team', ['class'=>'col-md-2 control-label']) !!}
+	{!! Form::label('team_id', 'Nama Team', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::select('team_id[]', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, ['class'=>'form-control js-selectize-multi', 'placeholder' => '--PILIH TEAM--']) !!}
 		{!! $errors->first('team_id', '<p class="help-block">:message</p>') !!}
