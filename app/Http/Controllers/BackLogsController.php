@@ -19,6 +19,7 @@ class BackLogsController extends Controller
         if ($request->ajax()) {
             $backlogs = Backlog::with('aplikasi')->get();
             return Datatables::of($backlogs)
+            ->escapeColumns([])
             ->addColumn('action', function($backlog) {
                 return view('datatable._action', [
                     'model' => $backlog,
@@ -35,23 +36,23 @@ class BackLogsController extends Controller
                 //     'angka' => $backlog->getKolomAttribute()
                 // ]);
                 // return $backlog->getKolomAttribute();
-          
+                
             })->make(true);
         }
         $html = $htmlBuilder
             // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
-            ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
-            ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
+        ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
+        ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
             // ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
             // ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
-            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
+        ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
     }
 
     public function create()
     {
         return view('backlog.create');
-     }
+    }
 
     public function store(Request $request)
     {
