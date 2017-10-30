@@ -10,6 +10,8 @@ use App\Backlog;
 use App\Sprintbacklog;
 use App\Aplication;
 use Session;
+use Excel;
+use Auth;
 
 class BackLogsController extends Controller
 {
@@ -31,20 +33,20 @@ class BackLogsController extends Controller
             ->addColumn('nama_backlog', function($backlog) {
                 return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
 
-            // })->addColumn('no_urut', function($backlog) {
-                // return view('datatable._noUrut', [
-                //     'angka' => $backlog->getKolomAttribute()
-                // ]);
-                // return $backlog->getKolomAttribute();
-                
+// })->addColumn('no_urut', function($backlog) {
+// return view('datatable._noUrut', [
+//     'angka' => $backlog->getKolomAttribute()
+// ]);
+// return $backlog->getKolomAttribute();
+
             })->make(true);
         }
         $html = $htmlBuilder
-            // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
+// ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
         ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
         ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
-            // ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
-            // ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
+// ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
+// ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
         ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
     }
@@ -102,7 +104,7 @@ class BackLogsController extends Controller
     public function destroy($id)
     {
 
-        // Mengecek apakah backlog sedang digunakan
+// Mengecek apakah backlog sedang digunakan
         $sprintBacklog = Sprintbacklog::where('id_backlog', $id)->count();
         if ($sprintBacklog > 0) {
 
@@ -123,9 +125,47 @@ class BackLogsController extends Controller
             ]);
 
             return redirect()->route('backlog.index');
-            
+
         }
 
     }
+    public function export()
+    {
+        return view('backlog.export');
+    }
+    public function exportPost(Request $request)
+    {
+// validasi
+        $this->validate($request, [
+            'id_backlog'=>'required'
+        ], 
+        [
+            'id_backlog.required'=>'Anda belum memilih backlog. Pilih minimal 1 backlog.'
+        ]);
+        $backlogs = Backlog::whereIn('id_backlog', $request->get('id_backlog'))->get();
+        Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($backlogs) {
+// Set property
+            $excel->setTitle('Data Backlog Aplikasi Scrum')
+            ->setCreator(Auth::user()->nama);
+            $excel->sheet('Data Backlog', function($sheet) use ($backlogs) {
+                $row = 1;
+                $sheet->row($row, [
+                    'Aplikasi',
+                    'Nama Backlog',
+                    'Demo',
+                    'Catatan'
+                ]);
+                foreach ($backlogs as $backlog) {
+                    $sheet->row(++$row, [
+                        $backlog->aplikasi->nama,
+                        $backlog->nama_backlog,
+                        $backlog->demo,
+                        $backlog->catatan
+                    ]);
+                }
+            });
+        })->export('xls');
+    }
+
 
 }

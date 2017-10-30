@@ -20,6 +20,14 @@ Route::post('export/aplikasi', [
 	'uses' => 'AplicationsController@exportPost'
 ]);
 
+Route::get('export/backlog', [
+	'as' => 'export.backlog',
+	'uses' => 'BackLogsController@export'
+]);
+Route::post('export/backlog', [
+	'as' => 'export.backlog.post',
+	'uses' => 'BacklogsController@exportPost'
+]);
 Route::get('export/sprintbacklogs/{id}', [
 	'middleware' => ['auth'], 
 	'as' => 'export.sprintbacklogs',
