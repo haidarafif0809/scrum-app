@@ -25,58 +25,59 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   public function index(Request $request, Builder $htmlBuilder)
+    public function index(Request $request, Builder $htmlBuilder)
     {
-    if ($request->ajax()) {
-        $members = User::with('team');
-        return Datatables::of($members)
+        if ($request->ajax()) {
+            $members = User::with('team');
+            return Datatables::of($members)
+            ->escapeColumns([])
         // ->addColumn($member->role_user->role)
-        ->addColumn('action', function($member){
-            return view('datatable._action', [
-                'model' => $member,
-                'form_url' => route('users.destroy', $member->id),
-                'edit_url' => route('users.edit', $member->id),
-                'confirm_message' => 'Yakin akan menghapus ' . $member->name . ' ?'
-            ]);
-         })
-        ->addColumn('konfirmasi', function($member){
-            return view('datatable._konfirmasi', [
-                'model' => $member, 
-                'konfirmasi_url' => route('users.konfirmasi', $member->id),
-                'confirm_message' => 'Apakah Anda Yakin akan mengkonfimasi ' . $member->name . ' ?',
-                'confirm_messages' => 'Apakah Anda Yakin akan membatalkan konfirmasi ' . $member->name . ' ?'
-            ]);
-        })        
-        ->addColumn('re_pass', function($member){
-            return view('datatable.re_pass', [
-                'model' => $member, 
-                're_pass_url' => route('users.repass', $member->id),
-                'confirm_message' => 'Apakah Anda Yakin akan me-reset password ' . $member->name . ' ?',
-            ]);
-        })
-        ->addColumn('otoritas', function($member){
+            ->addColumn('action', function($member){
+                return view('datatable._action', [
+                    'model' => $member,
+                    'form_url' => route('users.destroy', $member->id),
+                    'edit_url' => route('users.edit', $member->id),
+                    'confirm_message' => 'Yakin akan menghapus ' . $member->name . ' ?'
+                ]);
+            })
+            ->addColumn('konfirmasi', function($member){
+                return view('datatable._konfirmasi', [
+                    'model' => $member, 
+                    'konfirmasi_url' => route('users.konfirmasi', $member->id),
+                    'confirm_message' => 'Apakah Anda Yakin akan mengkonfimasi ' . $member->name . ' ?',
+                    'confirm_messages' => 'Apakah Anda Yakin akan membatalkan konfirmasi ' . $member->name . ' ?'
+                ]);
+            })        
+            ->addColumn('re_pass', function($member){
+                return view('datatable.re_pass', [
+                    'model' => $member, 
+                    're_pass_url' => route('users.repass', $member->id),
+                    'confirm_message' => 'Apakah Anda Yakin akan me-reset password ' . $member->name . ' ?',
+                ]);
+            })
+            ->addColumn('otoritas', function($member){
                return $member->roleUser->role->name;
-        })
-        ->addColumn('team', function($member){
+           })
+            ->addColumn('team', function($member){
 
-            $teams = TeamUser::where('user_id', $member->id)->get();
-            $data_team = '';
-            foreach($teams as $team) {
-                if ($data_team == '') {
-                    $data_team .= $team->team->nama_team;
+                $teams = TeamUser::where('user_id', $member->id)->get();
+                $data_team = '';
+                foreach($teams as $team) {
+                    if ($data_team == '') {
+                        $data_team .= $team->team->nama_team;
+                    }
+                    else {
+                        $data_team .= ', ' . $team->team->nama_team;
+
+                    }
+
                 }
-                else {
-                    $data_team .= ', ' . $team->team->nama_team;
-
-                }
-
-            }
-               return $data_team;
-            
-        })->make(true);
-    }
-    
-    $html = $htmlBuilder
+                return $data_team;
+                
+            })->make(true);
+        }
+        
+        $html = $htmlBuilder
         ->addColumn(['data' => 'name', 'name'=>'name', 'title'=>'Nama'])
         ->addColumn(['data' => 'email', 'name'=>'email', 'title'=>'Email'])
         ->addColumn(['data' => 'team', 'name'=>'team', 'title'=>'Team', 'orderable'=>false, 'searchable'=>false])
@@ -95,7 +96,7 @@ class UsersController extends Controller
     public function create()
     {
        return view('users.create');
-    }
+   }
 
     /**
      * Store a newly created resource in storage.
@@ -108,10 +109,10 @@ class UsersController extends Controller
        
 
         $this->validate($request, [
-        'name' => 'required:users',
-        'email' => 'required|unique:users',
-        'otoritas' => 'required|exists:roles,id',
-        'team_id' => 'required'
+            'name' => 'required:users',
+            'email' => 'required|unique:users',
+            'otoritas' => 'required|exists:roles,id',
+            'team_id' => 'required'
         ]);
         // $team_id = Team::where('id', $request->team_id)->first();
         $Role = Role::where('id', $request->otoritas)->first();
@@ -221,17 +222,17 @@ class UsersController extends Controller
 
         if ($user->is_verified == 0) {
             $user->update(['is_verified' => 1]);
-         Session::flash('flash_notification',  [
-            'level' => 'success',
-            'message' => 'User ' .$user->name . ' berhasil di Konfirmasi ! '
-         ]);
+            Session::flash('flash_notification',  [
+                'level' => 'success',
+                'message' => 'User ' .$user->name . ' berhasil di Konfirmasi ! '
+            ]);
         }
-         else {
+        else {
             $user->update(['is_verified' => 0]);
-         Session::flash('flash_notification',  [
-            'level' => 'danger',
-            'message' => 'User ' .$user->name . ' berhasil di batalkan ! '
-         ]);
+            Session::flash('flash_notification',  [
+                'level' => 'danger',
+                'message' => 'User ' .$user->name . ' berhasil di batalkan ! '
+            ]);
         }
 
         return redirect()->route('users.index');
@@ -256,7 +257,7 @@ class UsersController extends Controller
         $this->validate($request, [
             'name'=>'required',
         ], [
-                'name.required'=>'Anda belum memilih penulis. Pilih minimal 1 penulis.'
+            'name.required'=>'Anda belum memilih penulis. Pilih minimal 1 penulis.'
         ]);
 
         $users = User::whereIn('id', $request->get('name'))->get();
@@ -274,7 +275,7 @@ class UsersController extends Controller
                     'Konfirmasi'
                 ]);
                 foreach ($users as $user) {
-                        $sheet->row(++$row, [
+                    $sheet->row(++$row, [
                         $user->name,
                         $user->email,
                         $user->pasword,

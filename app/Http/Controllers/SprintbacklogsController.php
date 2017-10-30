@@ -1,15 +1,14 @@
 <?php 
- 
+
 namespace App\Http\Controllers; 
- 
+
 use Illuminate\Http\Request; 
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Datatables;
 use App\Sprintbacklog; 
-use App\Sprint;
+use App\Sprint; 
 use Session; 
-use Excel;
- 
+
 class SprintbacklogsController extends Controller 
 { 
     public function index(Request $request, Builder $htmlBuilder) 
@@ -17,7 +16,8 @@ class SprintbacklogsController extends Controller
         if ($request->ajax()) { 
             $sprintbacklogs = Sprintbacklog::select(['id', 'id_sprint', 'isi_kepentingan', 'perkiraan_waktu', 'id_backlog']); 
             return Datatables::of($sprintbacklogs) 
-                ->addColumn('action', function($sprintbacklog){ 
+            ->escapeColumns([])
+            ->addColumn('action', function($sprintbacklog){ 
                 return view('datatable._action', [ 
                     'model' => $sprintbacklog, 
                     'form_url'=> route('sprintbacklogs.destroy', $sprintbacklog->id), 
@@ -26,32 +26,45 @@ class SprintbacklogsController extends Controller
                 ]);             
             })->make(true); 
         } 
- 
+        
         $html = $htmlBuilder 
             // ->addColumn(['data' => 'aplikasi_id', 'name'=>'aplikasi_id', 'title'=>'Aplikasi']) 
-            ->addColumn(['data' => 'id_backlog', 'name'=>'id_backlog', 'title'=>'Nama Backlog']) 
-            ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
-            ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
-            ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
- 
-        return view('Sprintbacklogs.show')->with(compact('html'));
+        ->addColumn(['data' => 'id_backlog', 'name'=>'id_backlog', 'title'=>'Nama Backlog']) 
+        ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
+        ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
+        ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
+        
+        return view('Sprintbacklogs.show')->with(compact('html')); 
     } 
+    
+    /** 
+     * Show the form for creating a new resource. 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+    // public function create() 
+    // {
 
+    //     return view('Sprintbacklogs.create'); 
+    // } 
     public function create() 
     { 
         
-         return view('sprintbacklogs.create'); 
-
+        return view('sprintbacklogs.create'); 
     } 
 
 
     public function create_sprintbacklog($id) 
     { 
-        return view('sprintbacklogs.create',['sprint'=>$id]); 
-
-  
+        $sprint = $id;
+        return view('sprintbacklogs.create',['sprint'=>$sprint]); 
     } 
-
+    /** 
+     * Store a newly created resource in storage. 
+     * 
+     * @param  \Illuminate\Http\Request  $request 
+     * @return \Illuminate\Http\Response 
+     */ 
     public function store(Request $request) 
     { 
 
@@ -63,33 +76,36 @@ class SprintbacklogsController extends Controller
         
         $angka = $request->perkiraan_waktu;
         $sliceAngka = explode(',', trim($angka));
-        $array_angka = array();
+        $array_angka = [];
         foreach ($sliceAngka as $num) {
             array_push($array_angka, $num);
         }
         $hasil = array_sum($array_angka);
         $hasil = $hasil / count($sliceAngka);
-
-
         $sprintbacklogs = Sprintbacklog::create([
             'id_sprint' => $request->id_sprint,
             'id_backlog' => $request->id_backlog,
-            'asign' => $request->asign,
             'isi_kepentingan' => $request->isi_kepentingan,
             'perkiraan_waktu' => $hasil
-    ]);
-    
+        ]);
+        
         Session::flash("flash_notification", [ 
             "level" => "success", 
             "message" =>" Berhasil menyimpan data" 
-    ]); 
+        ]); 
         return redirect()->route('sprintbacklogs.show',$request->id_sprint); 
     } 
- 
+    
+    /** 
+     * Display the specified resource. 
+     * 
+     * @param  int  $id 
+     * @return \Illuminate\Http\Response 
+     */ 
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
         if ($request->ajax()) { 
-        $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id);
+            $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id);
             return Datatables::of($sprintbacklogs)
             ->addColumn('action', function($sprintbacklog){ 
                 return view('datatable._actionSprintBacklog', [ 
@@ -98,20 +114,19 @@ class SprintbacklogsController extends Controller
                     'edit_url' => route('sprintbacklogs.edit', $sprintbacklog->id), 
                     'confirm_message' => 'Apakah anda yakin ingin menghapus ?' 
                 ]);   
-                })
-                ->addColumn('detail', function($backlog) {
+            })    
+            ->addColumn('nama_backlog', function($backlog) {
                 return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';      
             })->make(true);
         } 
- 
+        
         $html = $htmlBuilder 
             // ->addColumn(['data' => 'aplikasi_id', 'name'=>'aplikasi_id', 'title'=>'Aplikasi']) 
-            ->addColumn(['data' => 'detail', 'name'=>'backlog.nama_backlog', 'title'=>'Nama Backlog']) 
-            ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
-            ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
-            ->addColumn(['data' => 'asign', 'name'=>'asign', 'title'=>'Asign']) 
-            ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
- 
+        ->addColumn(['data' => 'backlog.nama_backlog', 'name'=>'backlog.nama_backlog', 'title'=>'Nama Backlog']) 
+        ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
+        ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
+        ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
+        
         return view('Sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
     } 
 
@@ -120,7 +135,7 @@ class SprintbacklogsController extends Controller
         $sprintbacklog = Sprintbacklog::find($id); 
         return view('sprintbacklogs.edit')->with(compact('sprintbacklog')); 
     } 
- 
+    
     public function update(Request $request, $id) 
     { 
         $this->validate($request, [
@@ -134,10 +149,10 @@ class SprintbacklogsController extends Controller
             "level"=>"success", 
             "message"=>"Berhasil menyimpan data" 
         ]); 
-         
+        
         return redirect()->route('sprintbacklogs.show',['sprint'=>$request->id_sprint])->with(compact('sprints')); 
     }
- 
+    
     public function destroy(Request $request, $id) 
     { 
         $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
@@ -145,49 +160,7 @@ class SprintbacklogsController extends Controller
         Session::flash("flash_notification", [ 
             "level" => "success", 
             "message" => "Data Berhasil Di Hapus" 
-            ]); 
+        ]); 
         return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
     } 
-
-    public function export($id)
-    {
-    return view('sprintbacklogs.export',['sprint'=>$id]);
-    }
-
-    public function exportPost(Request $request)
-    {
-        // validasi
-        $this->validate($request, [
-            'author_id'=>'required',
-        ], [
-            'author_id.required'=>'Anda belum memilih penulis. Pilih minimal 1 penulis.'
-        ]);
-        
-        $sprintbacklogs = Sprintbacklog::whereIn('id_backlog', $request->get('id_backlog'))->get();
-        
-        Excel::create('Data Buku Larapus', function($excel) use ($sprintbacklogs) {
-            // Set property
-            $excel->setTitle('Data Buku Larapus')
-                ->setCreator(Auth::user()->name);
-
-            $excel->sheet('Data Buku', function($sheet) use ($sprintbacklogs) {
-                $row = 1;
-                $sheet->row($row, [
-                    'nama_backlog',
-                    'isi_kepentingan',
-                    'perkiraan_waktu',
-                    'asign'
-            ]);
-            foreach ($sprintbacklogs as $sprintbacklog) {
-            $sheet->row(++$row, [
-                $sprintbacklog->nama_backlog,
-                $sprintbacklog->isi_kepentingan,
-                $sprintbacklog->perkiraan_waktu,
-                $sprintbacklog->asign
-            ]);
-        }
-    });
-    })->export('xls');
-
-    }
 }
