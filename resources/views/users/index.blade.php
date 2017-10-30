@@ -15,7 +15,12 @@
 					<h2 class="panel-title">Data Member</h2>
 				</div>
 				<div class="panel-body">
-					<p><a class="btn btn-info" href="{{ url('users/create') }}">Tambah Member</a></p>
+
+				<p>
+					<a class="btn btn-info" href="{{ url('users/create') }}">Tambah Member</a>
+					<a class="btn btn-info" href="{{ url('export/users') }}">Export</a>
+				</p>
+
 					{!! $html->table(['class'=>'table-striped']) !!}
 				</div>
 			</div>

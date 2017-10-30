@@ -154,4 +154,40 @@ class SprintbacklogsController extends Controller
     return view('sprintbacklogs.export',['sprint'=>$id]);
     }
 
+    public function exportPost(Request $request)
+    {
+        // validasi
+        $this->validate($request, [
+            'author_id'=>'required',
+        ], [
+            'author_id.required'=>'Anda belum memilih penulis. Pilih minimal 1 penulis.'
+        ]);
+        
+        $sprintbacklogs = Sprintbacklog::whereIn('id_backlog', $request->get('id_backlog'))->get();
+        
+        Excel::create('Data Buku Larapus', function($excel) use ($sprintbacklogs) {
+            // Set property
+            $excel->setTitle('Data Buku Larapus')
+                ->setCreator(Auth::user()->name);
+
+            $excel->sheet('Data Buku', function($sheet) use ($sprintbacklogs) {
+                $row = 1;
+                $sheet->row($row, [
+                    'nama_backlog',
+                    'isi_kepentingan',
+                    'perkiraan_waktu',
+                    'asign'
+            ]);
+            foreach ($sprintbacklogs as $sprintbacklog) {
+            $sheet->row(++$row, [
+                $sprintbacklog->nama_backlog,
+                $sprintbacklog->isi_kepentingan,
+                $sprintbacklog->perkiraan_waktu,
+                $sprintbacklog->asign
+            ]);
+        }
+    });
+    })->export('xls');
+
+    }
 }

@@ -39,10 +39,6 @@ class AplicationsController extends Controller
         ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
         ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'', 'orderable'=>false,'searchable'=>false]);
-<<<<<<< HEAD
-=======
-      
->>>>>>> master
         
         return view('aplikasi.index')->with(compact('html'));
     }
