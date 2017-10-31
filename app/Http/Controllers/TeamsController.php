@@ -165,6 +165,17 @@ public function exportPost(Request $request){
     })->export('xls'); 
 } 
 
+
+public function exportAllPost() { 
+    $data = Team::select('kode_team', 'nama_team')->get(); 
+    Excel::create('Semua Data Team', function($excel) use ($data) { 
+        $excel->sheet('Data Team', function($sheet) use ($data) { 
+            $sheet->fromArray($data); 
+        }); 
+        
+    })->download('xls'); 
+} 
+
 public function generateExcelTemplate() { 
     Excel::create('Template Import Team', function($excel) {
         // Set the properties
