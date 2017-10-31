@@ -15,14 +15,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 	// route untuk membuat team
 	route::resource('teams', 'TeamsController');
 	route::resource('aplikasi', 'AplicationsController');
+
+
 	// route konfirmasi user
 	Route::get('/users/konfirmasi/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'users.konfirmasi', 
 		'uses' => 'UsersController@konfirmasi'
 	]);
-
-
 // untuk membuat reset password
 	Route::get('/users/repass/{id}', [
 		'middleware' => ['auth'],
