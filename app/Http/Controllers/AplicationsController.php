@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Aplication;
 use App\Backlog;
 use Excel;
+use Validator;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Datatables;
@@ -137,7 +138,7 @@ class AplicationsController extends Controller
 
         $data_backlog = Backlog::where('aplikasi_id', $id)->count();
 
-//JIKA APLIKASI SUDAH TERPAKAI
+         //JIKA APLIKASI SUDAH TERPAKAI
         if ($data_backlog > 0) {
 
             //PERINGTAN TIDAK BISA DIHAPUS
@@ -202,4 +203,70 @@ class AplicationsController extends Controller
             });
         })->download('xls');
     }
+
+    public function generateExcelTemplate() {
+        Excel::create('Template Import Aplikasi', function($excel) {
+
+            $excel->setTitle('Template Import Aplikasi')
+            ->setCreator('Aplikasi Scrum')
+            ->setCompany('Aplikasi Scrum')
+            ->setDescription('Template import aplikasi untuk Aplikasi Scrum');
+            $excel->sheet('Data Aplikasi', function($sheet) {
+                $row = 1;
+                $sheet->row($row, [
+                    'kode',
+                    'nama'
+                ]);
+            });
+        })->export('xlsx');
+    }
+    public function importExcel(Request $request) {
+    // validation
+        $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
+    // get file
+        $excel = $request->file('excel');
+    // read first sheet
+        $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
+    // options
+        })->get();
+    // row validation
+        $rowRules = [
+            'kode' => 'required',
+            'nama' => 'required'
+        ];
+    // record id for count successfull app imported 
+        $aplikasi_id = [];
+    // looping anyline, starting from the second line
+        foreach ($excels as $row) {
+    // make validation for row and change the line in proses to array
+            $validator = Validator::make($row->toArray(), $rowRules);
+    // Skip this line if not valid
+            if ($validator->fails()) continue;
+    // make new app
+            $aplikasi = Aplication::create([
+                'kode' => $row['kode'],
+                'nama' => $row['nama']
+            ]);
+    // record new app id
+            array_push($aplikasi_id, $aplikasi->id);
+        }
+    // get all app
+        $aplikasi = Aplication::whereIn('id', $aplikasi_id)->get();
+    // redirect to form if nothing successful app to import
+        if ($aplikasi->count() == 0) {
+            Session::flash("flash_notification", [
+                "level" => "danger",
+                "message" => "Tidak ada aplikasi yang berhasil diimport."
+            ]);
+            return redirect()->back();
+        }
+    // set feedback
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil mengimport " . $aplikasi->count() . " aplikasi."
+        ]);
+    // back to index
+        return redirect()->route('aplikasi.index');
+    }
+
 }

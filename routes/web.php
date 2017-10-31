@@ -96,6 +96,15 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'export.aplikasi.all',
 		'uses' => 'AplicationsController@exportAll'
 	]);
+
+	Route::get('template/aplikasi', [
+		'as' => 'template.aplikasi',
+		'uses' => 'AplicationsController@generateExcelTemplate'
+	]);
+	Route::post('import/aplikasi', [
+		'as' => 'import.aplikasi',
+		'uses' => 'AplicationsController@importExcel'
+	]);
 });
 
 
@@ -132,11 +141,15 @@ Route::group(['middleware' => ['auth']], function () {
 		'uses' => 'SprintbacklogsController@exportPost'
 	]);
 
-
 });
 
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
+
+Route::get('/sprintbacklogs/sb/detail_sb', [
+	'as' => 'sprintbacklogs.detail_sb',
+	'uses' => 'SprintbacklogsController@detailSb'
+]);
 
 Route::get('/', function () {
 	return view('welcome');
