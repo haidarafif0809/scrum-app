@@ -63,6 +63,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'export.teams',
 		'uses' => 'teamsController@export'
 	]);
+
+	Route::get('exportAll/teams', [
+		'as' => 'exportAll.teams.post',
+		'uses' => 'TeamsController@exportAllPost'
+	]);
 	Route::post('export/teams', [
 		'as' => 'export.teams.post',
 		'uses' => 'teamsController@exportPost'
