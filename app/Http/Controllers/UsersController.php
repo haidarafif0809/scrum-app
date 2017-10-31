@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
 // menampilkan user
 use App\Role;
 use App\RoleUser;
@@ -248,7 +249,7 @@ class UsersController extends Controller
         return redirect()->route('users.index');
     }
 
-    // untuk proses export
+    // untuk proses export berdasarkan id
     public function export() {
         return view('users.export');
     }
@@ -271,20 +272,20 @@ class UsersController extends Controller
                 $sheet->row($row, [
                     'Nama',
                     'Email',
-                    'Password',
                     'Konfirmasi'
                 ]);
                 foreach ($users as $user) {
                     $sheet->row(++$row, [
                         $user->name,
                         $user->email,
-                        $user->pasword,
                         $user->is_verified
                     ]);
                 }
             });
         })->export('xls');
     }
+
+    // untuk proses export all
     public function exportAllPost() {
         $data = User::select('name', 'email', 'password', 'is_verified')->get();
         Excel::create('Semua Data User', function($excel) use ($data) {
@@ -294,5 +295,84 @@ class UsersController extends Controller
             });
 
         })->download('xls');
+    }
+
+    public function generateExcelTemplate() { 
+        Excel::create('Template Import User', function($excel) {
+            // Set the properties
+            $excel->setTitle('Template Import User')
+            ->setCreator('Scrum-App')
+            ->setCompany('Scrum-App')
+            ->setDescription('Template import data user untuk Scrum-App');
+            $excel->sheet('Data User', function($sheet) {
+                $row = 1;
+                $sheet->row($row, [
+                    'name',
+                    'email',
+                    'password',
+                    'otoritas',
+                    'team_id'
+                ]);
+            });
+        })->export('xlsx');
+    }
+    public function importExcel(Request $request) {
+        // validasi untuk memastikan file yang diupload adalah excel
+        $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
+        // ambil file yang baru diupload
+        $excel = $request->file('excel');
+        // baca sheet pertama
+        $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
+        // options, jika ada
+        })->get();
+        // rule untuk validasi setiap row pada file excel
+        $rowRules = [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required',
+            'otoritas' => 'required|exists:roles,id',
+            'team_id' => 'required'
+        ];
+        // Catat semua id buku baru
+        // ID ini kita butuhkan untuk menghitung total buku yang berhasil diimport
+        $users_id = [];
+            // looping setiap baris, mulai dari baris ke 2 (karena baris ke 1 adalah nama kolom)
+        foreach ($excels as $row) {
+            // Membuat validasi untuk row di excel
+            // Disini kita ubah baris yang sedang di proses menjadi array
+            $validator = Validator::make($row->toArray(), $rowRules);
+            // buat buku baru
+            $user = User::create([
+                'name' => $row['name'],
+                'email' => $row['email'],
+                'password' => $row['password']
+            ]);
+            $role = RoleUser::create([
+                'user_id' => $user->id, 'role_id' => $row['otoritas']
+            ]);
+            $team = Teamuser::create([
+                'user_id' => $user->id,
+                'team_id' => $row['team_id']]);
+            // catat id dari buku yang baru dibuat
+            array_push($users_id, $user->id);
+        }
+        // Ambil semua buku yang baru dibuat
+        $users = User::whereIn('id', $users_id)->get();
+        // redirect ke form jika tidak ada buku yang berhasil diimport
+        if ($users->count() == 0) {
+            Session::flash("flash_notification", [
+                "level" => "danger",
+                "message" => "Tidak ada buku yang berhasil diimport."
+            ]);
+            return redirect()->back();
+        }
+        // set feedback
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil mengimport " . $users->count() . " user."
+        ]);
+        // Tampilkan index buku
+        return redirect()->route('users.index');
+
     }
 }
