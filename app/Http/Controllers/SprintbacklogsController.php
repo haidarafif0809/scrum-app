@@ -192,10 +192,7 @@ class SprintbacklogsController extends Controller
 
      public function assign($id) 
     { 
-         $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
-        Sprintbacklog::($id); 
-        ]); 
-        return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
+        
     } 
     
         public function export($id) {
