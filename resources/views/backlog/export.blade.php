@@ -11,20 +11,20 @@
 			</ul>
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h2 class="panel-title">Export Backlog</h2>
+					<h2 class="panel-title">Export Backlog berdasarkan Aplikasi</h2>
 				</div>
 				<div class="panel-body">
 					{!! Form::open(['url' => route('export.backlog.post'),
 					'method' => 'post', 'class'=>'form-horizontal']) !!}
-					<div class="form-group {!! $errors->has('id_backlog') ? 'has-error' : '' !!}">
-						{!! Form::label('id_backlog', 'Backlog', ['class'=>'col-md-2 control-label']) !!}
+					<div class="form-group {!! $errors->has('id') ? 'has-error' : '' !!}">
+						{!! Form::label('id', 'Aplikasi', ['class'=>'col-md-2 control-label']) !!}
 						<div class="col-md-4">
-							{!! Form::select('id_backlog[]', [''=>'']+App\Backlog::pluck('nama_backlog','id_backlog')->all(), null, [
+							{!! Form::select('id[]', [''=>'']+App\Aplication::pluck('nama','id')->all(), null, [
 							'class' => 'form-control js-selectize-reguler', 
 							'multiple', 
-							'placeholder' => 'Pilih Backlog'
+							'placeholder' => 'Pilih Aplikasi'
 							]) !!}
-							{!! $errors->first('id_backlog', '<p class="help-block">:message</p>') !!}
+							{!! $errors->first('id', '<p class="help-block">:message</p>') !!}
 						</div>
 					</div>
 					<div class="form-group">

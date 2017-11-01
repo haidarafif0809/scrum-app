@@ -22,13 +22,13 @@ $(document).ready(function () {
 	else {
 		title.text(title.text() + " | Aplikasi Scrum");
 	}
-    $("#datepicker").datepicker({
-        dateFormat: "yy/mm/dd",
-        changeMonth: true,
-        changeYear: true ,
-        yearRange: "-100:+0",
-        minDate: new Date()
-    });
+	$("#datepicker").datepicker({
+		dateFormat: "yy/mm/dd",
+		changeMonth: true,
+		changeYear: true ,
+		yearRange: "-100:+0",
+		minDate: new Date()
+	});
 	$(function() {
 		$('#timepicker').timepicker();
 	});
