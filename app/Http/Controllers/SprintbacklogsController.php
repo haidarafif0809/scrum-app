@@ -122,7 +122,7 @@ class SprintbacklogsController extends Controller
              ->escapeColumns([])
             ->addColumn('assign', function($sprint) { 
                 return view('datatable._assign', [ 
-                    'assign' => route('sprintbacklogs.edit', $sprint->id) 
+                    'assign' => route('sprintbacklogs.assign', $sprint->id) 
                 ]); 
             })
             ->escapeColumns([])
@@ -192,7 +192,10 @@ class SprintbacklogsController extends Controller
 
      public function assign($id) 
     { 
-        
+         $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
+        Sprintbacklog::($id); 
+        ]); 
+        return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
     } 
     
         public function export($id) {

@@ -15,7 +15,6 @@ class CreateSprintbacklogsTable extends Migration
             $table->string('perkiraan_waktu'); 
             $table->integer('id_sprint');
             $table->integer('id_backlog');
-            $table->string('asign');
             $table->integer('created_by')->nullable()->index();
             $table->integer('updated_by')->nullable()->index();
             $table->timestamps(); 
