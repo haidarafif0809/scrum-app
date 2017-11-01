@@ -15,14 +15,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 	// route untuk membuat team
 	route::resource('teams', 'TeamsController');
 	route::resource('aplikasi', 'AplicationsController');
+
+
 	// route konfirmasi user
 	Route::get('/users/konfirmasi/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'users.konfirmasi', 
 		'uses' => 'UsersController@konfirmasi'
 	]);
-
-
 // untuk membuat reset password
 	Route::get('/users/repass/{id}', [
 		'middleware' => ['auth'],
@@ -63,6 +63,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'export.teams',
 		'uses' => 'teamsController@export'
 	]);
+
+	Route::get('exportAll/teams', [
+		'as' => 'exportAll.teams.post',
+		'uses' => 'TeamsController@exportAllPost'
+	]);
 	Route::post('export/teams', [
 		'as' => 'export.teams.post',
 		'uses' => 'teamsController@exportPost'
@@ -90,6 +95,15 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 	Route::get('export/semua_aplikasi', [
 		'as' => 'export.aplikasi.all',
 		'uses' => 'AplicationsController@exportAll'
+	]);
+
+	Route::get('template/aplikasi', [
+		'as' => 'template.aplikasi',
+		'uses' => 'AplicationsController@generateExcelTemplate'
+	]);
+	Route::post('import/aplikasi', [
+		'as' => 'import.aplikasi',
+		'uses' => 'AplicationsController@importExcel'
 	]);
 });
 
@@ -127,11 +141,15 @@ Route::group(['middleware' => ['auth']], function () {
 		'uses' => 'SprintbacklogsController@exportPost'
 	]);
 
-
 });
 
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
+
+Route::get('/sprintbacklogs/sb/detail_sb', [
+	'as' => 'sprintbacklogs.detail_sb',
+	'uses' => 'SprintbacklogsController@detailSb'
+]);
 
 Route::get('/', function () {
 	return view('welcome');
