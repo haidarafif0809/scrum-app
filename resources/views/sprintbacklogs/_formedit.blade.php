@@ -2,7 +2,7 @@
   {!! Form::label('id_backlog', 'Nama Backlog', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
 {!! Form::select('id_backlog', [''=>'']+App\Backlog::pluck('nama_backlog','id_backlog')->all(), null, [  
-'class'=>'form-control js-selectize-reguler',
+'class'=>'form-control js-selectize-reguler', 'id' => 'id_backlog',
 'placeholder' => 'Pilih Backlog']) !!}
     {!! $errors->first('id_backlog', '<p class="help-block">:message</p>') !!} 
   </div> 

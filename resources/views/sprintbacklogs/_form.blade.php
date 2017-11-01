@@ -2,7 +2,7 @@
   {!! Form::label('id_backlog', 'Nama Backlog', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
 {!! Form::select('id_backlog', [''=>'']+App\Backlog::pluck('nama_backlog','id_backlog')->all(), null, [  
-'class'=>'form-control js-selectize-reguler', 'id' => 'id_backlog'
+'class'=>'form-control js-selectize-reguler', 'id' => 'id_backlog',
 'placeholder' => 'Pilih Backlog']) !!}
     {!! $errors->first('id_backlog', '<p class="help-block">:message</p>') !!} 
   </div> 
@@ -23,14 +23,6 @@
     {!! $errors->first('perkiraan_waktu', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
-
-<div class="form-group{{ $errors->has('asign') ? ' has-error' : '' }}"> 
-  {!! Form::label('asign', 'Asign', ['class'=>'col-md-2 control-label']) !!} 
-  <div class="col-md-4"> 
-    {!! Form::text('asign', null, ['class'=>'form-control', 'id' => 'asign']) !!} 
-    {!! $errors->first('asign', '<p class="help-block">:message</p>') !!} 
-  </div> 
-</div>
 
    {!! Form::hidden('id_sprint', $sprint, ['class'=>'form-control']) !!} 
  

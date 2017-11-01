@@ -16,7 +16,8 @@
             
           <div class="panel-body"> 
           <p> <a class="btn btn-primary" href="{{ route('sprintbacklogs.create_sprintbacklog',$sprint) }}">Tambah SprintBacklog</a> 
-            <a class="btn btn-primary" href="{{ url('/export/sprintbacklogs',$sprint) }}">Export</a></p> 
+            <a class="btn btn-primary" href="{{ url('/export/sprintbacklogs',$sprint) }}">Export</a>
+            <a class="btn btn-primary" href="{{ url('/exportall/sprintbacklogs',$sprint) }}">Export All</a> 
             {!! $html->table(['class'=>'table-striped']) !!} 
           </div> 
         </div> 
