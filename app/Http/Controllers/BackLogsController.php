@@ -135,37 +135,64 @@ class BackLogsController extends Controller
     }
     public function exportPost(Request $request)
     {
-// validasi
+        // validasi
         $this->validate($request, [
-            'id_backlog'=>'required'
+            'id'=>'required'
         ], 
         [
-            'id_backlog.required'=>'Anda belum memilih backlog. Pilih minimal 1 backlog.'
+            'id.required'=>'Anda belum memilih Aplikasi. Pilih minimal 1 Aplikasi.'
         ]);
-        $backlogs = Backlog::whereIn('id_backlog', $request->get('id_backlog'))->get();
-        Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($backlogs) {
-// Set property
-            $excel->setTitle('Data Backlog Aplikasi Scrum')
-            ->setCreator(Auth::user()->nama);
-            $excel->sheet('Data Backlog', function($sheet) use ($backlogs) {
-                $row = 1;
-                $sheet->row($row, [
-                    'Aplikasi',
-                    'Nama Backlog',
-                    'Demo',
-                    'Catatan'
-                ]);
-                foreach ($backlogs as $backlog) {
-                    $sheet->row(++$row, [
-                        $backlog->aplikasi->nama,
-                        $backlog->nama_backlog,
-                        $backlog->demo,
-                        $backlog->catatan
+        // Backlog::with('aplikasi')->get();
+
+        $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
+        Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($aplikasi) {
+        // echo count($aplikasi);
+
+                // print_r(json_decode($backlog, true));
+
+            $arrayApp = json_decode($aplikasi, true);
+
+            for ($i = 0; $i < count($aplikasi); $i++) {
+                // echo '<pre>';
+                // print_r($arrayApp);
+                // echo '</pre>';
+                /*
+                */
+                // $num++;
+                // print_r($arrayApp['nama']);
+
+                // $dataApp = Aplication::where('id', $arrayApp[$i]['id'])->get();
+                // $dataApp = json_decode($dataApp, true);
+                // Set property
+                $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
+                $excel->sheet('nama aplikasi', function($sheet) use ($aplikasi) {
+                    $backlog = Backlog::where('aplikasi_id', $arrayApp[$i]['id'])->get();
+                    // global $dataApp;
+                    // global $i, $arrayApp;
+                    // $i = '';
+                    // $i++;
+                    // $i = 0;
+                    // $arrayApp = json_decode($aplikasi[$i], true);
+                //     // $row = count($request->get('id')->get());
+                    $row = 1;
+                    $sheet->row($row, [
+                        'Aplikasi',
+                        'Backlog'
                     ]);
-                }
-            });
-        })->export('xls');
+                // foreach($arrayApp as $app) {
+            // $indexForArr = [0 => 'id', 1 => 'kode', 2 => 'nama', 3 => 'created_by', 4 => 'updated_by', 5 => 'created_at', 6 => 'updated_at'];
+                    for ($u = 0; $u < count($aplikasi); $u++) {
+
+                    // echo $arrayApp['nama'];
+                        $sheet->row(++$row, [
+                            $dataApp[$u]['nama'],
+                            $backlog['nama_backlog']
+                        ]);
+
+                    }
+            // }
+                })->export('xls');
+            }
+        });
     }
-
-
 }
