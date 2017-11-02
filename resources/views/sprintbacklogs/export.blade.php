@@ -28,6 +28,8 @@
 									'multiple',
 									'placeholder' => 'Pilih Backlog']) !!}
 								{!! $errors->first('backlog', '<p class="help-block">:message</p>') !!}
+
+								{!! Form::hidden('id_sprint', $sprint, ['class'=>'form-control']) !!} 
 							</div>
 						</div>
 						

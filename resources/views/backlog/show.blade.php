@@ -24,7 +24,7 @@
 						<div class="col-md-6">
 							<b>Catatan:</b>
 							<br>
-							{{ $backlog->catatan }}
+							{!! $backlog->catatan !!}
 						</div>
 						</p>
 					</div>
