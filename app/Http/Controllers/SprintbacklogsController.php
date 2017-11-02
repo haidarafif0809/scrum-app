@@ -38,7 +38,7 @@ class SprintbacklogsController extends Controller
         ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]); 
         
-        return view('Sprintbacklogs.show')->with(compact('html')); 
+        return view('sprintbacklogs.show')->with(compact('html')); 
     } 
     
     /** 
@@ -122,7 +122,7 @@ class SprintbacklogsController extends Controller
              ->escapeColumns([])
             ->addColumn('assign', function($sprint) { 
                 return view('datatable._assign', [ 
-                    'assign' => route('sprintbacklogs.edit', $sprint->id) 
+                    'assign' => route('sprintbacklogs.assign', $sprint->id) 
                 ]); 
             })
             ->escapeColumns([])
@@ -140,7 +140,7 @@ class SprintbacklogsController extends Controller
         ->addColumn(['data' => 'assign', 'name'=>'assign', 'title'=>'Assign', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
         
-        return view('Sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
+        return view('sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
     } 
 
     public function edit($id) 
@@ -192,7 +192,7 @@ class SprintbacklogsController extends Controller
 
      public function assign($id) 
     { 
-        
+
     } 
     
         public function export($id) {

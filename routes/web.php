@@ -127,6 +127,11 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'sprintbacklogs.create_sprintbacklog', 
 		'uses' => 'SprintbacklogsController@create_sprintbacklog'
 	]);
+	Route::get('/sprintbacklogs/assign', [
+		'middleware' => ['auth'], 
+		'as' => 'sprintbacklogs.assign', 
+		'uses' => 'SprintbacklogsController@assign'
+	]);
 	Route::post('export/backlog', [
 		'as' => 'export.backlog.post',
 		'uses' => 'BacklogsController@exportPost'
