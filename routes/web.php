@@ -154,7 +154,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('template/sprintbacklogs', [
 		'as' => 'template.sprintbacklogs',
-		'uses' => 'SprintbacklogsController@generateExcelTemplate']);
+		'uses' => 'SprintbacklogsController@generateExcelTemplate'
+	]);
 	
 	Route::post('import/sprintbacklogs', [
 		'as' => 'import.sprintbacklogs',

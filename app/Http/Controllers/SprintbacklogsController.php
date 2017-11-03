@@ -12,6 +12,7 @@ use Session;
 use Excel; 
 use Validator;
 use DB;
+use App\User;
 
 class SprintbacklogsController extends Controller 
 { 
@@ -125,6 +126,11 @@ class SprintbacklogsController extends Controller
                     'assign' => route('sprintbacklogs.assign', $sprint->id) 
                 ]); 
             })
+            // ->addColumn('finish', function($sprint) { 
+            //     return view('datatable._finish', [ 
+            //         'finish' => route('sprintbacklogs.finish', $sprint->id) 
+            //     ]); 
+            // })
             ->escapeColumns([])
 
            ->addColumn('detail', function($backlog) {
@@ -191,9 +197,18 @@ class SprintbacklogsController extends Controller
     } 
 
      public function assign($id) 
-    { 
-
+    {
+        // $user = User::find($id)
+        // $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
+        // Sprintbacklog::($id); 
+         
+        // return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
     } 
+
+    // public function finish()
+    // {
+        
+    // }
     
         public function export($id) {
         return view('sprintbacklogs.export',['sprint'=>$id]);
@@ -206,7 +221,7 @@ class SprintbacklogsController extends Controller
         ], [
             'id_backlog.required'=>'Pilih minimal 1 Aplikasi.'
         ]);
-        $Sprintbacklogs = Sprintbacklog::with('backlog')->whereIn('id_backlog', $request->id_backlog)->where('id_sprint', $request->id_sprint)->where('id')->get();
+        $Sprintbacklogs = Sprintbacklog::with('backlog')->whereIn('id_backlog', $request->id_backlog)->where('id_sprint', $request->id_sprint)->where('id', $request->get('id_sprint'))->get();
         Excel::create('Data Sprintbacklog', function($excel) use ($Sprintbacklogs) {
         // Set property
             $excel->setTitle('Data Sprintbacklog')
@@ -255,23 +270,94 @@ class SprintbacklogsController extends Controller
             });
         })->export('xls');
     }
-    public function generateExcelTemplate()
-    {
-        Excel::create('Template Import Buku', function($excel) {
-        // Set the properties
-        $excel->setTitle('Template Import Buku')
-            ->setCreator('Sprintbacklogs')
-            ->setCompany('Sprintbacklogs')
-            ->setDescription('Template import buku untuk Sprintbacklogs');
-        
-        $excel->sheet('Data Sprintbacklogs', function($sheet) {
-            $row = 1;
-            $sheet->row($row, [
-                'Nama Backlog',
-                'Isi Kepentingan',
-                'Perkiraan Waktu',
-            ]);
-        });
+
+    public function generateExcelTemplate() { 
+        Excel::create('Template Import Sprintbacklog', function($excel) {
+                // Set the properties
+            $excel->setTitle('Template Import Team')
+            ->setCreator('Sprintbacklog')
+            ->setCompany('Sprintbacklog')
+            ->setDescription('Template import data Sprintbacklog');
+
+            $excel->sheet('Data Sprintbacklog', function($sheet) {
+                $row = 1;
+                $sheet->row($row, [
+                    'id_backlog',
+                    'isi_kepentingan',
+                    'perkiraan_waktu',
+                ]);
+            });
+
         })->export('xlsx');
+    }
+
+    public function importExcel(Request $request) {
+              //validasi untuk memastikan file yang diupload adalah excel
+        $this->validate($request, ['excel'=>'required|mimes:xls,xlsx']);
+            //ambil file yang baru di upload
+        $excel = $request->file('excel');
+            //baca sheet pertama
+        $excels = Excel::selectSheetsByIndex(0)->load($excel,function($reader){
+              //option ,jika ada
+        })->get();
+
+
+           //rule untuk validasi setiap row pada file excel
+        $rowRules = [
+           'id_sprint' => 'required',
+           'id_backlog' => 'required|exists:backlogs,id_backlog',
+            'isi_kepentingan' => 'required',
+            'perkiraan_waktu' => 'required'
+        ];
+
+           //Catat semua id team baru
+            //ID ini kita butuhkan untuk menghitung total team yang berhasil di import
+        $sprintbacklogs_id = [''];
+
+           //looping setiap baris ,mulai dari baris ke 2 (karena baris ke 1 adlah nama kolom )
+        foreach ($excels as $row) {
+              //membuat validasi untuk row di excel
+              //Dsini kita ubah baris yang sedang di proses menjadi array
+          $validator = Validator::make($row->toArray(),$rowRules);
+
+             //Skip baris ini jadi tidak valid , langsung ke baris selajutnya
+          if ($validator->fails()) continue;
+
+             //buat team baru
+          $sprintbacklog = Sprintbacklog::create([
+            'id_sprint' => $row['id_sprint'],
+            'id_backlog' => $row['id_backlog'],
+            'isi_kepentingan' => $row['isi_kepentingan'],
+            'perkiraan_waktu' => $row['perkiraan_waktu'],
+
+        ]);
+
+             //catat id dari team yang baru dibuat
+          array_push($sprintbacklogs_id, $sprintbacklog->id);
+
+      }
+
+           //ambil semua team yang baru dibuat
+      $sprintbacklogs = Sprintbacklog::whereIn('id',$sprintbacklogs_id)->get();
+
+           //redirect ke form jika tidak ada team yang berhasil di import
+      if($sprintbacklogs->count() == 0){
+          Session::flash('flash_notification',[
+            'level' =>'danger',
+            'message'=>'Tidak ada Team yang diimport'
+
+        ]);
+          return redirect()->back();
+      }
+
+           //set feedback
+      Session::flash('flash_notification',[
+        'level' =>'success',
+        'message'=>"Berhasil mengimport ".$sprintbacklogs->count()." Team"
+
+    ]);
+
+           //Tampilkan index team
+      return redirect()->route('sprintbacklogs.index');
     }
 }
