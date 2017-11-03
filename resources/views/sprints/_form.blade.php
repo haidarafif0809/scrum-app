@@ -10,7 +10,7 @@
 <div class="form-group{{ $errors->has('durasi') ? ' has-error' : '' }}"> 
   {!! Form::label('durasi', 'Durasi', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::select('durasi',  ['1 Minggu' => '1 Minggu', '2 Minggu'=>'2 Minggu', '3 Minggu'=>'3 Minggu'] ,  null, ['class'=>'form-control js-selectize' ]) !!} 
+    {!! Form::select('durasi',  ['1 Minggu' => '1 Minggu', '2 Minggu'=>'2 Minggu', '3 Minggu'=>'3 Minggu'] ,  null, ['class'=>'form-control js-selectize', 'id' => 'durasi' ]) !!} 
     {!! $errors->first('durasi', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
@@ -44,6 +44,22 @@
   <div class="col-md-4"> 
     {!! Form::text('nama_sprint', null, ['class'=>'form-control']) !!} 
     {!! $errors->first('nama_sprint', '<p class="help-block">:message</p>') !!} 
+  </div> 
+</div> 
+ 
+<div class="form-group{{ $errors->has('nilai_sp') ? ' has-error' : '' }}"> 
+  {!! Form::label('nilai_sp', 'Nilai SP', ['class'=>'col-md-2 control-label']) !!} 
+  <div class="col-md-4"> 
+    {!! Form::text('nilai_sp', null, ['class'=>'form-control']) !!} 
+    {!! $errors->first('nilai_sp', '<p class="help-block">:message</p>') !!} 
+  </div> 
+</div> 
+ 
+<div class="form-group{{ $errors->has('goal') ? ' has-error' : '' }}"> 
+  {!! Form::label('goal', 'goal', ['class'=>'col-md-2 control-label']) !!} 
+  <div class="col-md-4"> 
+    {!! Form::text('goal', null, ['class'=>'form-control']) !!} 
+    {!! $errors->first('goal', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div> 
  
