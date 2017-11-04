@@ -17,6 +17,11 @@ class SprintsController extends Controller
             $sprints = Sprint::with('team')->get();
             return Datatables::of($sprints)
             ->escapeColumns([])
+            ->addColumn('detail', function($sprint) { 
+                return view('datatable._detail_sd', [ 
+                    'detail' => route('sprints.detail_sd', $sprint->id) 
+                ]); 
+            })
             ->addColumn('action', function($sprint) { 
                 return view('datatable._action', [ 
                     'model' => $sprint, 
@@ -25,7 +30,6 @@ class SprintsController extends Controller
                     'confirm_message' => 'Yakin anda ingin menghapus' . $sprint->nama_sprint . '?'  
                 ]); 
             })
-            
             ->addColumn('backlog', function($sprint) { 
                 return view('datatable._backlog', [ 
                     'backlog' => route('sprintbacklogs.show', $sprint->id) 
@@ -33,7 +37,7 @@ class SprintsController extends Controller
             })->make(true); 
         } 
         
-            
+
         $html = $htmlBuilder 
        // ->addColumn(['data' => 'durasi', 'name' =>  'durasi', 'title' =>  'Durasi']) 
         //->addColumn(['data' => 'waktu_mulai', 'name' =>  'waktu_mulai', 'title' =>  'Waktu Mulai']) 
@@ -43,7 +47,9 @@ class SprintsController extends Controller
         ->addColumn(['data' => 'nama_sprint', 'name' =>'nama_sprint', 'title'   =>'Nama Sprint']) 
         ->addColumn(['data' => 'goal', 'name' =>'goal', 'title'   =>'Goal']) 
         ->addColumn(['data' => 'backlog',      'name' =>  'backlog', 'title'      => 'Sprint Backlog', 'orderable' => false, 'searchable' => false])
-        ->addColumn(['data' => 'action', 'name'      =>  'action', 'title'      => 'Aksi', 'orderable' => false, 'searchable' => false]); 
+        ->addColumn(['data' => 'action', 'name'      =>  'action', 'title'      => 'Aksi', 'orderable' => false, 'searchable' => false])
+        ->addColumn(['data' => 'detail',      'name' =>  'detail', 'title'      => '
+            Detail', 'orderable' => false, 'searchable' => false]); 
         
         
         return view('sprints.index')->with(compact('html')); 
@@ -91,7 +97,7 @@ class SprintsController extends Controller
     } 
     public function show($id) 
     { 
-        
+
     } 
     public function edit($id) 
     { 
@@ -151,5 +157,7 @@ class SprintsController extends Controller
         
         return redirect()->route('sprints.index'); 
     } 
-    
+    public function detailSd(){
+        return view('sprints.detail_sd');
+    }
 }

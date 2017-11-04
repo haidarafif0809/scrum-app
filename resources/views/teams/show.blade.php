@@ -20,11 +20,13 @@
 					<p>Anggota {{ $team->nama_team }} :</p>
 					<table class="table table-condensed table-striped">
 						<tbody>
-							@foreach ($anggotaTeam as $teams)
-							<ul>
-								<li>{{ $teams->user->name }}</li>
-							</ul>
-							@endforeach
+							<div class="ulli">
+								<ul>
+									@foreach ($anggotaTeam as $teams)
+									<li>{{ $teams->user->name }}</li>
+									@endforeach
+								</ul>
+							</div>
 						</tbody>
 						
 					</table>

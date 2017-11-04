@@ -4,5 +4,9 @@
 {!! Form::submit('reset password', ['class' => 'btn btn-xs btn-primary']) !!}
 {!! Form::close() !!}
 
+@else
+{!! Form::submit('should confirm', ['class' => 'btn btn-xs btn-default disabled']) !!}
+{!! Form::close() !!}
+
 @endif
 

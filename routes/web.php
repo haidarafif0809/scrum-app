@@ -167,16 +167,16 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
 
-Route::get('/sprintbacklogs/sb/detail_sb', [
-	'as' => 'sprintbacklogs.detail_sb',
-	'uses' => 'SprintbacklogsController@detailSb'
+Route::get('/sprints/sd/detail_sd', [
+	'as' => 'sprints.detail_sd',
+	'uses' => 'SprintsController@detailSd'
 ]);
 
 Route::get('/', function () {
 	return view('welcome');
 });
-Route::get('/anu', function () {
-	return view('anu');
+Route::get('/about', function () {
+	return view('about');
 });
 
 Auth::routes();
