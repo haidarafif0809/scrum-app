@@ -127,7 +127,7 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'sprintbacklogs.create_sprintbacklog', 
 		'uses' => 'SprintbacklogsController@create_sprintbacklog'
 	]);
-	Route::get('/sprintbacklogs/assign', [
+	Route::get('/sprintbacklogs/assign/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'sprintbacklogs.assign', 
 		'uses' => 'SprintbacklogsController@assign'
@@ -182,5 +182,7 @@ Route::get('/anu', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/testing/sprintbacklog', 'SprintbacklogsController@testing');
 Route::get('/settings/password', 'SettingsController@editPassword');
 Route::post('/settings/password', 'SettingsController@updatePassword');
+

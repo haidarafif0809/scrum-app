@@ -61,7 +61,7 @@ class BackLogsController extends Controller
         $this->validate($request, [
             'aplikasi_id' => 'required|exists:aplications,id',
             'nama_backlog' => 'required',
-            'demo' => 'required',
+            'demo' => '',
             'catatan' => ''
         ]);
         $backlog = Backlog::create($request->all());
@@ -142,57 +142,99 @@ class BackLogsController extends Controller
         [
             'id.required'=>'Anda belum memilih Aplikasi. Pilih minimal 1 Aplikasi.'
         ]);
-        // Backlog::with('aplikasi')->get();
 
         $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
         Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($aplikasi) {
-        // echo count($aplikasi);
+            $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
 
-                // print_r(json_decode($backlog, true));
-
+            // Merapikan data dari id-id aplikasi yg dikirim
             $arrayApp = json_decode($aplikasi, true);
 
-            for ($i = 0; $i < count($aplikasi); $i++) {
-                // echo '<pre>';
-                // print_r($arrayApp);
-                // echo '</pre>';
-                /*
-                */
-                // $num++;
-                // print_r($arrayApp['nama']);
+            for ($i = 0; $i < count($arrayApp); $i++) {
+                $dataApp = Aplication::where('id', $arrayApp[$i]['id'])->get();
 
-                // $dataApp = Aplication::where('id', $arrayApp[$i]['id'])->get();
-                // $dataApp = json_decode($dataApp, true);
-                // Set property
-                $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
-                $excel->sheet('nama aplikasi', function($sheet) use ($aplikasi) {
-                    $backlog = Backlog::where('aplikasi_id', $arrayApp[$i]['id'])->get();
-                    // global $dataApp;
-                    // global $i, $arrayApp;
-                    // $i = '';
-                    // $i++;
-                    // $i = 0;
-                    // $arrayApp = json_decode($aplikasi[$i], true);
-                //     // $row = count($request->get('id')->get());
+                // Merapikan data dari aplikasi tertentu sesuai perulangan
+                $dataApp = json_decode($dataApp, true);
+                $backlog = Backlog::where('aplikasi_id', $arrayApp[$i]['id'])->get();
+
+                // Merapikan data dari backlog tertentu sesuai perulangan
+                $backlog = json_decode($backlog, true);
+
+                // Membuat variable array kosong
+                $arrayData = [];
+
+                // Memasukkan array $dataApp dan $backlog ke array $arrayData
+                array_push($arrayData, $dataApp, $backlog);
+
+                $excel->sheet($arrayData[0][0]['nama'], function($sheet) use ($arrayData) {
                     $row = 1;
                     $sheet->row($row, [
-                        'Aplikasi',
-                        'Backlog'
+                        'Nama Backlog',
+                        'Waktu Dibuat',
+                        'Demo',
+                        'Catatan'
                     ]);
-                // foreach($arrayApp as $app) {
-            // $indexForArr = [0 => 'id', 1 => 'kode', 2 => 'nama', 3 => 'created_by', 4 => 'updated_by', 5 => 'created_at', 6 => 'updated_at'];
-                    for ($u = 0; $u < count($aplikasi); $u++) {
-
-                    // echo $arrayApp['nama'];
+                    for ($u = 0; $u < count($arrayData[1]); $u++) {   
                         $sheet->row(++$row, [
-                            $dataApp[$u]['nama'],
-                            $backlog['nama_backlog']
+                            $arrayData[1][$u]['nama_backlog'],
+                            $arrayData[1][$u]['created_at'],
+                            $arrayData[1][$u]['demo'],
+                            // Menyaring tag html
+                            strip_tags($arrayData[1][$u]['catatan'])
                         ]);
-
                     }
-            // }
-                })->export('xls');
+                });
             }
-        });
+        })->export('xls');
+    }
+    public function exportAll() {
+        // $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
+        $aplikasi = Aplication::select('id')->count();
+
+        /*
+        $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
+        Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($aplikasi) {
+            $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
+
+            // Merapikan data dari id-id aplikasi yg dikirim
+            $arrayApp = json_decode($aplikasi, true);
+
+            for ($i = 0; $i < count($arrayApp); $i++) {
+                $dataApp = Aplication::where('id', $arrayApp[$i]['id'])->get();
+
+                // Merapikan data dari aplikasi tertentu sesuai perulangan
+                $dataApp = json_decode($dataApp, true);
+                $backlog = Backlog::where('aplikasi_id', $arrayApp[$i]['id'])->get();
+
+                // Merapikan data dari backlog tertentu sesuai perulangan
+                $backlog = json_decode($backlog, true);
+
+                // Membuat variable array kosong
+                $arrayData = [];
+
+                // Memasukkan array $dataApp dan $backlog ke array $arrayData
+                array_push($arrayData, $dataApp, $backlog);
+
+                $excel->sheet($arrayData[0][0]['nama'], function($sheet) use ($arrayData) {
+                    $row = 1;
+                    $sheet->row($row, [
+                        'Nama Backlog',
+                        'Waktu Dibuat',
+                        'Demo',
+                        'Catatan'
+                    ]);
+                    for ($u = 0; $u < count($arrayData[1]); $u++) {   
+                        $sheet->row(++$row, [
+                            $arrayData[1][$u]['nama_backlog'],
+                            $arrayData[1][$u]['created_at'],
+                            $arrayData[1][$u]['demo'],
+                            // Menyaring tag html
+                            strip_tags($arrayData[1][$u]['catatan'])
+                        ]);
+                    }
+                });
+            }
+        })->export('xls');
+        */
     }
 }
