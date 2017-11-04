@@ -1,0 +1,1 @@
+<a href="{{ $detail }}" class="btn btn-xs btn-primary">Detail</a>
