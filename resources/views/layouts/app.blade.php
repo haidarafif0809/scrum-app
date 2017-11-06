@@ -10,6 +10,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 // }
 // $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
 // print_r($_SERVER);
+// echo $requestURI; 
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +90,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
      </ul>
    </li>
    @endrole
-   <li<?=(preg_match("/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
+   <li<?=(preg_match("/^\/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
    <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
