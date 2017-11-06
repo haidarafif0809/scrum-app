@@ -1,14 +1,14 @@
 <?php
-$httpHost = @$_SERVER['HTTP_HOST'];
-$https = @$_SERVER['HTTPS'];
+// $httpHost = @$_SERVER['HTTP_HOST'];
+// $https = @$_SERVER['HTTPS'];
 $requestURI = @$_SERVER['REQUEST_URI'];
 
-if ($httpHost == 'localhost') {
-  $pathApp = explode('/', $_SERVER['PHP_SELF']);
-  $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
-  
-}
-$url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
+// if ($httpHost == 'localhost') {
+//   $pathApp = explode('/', $_SERVER['PHP_SELF']);
+//   $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
+
+// }
+// $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
 // print_r($_SERVER);
 ?> 
 <!DOCTYPE html>
@@ -29,8 +29,9 @@ $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($ht
   <!-- Styles -->
 
   <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
+  <link href="{{ asset('css/detail.css') }}" rel="stylesheet"> 
   <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
-  <link href="<?=$url;?>css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
+  <link href="./css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">

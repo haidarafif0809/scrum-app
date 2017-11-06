@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  
 class Sprint extends Model 
 { 
-   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id'];
+   	protected $fillable = ['kode_sprint', 'nama_sprint', 'tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id', 'nilai_sp', 'goal'];
    
 
     public function team() {

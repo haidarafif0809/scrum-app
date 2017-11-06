@@ -127,7 +127,7 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'sprintbacklogs.create_sprintbacklog', 
 		'uses' => 'SprintbacklogsController@create_sprintbacklog'
 	]);
-	Route::get('/sprintbacklogs/assign', [
+	Route::get('/sprintbacklogs/assign/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'sprintbacklogs.assign', 
 		'uses' => 'SprintbacklogsController@assign'
@@ -154,7 +154,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('template/sprintbacklogs', [
 		'as' => 'template.sprintbacklogs',
-		'uses' => 'SprintbacklogsController@generateExcelTemplate']);
+		'uses' => 'SprintbacklogsController@generateExcelTemplate'
+	]);
 	
 	Route::post('import/sprintbacklogs', [
 		'as' => 'import.sprintbacklogs',
@@ -166,20 +167,22 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
 
-Route::get('/sprintbacklogs/sb/detail_sb', [
-	'as' => 'sprintbacklogs.detail_sb',
-	'uses' => 'SprintbacklogsController@detailSb'
+Route::get('/sprints/sd/detail_sd', [
+	'as' => 'sprints.detail_sd',
+	'uses' => 'SprintsController@detailSd'
 ]);
 
 Route::get('/', function () {
 	return view('welcome');
 });
-Route::get('/anu', function () {
-	return view('anu');
+Route::get('/about', function () {
+	return view('about');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/testing/sprintbacklog', 'SprintbacklogsController@testing');
 Route::get('/settings/password', 'SettingsController@editPassword');
 Route::post('/settings/password', 'SettingsController@updatePassword');
+

@@ -16,15 +16,15 @@
 					<h2 class="panel-title">List Backlog <b>{{ $aplikasi->nama }} :</b></h2>
 				</div>
 				<div class="panel-body">
-					<table class="table table-condensed table-striped">
-						
-						@foreach ($listBacklog as $backlog) 
-						<ul>
-							<li>
-								{{ $backlog->nama_backlog }}
-							</li>
-						</ul>
-						@endforeach
+					<table class="table table-condensed table-striped">		
+						<div class="ulli">
+							<ul>
+								@foreach ($listBacklog as $backlog)
+								<li>
+									{{ $backlog->nama_backlog }}
+								</li>@endforeach
+							</ul>
+						</div>
 						@if ($listBacklog->count() == 0)
 						<h4 >"<strong>{{$aplikasi->nama}}</strong>" belum memiliki backlog!.</h4>
 						@endif

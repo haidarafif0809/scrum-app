@@ -13,8 +13,7 @@
         "barryvdh/laravel-debugbar": "^2.4",
         "laravelcollective/html": "^5.5",
         "maatwebsite/excel": "^2.1",
-        "yajra/laravel-datatables-buttons": "^3.0",
-        "renatomarinho/laravel-page-speed": "^1.8"
+        "yajra/laravel-datatables-buttons": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -22,8 +21,8 @@
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*",
-        "laravel/dusk": "^2.0",
-        "filp/whoops": "^2.1"
+        "filp/whoops": "^2.1",
+        "laravel/dusk": "^2.0"
     },
     "autoload": {
         "classmap": [
