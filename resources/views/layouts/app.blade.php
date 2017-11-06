@@ -11,6 +11,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 // $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
 // print_r($_SERVER);
 // echo $requestURI; 
+// echo $url;
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +33,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
   <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
   <link href="{{ asset('css/detail.css') }}" rel="stylesheet"> 
   <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
-  <link href="./css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
+  <link href="{{ asset('') }}css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
