@@ -22,7 +22,8 @@
 								@foreach ($listBacklog as $backlog)
 								<li>
 									{{ $backlog->nama_backlog }}
-								</li>@endforeach
+								</li>
+								@endforeach
 							</ul>
 						</div>
 						@if ($listBacklog->count() == 0)

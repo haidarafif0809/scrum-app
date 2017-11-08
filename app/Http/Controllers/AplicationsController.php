@@ -31,6 +31,7 @@ class AplicationsController extends Controller
            ->addColumn('action', function($aplications){
                return view('datatable._action', [
                 'model'    => $aplications,
+                'id_aplikasi'    => $aplications->id,
                 'form_url' => route('aplikasi.destroy', $aplications->id),
                 'edit_url' => route('aplikasi.edit', $aplications->id),
                 'confirm_message' => 'Yakin mau menghapus '."$aplications->nama.?"
