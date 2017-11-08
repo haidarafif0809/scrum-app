@@ -3,7 +3,6 @@
 @section('content')
 <div class="container">
     <ul class="breadcrumb">
-        <li><a href="{{ url('/sprints') }}" class="btn btn-primary btn-xs">Kembali</a></li>
         <li><a href="{{ url('/home') }}">Dashboard</a></li>
         <li><a href="{{ url('/sprints') }}">Sprint</a></li>
         <li class="active">Detail Sprint</li>
