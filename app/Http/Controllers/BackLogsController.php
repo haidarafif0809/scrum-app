@@ -12,6 +12,9 @@ use App\Aplication;
 use Session;
 use Excel;
 use Auth;
+use Validator;
+use App\User;
+use DB;
 
 class BackLogsController extends Controller
 {
@@ -33,20 +36,20 @@ class BackLogsController extends Controller
             ->addColumn('nama_backlog', function($backlog) {
                 return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
 
-// })->addColumn('no_urut', function($backlog) {
-// return view('datatable._noUrut', [
-//     'angka' => $backlog->getKolomAttribute()
-// ]);
-// return $backlog->getKolomAttribute();
+            // })->addColumn('no_urut', function($backlog) {
+            // return view('datatable._noUrut', [
+            //     'angka' => $backlog->getKolomAttribute()
+            // ]);
+            // return $backlog->getKolomAttribute();
 
             })->make(true);
         }
         $html = $htmlBuilder
-// ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
+        // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
         ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
         ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
-// ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
-// ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
+        // ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
+        // ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
         ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
     }
@@ -189,10 +192,19 @@ class BackLogsController extends Controller
     }
     public function exportAll() {
         // $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
-        $aplikasi = Aplication::select('id')->count();
-
+        $jumlahAplikasi = Aplication::select('id')->count();
+        $aplikasi = Aplication::all();
+        $aplikasi = json_decode($aplikasi, true);
+        $arrayIdApp = [];
+        for ($i = 0; $i < $jumlahAplikasi; $i++) {
+            array_push($arrayIdApp, $aplikasi[$i]['id']);
+        }
+        // echo "<pre>";
+        // echo print_r($arrayIdApp);
+        // echo "</pre>";
         /*
-        $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
+        */
+        $aplikasi = Aplication::whereIn('id', $arrayIdApp)->get();
         Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($aplikasi) {
             $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
 
@@ -235,6 +247,163 @@ class BackLogsController extends Controller
                 });
             }
         })->export('xls');
-        */
+    }
+    public function generateExcelTemplate() {
+        Excel::create('Template Import Backlog', function($excel) {
+        // Set the properties
+            $excel->setTitle('Template Import Backlog')
+            ->setCreator('Aplikasi Scrum')
+            ->setCompany('Aplikasi Scrum')
+            ->setDescription('Template import Backlog untuk Aplikasi Scrum');
+            $excel->sheet('Data Backlog', function($sheet) {
+                $row = 1;
+                $sheet->row($row, [
+                    'Nama Aplikasi',
+                    'Nama Backlog',
+                    'Demo',
+                    'Catatan'
+                ]);
+            });
+        })->export('xlsx');
+    }
+    public function importExcel(Request $request) {
+        // validasi untuk memastikan file yang diupload adalah excel
+        $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
+        // ambil file yang baru diupload
+        $excel = $request->file('excel');
+        // baca sheet pertama
+        $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
+            // options, jika ada
+        })->get();
+        // rule untuk validasi setiap row pada file excel
+        $rowRules = [
+            'Nama Aplikasi' => 'required',
+            'Nama Backlog' => 'required',
+            'Demo' => '',
+            'Catatan' => ''
+        ];
+        // looping setiap baris, mulai dari baris ke 2 (karena baris ke 1 adalah nama kolom)
+        foreach ($excels as $row) {
+            // Membuat validasi untuk row di excel
+            // Disini kita ubah baris yang sedang di proses menjadi array
+            $validator = Validator::make($row->toArray(), $rowRules);
+            // buat backlog baru
+
+            $namaAplikasi = Aplication::select('nama')->get();
+            $namaAplikasi2 = json_decode($namaAplikasi, true);
+            $idAplikasi = Aplication::select('id')->get();
+            $idAplikasi = json_decode($idAplikasi, true);
+            $importNamaAplikasi = strtolower($row['nama_aplikasi']);
+
+            $arrayDataAplikasi = [];
+            array_push($arrayDataAplikasi, $namaAplikasi2, $idAplikasi);
+            // $arrayNamaDanIdAplikasi = [];
+            $arr = [];
+
+            for ($i = 0; $i < count($arrayDataAplikasi[1]); $i++) {
+                $arr[$arrayDataAplikasi[0][$i]['nama']] = $arrayDataAplikasi[1][$i]['id'];
+            }
+
+            $arr = array_change_key_case($arr, CASE_LOWER);
+
+            $arrayNamaAplikasi = [];
+            foreach ($namaAplikasi as $namaApp) {
+                array_push($arrayNamaAplikasi, $namaApp->nama);
+            }
+            $arrayNamaAplikasi = array_map('strtolower', $arrayNamaAplikasi);
+            if (in_array($importNamaAplikasi, $arrayNamaAplikasi)) {
+
+
+                // $aplikasi = Aplication::select('id')->where))
+                $backlog = Backlog::create([
+                    'aplikasi_id' => $arr[$importNamaAplikasi],
+                    'nama_backlog' => $row['nama_backlog'],
+                    'demo' => $row['demo'],
+                    'catatan' => $row['catatan']
+                ]);
+            }
+            else {
+                $aplikasi = Aplication::create([
+                    'nama' => $row['nama_aplikasi']
+                ]);
+
+                $idAplikasiTerbaru = DB::table('aplications')->orderBy('id', 'desc')->limit(1)->first();
+
+                $backlog = Backlog::create([
+                    'aplikasi_id' => $idAplikasiTerbaru->id,
+                    'nama_backlog' => $row['nama_backlog'],
+                    'demo' => $row['demo'],
+                    'catatan' => $row['catatan']
+                ]);
+                
+            }
+            // Catat semua id buku baru
+            // ID ini kita butuhkan untuk menghitung total buku yang berhasil diimport
+            $backlogs_id = [];
+            // catat id dari buku yang baru dibuat
+            array_push($backlogs_id, $backlog->id_backlog);
+        }
+        // Ambil semua buku yang baru dibuat
+        $backlogs = Backlog::whereIn('id_backlog', $backlogs_id)->get();
+        // redirect ke form jika tidak ada buku yang berhasil diimport
+        if ($backlogs->count() == 0) {
+            Session::flash("flash_notification", [
+                "level" => "danger",
+                "message" => "Tidak ada Backlog yang berhasil diimport."
+            ]);
+            return redirect()->back();
+        }
+        // set feedback
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil mengimport " . $backlogs->count() . " Backlog."
+        ]);
+        // Tampilkan index buku
+        return redirect()->route('backlog.index');
+    }
+    public function tes() {
+        // $ar = ['Aku', 'kamu'];
+        // if (in_array('kamu', $ar)) {
+        //     echo "nilai ada";
+        // }
+        // else {
+        //     echo "nilai tidak ada";
+        // }
+        $namaAplikasi = Aplication::select('nama')->get();
+        $namaAplikasi = json_decode($namaAplikasi, true);
+        $idAplikasi = Aplication::select('id')->get();
+        $idAplikasi = json_decode($idAplikasi, true);
+        // print_r($namaAplikasi);
+        $arrayNamaAplikasi = [];
+        // foreach ($namaAplikasi as $namaApp) {
+        //     array_push($arrayNamaAplikasi, $namaApp->nama);
+        // }
+        array_push($arrayNamaAplikasi, $namaAplikasi, $idAplikasi);
+        // foreach($arrayNamaAplikasi as $b) {
+        // print_r($arrayNamaAplikasi);
+        $arr = [];
+        // foreach ($arrayNamaAplikasi[0] as $ar) {
+        //     array_push($arr, $ar['nama']);
+        // }
+        // $aaa = [];
+        for ($i = 0; $i < count($arrayNamaAplikasi[1]); $i++) {
+            $arr[$arrayNamaAplikasi[0][$i]['nama']] = $arrayNamaAplikasi[1][$i]['id'];
+        }
+
+
+        // array_push($aaa, $arr);
+        // $anu = ['a', 'b', 'c'];
+        // $anu['a'] = 1;
+        //     // echo $b[0][0]['nama'];
+        // }
+        // $arrayNamaAplikasi = array_map('strtolower', $arrayNamaAplikasi);
+        // $arr['Aplikasi Absen Siswa'] = 1;
+        $arr = array_change_key_case($arr, CASE_LOWER);
+
+        // echo "<pre>";
+        // print_r($arr);
+        // echo "</pre>";
+        $idne = DB::table('aplications')->orderBy('id', 'desc')->limit(1)->first();
+        echo $idne->id;
     }
 }
