@@ -105,6 +105,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'import.aplikasi',
 		'uses' => 'AplicationsController@importExcel'
 	]);
+	Route::get('export/backlog', [
+		'as' => 'export.backlog',
+		'uses' => 'BackLogsController@export'
+	]);
+	Route::get('export/backlog_all', [
+		'as' => 'export.backlog.all',
+		'uses' => 'BackLogsController@exportAll'
+	]);
 });
 
 
@@ -113,10 +121,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('backlog', 'BackLogsController');
 	Route::resource('sprints', 'SprintsController'); 
 	Route::resource('sprintbacklogs', 'SprintbacklogsController');
-	Route::get('export/backlog', [
-		'as' => 'export.backlog',
-		'uses' => 'BackLogsController@export'
-	]);
 	Route::get('/sprintbacklogs/create/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'sprintbacklogs.create_sprintbacklog', 
