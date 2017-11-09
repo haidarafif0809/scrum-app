@@ -21,47 +21,46 @@ class TeamTest extends DuskTestCase
             $first->loginAs(User::find(1))
             ->visit('/admin/teams')
             ->clickLink("Tambah")
-            ->type('kode_team', '3')
-            ->type('nama_team', 'team tester')
+            ->type('kode_team', '3555')
+            ->type('nama_team', 'team3')
             ->press('.btn-primary')
-            ->assertSee('Berhasil menyimpan team tester');
+            ->assertSee('Berhasil menyimpan team3');
         });
     }
 
     public function testEditTeam(){
-        $this->browse(function($first){
-            $first->loginAs(User::find(1))
-            ->visit('/admin/teams')
-            ->whenAvailable('.js-confirm', function ($table){
-                ;
-            })
-            ->with('.table-striped',function($table){
-                $table->assertSee("1")
-                ->press('.btn-primary');
-            })
-            ->assertSee('Ubah Team')
-            ->type('kode_team', '2')
-            ->type('nama_team', 'team tester baru')
-            ->press('.btn-primary')
-            ->assertSee('Berhasil Mengedit team tester baru');
-        });
-    }
+      $team = Team::select('id')->orderBy('id','DESC')->first();
+
+      $this->browse(function($first)use($team){
+        $first->whenAvailable('.js-confirm', function ($table){
+            ;
+        })
+        ->with('.table-striped',function($table)use($team){
+            $table->assertSee("team3")
+            ->press('#btnEdit-'.$team->id);
+        })
+        ->assertSee('Ubah Team')
+        ->type('kode_team', '44442')
+        ->type('nama_team', 'team4')
+        ->press('Simpan')
+        ->assertSee('Berhasil Mengedit team4');
+    });
+  }
 
 
-    public function testHapusTeam(){
-      $team = Team::select('id')->where('kode_team','team tester baru')->first();
-      $this->browse(function ($first) use ($team) {
-        $first->loginAs(User::find(1))
-        ->visit('/admin/teams')
-        ->whenAvailable('.js-confirm', function ($table) {
+  public function testHapusTeam(){
+    $team = Team::select(['id','nama_team'])->orderBy('id','DESC')->first();
+    $this->browse(function ($first) use ($team) {
+        $first->whenAvailable('.js-confirm', function ($table) {
           ;
       })
-        ->with('.table-striped', function ($table){
-            $table->press('.btn-danger')
-            ->assertDialogOpened('Apakah anda yakin akan menghapus team tester baru?');
-        })->driver->switchTo()->alert()->accept();
+        ->with('.table-striped', function ($table)use($team){
+          $table->assertSee(''.$team->nama_team.'')
+          ->press('#btnHapus-'.$team->id)
+          ->assertDialogOpened('Apakah anda yakin akan menghapus team4?');
+      })->driver->switchTo()->alert()->accept();
         $first->assertSee('Team berhasil dihapus'); 
 
     });
-  }
+}
 }

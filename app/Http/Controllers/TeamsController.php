@@ -27,8 +27,9 @@ class TeamsController extends Controller
         })
 
         ->addColumn('action', function($team){
-            return view('datatable._action', [
+            return view('datatable._action_team', [
                 'model' => $team,
+                'id_team' => $team->id,
                 'form_url' => route('teams.destroy', $team->id),
                 'edit_url' => route('teams.edit', $team->id),
                 'confirm_message' => 'Apakah anda yakin akan menghapus ' . $team->nama_team . '?'
