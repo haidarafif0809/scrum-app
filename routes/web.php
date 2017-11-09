@@ -105,6 +105,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'import.aplikasi',
 		'uses' => 'AplicationsController@importExcel'
 	]);
+	Route::post('import/backlog', [
+		'as' => 'import.backlog',
+		'uses' => 'BacklogsController@importExcel'
+	]);
+	Route::get('template/backlog', [
+		'as' => 'template.backlog',
+		'uses' => 'BacklogsController@generateExcelTemplate'
+	]);
 	Route::get('export/backlog', [
 		'as' => 'export.backlog',
 		'uses' => 'BackLogsController@export'
