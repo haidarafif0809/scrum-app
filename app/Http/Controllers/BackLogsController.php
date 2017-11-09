@@ -324,7 +324,7 @@ class BackLogsController extends Controller
             }
             else {
                 $aplikasi = Aplication::create([
-                    'nama' => $row['nama_aplikasi']
+                    'nama' => ucwords($row['nama_aplikasi'])
                 ]);
 
                 $idAplikasiTerbaru = DB::table('aplications')->orderBy('id', 'desc')->limit(1)->first();
