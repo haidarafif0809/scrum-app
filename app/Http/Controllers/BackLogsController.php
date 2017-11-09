@@ -287,48 +287,73 @@ class BackLogsController extends Controller
             // Membuat validasi untuk row di excel
             // Disini kita ubah baris yang sedang di proses menjadi array
             $validator = Validator::make($row->toArray(), $rowRules);
-            // buat backlog baru
 
+            // Mengambil data nama dari master data aplikasi
             $namaAplikasi = Aplication::select('nama')->get();
+            // Men-decode data
             $namaAplikasi2 = json_decode($namaAplikasi, true);
+            // Mengambil data id dari master data aplikasi
             $idAplikasi = Aplication::select('id')->get();
+            // Men-decode data
             $idAplikasi = json_decode($idAplikasi, true);
+            // Membuat nama menjadi huruf kecil semua
             $importNamaAplikasi = strtolower($row['nama_aplikasi']);
 
+            // Membuat variable array kosong
             $arrayDataAplikasi = [];
+            // Memasukkan variable $namaAplikasi2 dan $idAplikasi
+            // ke variable array kosong $arrayDataAplikasi
             array_push($arrayDataAplikasi, $namaAplikasi2, $idAplikasi);
-            // $arrayNamaDanIdAplikasi = [];
-            $arr = [];
 
+            // Membuat variable array kosong
+            // untuk menampung array data aplikasi "nama aplikasi => id aplikasi"
+            $arrNamaIdAplikasi = [];
+
+            // Mengisi variable array $arrNamaIdAplikasi dengan nama aplikasi sebagai index
+            // dan id aplikasi sebagai value
             for ($i = 0; $i < count($arrayDataAplikasi[1]); $i++) {
-                $arr[$arrayDataAplikasi[0][$i]['nama']] = $arrayDataAplikasi[1][$i]['id'];
+                $arrNamaIdAplikasi[$arrayDataAplikasi[0][$i]['nama']] = $arrayDataAplikasi[1][$i]['id'];
             }
 
-            $arr = array_change_key_case($arr, CASE_LOWER);
+            // Mengubah semua key (nama aplikasi) menjadi huruf kecil
+            $arrNamaIdAplikasi = array_change_key_case($arrNamaIdAplikasi, CASE_LOWER);
 
+            // Membuat variable array kosong untuk menampung nama aplikasi
             $arrayNamaAplikasi = [];
+            // Memasukkan data nama aplikasi ke variable $arrayNamaAplikasi
             foreach ($namaAplikasi as $namaApp) {
                 array_push($arrayNamaAplikasi, $namaApp->nama);
             }
+            // Membuat value dari $arrayNamaAplikasi menjadi huruf kecil semua
             $arrayNamaAplikasi = array_map('strtolower', $arrayNamaAplikasi);
+
+            // Mengecek apakah nilai dari variable $importNamaAplikasi ada atau tidak
+            // pada didalam array $arrayNamaAplikasi
             if (in_array($importNamaAplikasi, $arrayNamaAplikasi)) {
 
-
-                // $aplikasi = Aplication::select('id')->where))
+                // Membuat backlog baru
                 $backlog = Backlog::create([
-                    'aplikasi_id' => $arr[$importNamaAplikasi],
+                    // Mengambil id aplikasi dari array berdasarkan nama aplikasi yang user masukkan
+                    // pada file excel
+                    'aplikasi_id' => $arrNamaIdAplikasi[$importNamaAplikasi],
                     'nama_backlog' => $row['nama_backlog'],
                     'demo' => $row['demo'],
                     'catatan' => $row['catatan']
                 ]);
             }
+            // Proses jika nama aplikasi yang user masukkan belum ada
             else {
+
+                // Membuat aplikasi baru
                 $aplikasi = Aplication::create([
+                    // Membuat setiap kata pada nama aplikasi menggunakan huruf kapital
                     'nama' => ucwords($row['nama_aplikasi'])
                 ]);
 
+                // Mengambil id terbaru dari master data aplikasi
                 $idAplikasiTerbaru = DB::table('aplications')->orderBy('id', 'desc')->limit(1)->first();
 
+                // Membuat backlog baru
                 $backlog = Backlog::create([
                     'aplikasi_id' => $idAplikasiTerbaru->id,
                     'nama_backlog' => $row['nama_backlog'],
@@ -337,15 +362,15 @@ class BackLogsController extends Controller
                 ]);
                 
             }
-            // Catat semua id buku baru
-            // ID ini kita butuhkan untuk menghitung total buku yang berhasil diimport
+            // Catat semua id backlog baru
+            // ID ini kita butuhkan untuk menghitung total backlog yang berhasil diimport
             $backlogs_id = [];
-            // catat id dari buku yang baru dibuat
+            // catat id dari backlog yang baru dibuat
             array_push($backlogs_id, $backlog->id_backlog);
         }
-        // Ambil semua buku yang baru dibuat
+        // Ambil semua backlog yang baru dibuat
         $backlogs = Backlog::whereIn('id_backlog', $backlogs_id)->get();
-        // redirect ke form jika tidak ada buku yang berhasil diimport
+        // redirect ke form jika tidak ada backlog yang berhasil diimport
         if ($backlogs->count() == 0) {
             Session::flash("flash_notification", [
                 "level" => "danger",
@@ -353,12 +378,12 @@ class BackLogsController extends Controller
             ]);
             return redirect()->back();
         }
-        // set feedback
+        // set alert
         Session::flash("flash_notification", [
             "level" => "success",
             "message" => "Berhasil mengimport " . $backlogs->count() . " Backlog."
         ]);
-        // Tampilkan index buku
+        // Tampilkan index backlog
         return redirect()->route('backlog.index');
     }
     public function tes() {
