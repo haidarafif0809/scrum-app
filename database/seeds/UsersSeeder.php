@@ -31,7 +31,7 @@ class UsersSeeder extends Seeder
         $admin->attachRole($adminRole);
 
         // membuat sample member
-		$member = new User;
+        $member = new User;
         $member->name = 'Member Aplikasi Scrum';
         $member->email = 'member@gmail.com';
         $member->password = 'rahasiaku';

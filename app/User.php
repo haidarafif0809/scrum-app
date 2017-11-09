@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'otoritas', 'is_verified', 'team_id',
+        'name', 'email', 'password', 'otoritas', 'is_verified', 'team_id', 'jml_assign', 'jml_finish',
     ];
 
     /**
@@ -38,7 +38,7 @@ class User extends Authenticatable
 
     // mengambil data roleUser dari model RoleUser (Proses Relasi)
     // berdasarkan foreign key User->'id', reference 'RoleUser'('role_id')
-   public function roleUser()
+    public function roleUser()
     {
         return $this->belongsTo('App\RoleUser', 'id','user_id');
     }
