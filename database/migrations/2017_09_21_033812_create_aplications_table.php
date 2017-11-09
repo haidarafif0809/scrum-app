@@ -15,7 +15,7 @@ class CreateAplicationsTable extends Migration
     {
         Schema::create('aplications', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('kode');
+            $table->string('kode')->nullable();
             $table->string('nama');
             $table->integer('created_by')->nullable()->index();
             $table->integer('updated_by')->nullable()->index();

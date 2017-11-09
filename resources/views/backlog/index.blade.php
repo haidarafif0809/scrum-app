@@ -18,7 +18,7 @@
 					<p> 
 						<a class="btn btn-primary" href="{{ route('backlog.create') }}">Tambah</a>
 						<a class="btn btn-primary" href="{{ route('export.backlog') }}">Export</a>
-						<a class="btn btn-primary" href="{{ route('export.backlog') }}">Export Semua</a>
+						<a class="btn btn-primary" href="{{ route('export.backlog.all') }}">Export Semua</a>
 					</p>
 					{!! $html->table(['class'=>'table-striped']) !!}
 				</div>

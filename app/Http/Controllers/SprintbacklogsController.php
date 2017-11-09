@@ -146,48 +146,20 @@ class SprintbacklogsController extends Controller
                 ]);   
             })    
             ->escapeColumns([])
-            ->addColumn('assign', function($request) { 
-                $sprintBacklog = Sprintbacklog::where('id_sprint', $request->id_sprint)->first();
-                $sb = json_decode($sprintBacklog, true);
-                // for ($i = 0; $i < count($sb); $i++) {
-                /**/
-                // if ($sb[$i]['assign'] != 0) {
-                $arr = [];
-                foreach ($sb as $b) {
-                    array_push($arr, $b[0]);
-                }
-                // print_r($arr);
-                for ($i = 0; $i < count($arr); $i++) {
+            ->addColumn('assign', function($sprint) { 
+                
 
-                    if ($arr[$i] == 0) {
-                        continue;
-                    }
-                    else if ($arr[$i] != 0) {
-                        $dataUser = User::find($arr[$i])->first();
-                        $namaUser = $dataUser->name;
-                    }
-
-                }
-                // else {
-                // $namaUser = false;
-                // }
-                // }
-                // foreach ($sprintBacklog as $sb) {   
-                // }
-
-
-                // if ($sprintBacklog->assign == 0) {
-                //     $namaUser = 0;
-                // }
-                // else {
-                //     $namaUser = $user->name;
-                // }
+                $sprintBacklog = Sprintbacklog::select(['assign', 'assign_user_id'])->where('id_sprint', $sprint->id)->get();
+                $user = User::find($sprintBacklog->assign_user_id)->first();
+                $namaUser = $user->name;
 
                 return view('datatable._assign', [ 
-                    'assignUrl' => route('sprintbacklogs.assign', $request->id),
+                    'assignUrl' => route('sprintbacklogs.assign', $sprint->id),
                     'namaUser' => $namaUser,
-                    'assign' => $arr
+                    'assign' => $sprintBacklog->assign
                 ]); 
+
+
             })
             // ->addColumn('finish', function($sprint) { 
             //     return view('datatable._finish', [ 
@@ -220,15 +192,15 @@ class SprintbacklogsController extends Controller
     
     public function update(Request $request, $id) 
     { 
-     $this->validate($request, [
+       $this->validate($request, [
         'id_backlog' => 'required|exists:backlogs,id_backlog',
         'isi_kepentingan' => 'required',
         'perkiraan_waktu' => 'required'
     ]);
-     $angka = $request->perkiraan_waktu;
-     $sliceAngka = explode(',', trim($angka));
-     $array_angka = [];
-     foreach ($sliceAngka as $num) {
+       $angka = $request->perkiraan_waktu;
+       $sliceAngka = explode(',', trim($angka));
+       $array_angka = [];
+       foreach ($sliceAngka as $num) {
         array_push($array_angka, $num);
     }
     $hasil = array_sum($array_angka);
@@ -368,60 +340,60 @@ public function importExcel(Request $request) {
 
            //rule untuk validasi setiap row pada file excel
     $rowRules = [
-       'id_sprint' => 'required',
-       'id_backlog' => 'required|exists:backlogs,id_backlog',
-       'isi_kepentingan' => 'required',
-       'perkiraan_waktu' => 'required'
-   ];
+     'id_sprint' => 'required',
+     'id_backlog' => 'required|exists:backlogs,id_backlog',
+     'isi_kepentingan' => 'required',
+     'perkiraan_waktu' => 'required'
+ ];
 
            //Catat semua id team baru
             //ID ini kita butuhkan untuk menghitung total team yang berhasil di import
-   $sprintbacklogs_id = [''];
+ $sprintbacklogs_id = [''];
 
            //looping setiap baris ,mulai dari baris ke 2 (karena baris ke 1 adlah nama kolom )
-   foreach ($excels as $row) {
+ foreach ($excels as $row) {
               //membuat validasi untuk row di excel
               //Dsini kita ubah baris yang sedang di proses menjadi array
-      $validator = Validator::make($row->toArray(),$rowRules);
+  $validator = Validator::make($row->toArray(),$rowRules);
 
              //Skip baris ini jadi tidak valid , langsung ke baris selajutnya
-      if ($validator->fails()) continue;
+  if ($validator->fails()) continue;
 
              //buat team baru
-      $sprintbacklog = Sprintbacklog::create([
-        'id_sprint' => $row['id_sprint'],
-        'id_backlog' => $row['id_backlog'],
-        'isi_kepentingan' => $row['isi_kepentingan'],
-        'perkiraan_waktu' => $row['perkiraan_waktu'],
+  $sprintbacklog = Sprintbacklog::create([
+    'id_sprint' => $row['id_sprint'],
+    'id_backlog' => $row['id_backlog'],
+    'isi_kepentingan' => $row['isi_kepentingan'],
+    'perkiraan_waktu' => $row['perkiraan_waktu'],
 
-    ]);
+]);
 
              //catat id dari team yang baru dibuat
-      array_push($sprintbacklogs_id, $sprintbacklog->id);
+  array_push($sprintbacklogs_id, $sprintbacklog->id);
 
-  }
+}
 
            //ambil semua team yang baru dibuat
-  $sprintbacklogs = Sprintbacklog::whereIn('id',$sprintbacklogs_id)->get();
+$sprintbacklogs = Sprintbacklog::whereIn('id',$sprintbacklogs_id)->get();
 
            //redirect ke form jika tidak ada team yang berhasil di import
-  if($sprintbacklogs->count() == 0){
-      Session::flash('flash_notification',[
-        'level' =>'danger',
-        'message'=>'Tidak ada Team yang diimport'
+if($sprintbacklogs->count() == 0){
+  Session::flash('flash_notification',[
+    'level' =>'danger',
+    'message'=>'Tidak ada Team yang diimport'
 
-    ]);
-      return redirect()->back();
-  }
+]);
+  return redirect()->back();
+}
 
            //set feedback
-  Session::flash('flash_notification',[
+Session::flash('flash_notification',[
     'level' =>'success',
     'message'=>"Berhasil mengimport ".$sprintbacklogs->count()." Team"
 
 ]);
 
            //Tampilkan index team
-  return redirect()->route('sprintbacklogs.index');
+return redirect()->route('sprintbacklogs.index');
 }
 }
