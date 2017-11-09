@@ -282,6 +282,9 @@ class BackLogsController extends Controller
             'Demo' => '',
             'Catatan' => ''
         ];
+        // Catat semua id backlog baru
+        // ID ini kita butuhkan untuk menghitung total backlog yang berhasil diimport
+        $backlogs_id = [];
         // looping setiap baris, mulai dari baris ke 2 (karena baris ke 1 adalah nama kolom)
         foreach ($excels as $row) {
             // Membuat validasi untuk row di excel
@@ -340,13 +343,15 @@ class BackLogsController extends Controller
                     'demo' => $row['demo'],
                     'catatan' => $row['catatan']
                 ]);
+                // catat id dari backlog yang baru dibuat
+                array_push($backlogs_id, $backlog->id_backlog);
             }
             // Proses jika nama aplikasi yang user masukkan belum ada
             else {
 
                 // Membuat aplikasi baru
                 $aplikasi = Aplication::create([
-                    // Membuat setiap kata pada nama aplikasi menggunakan huruf kapital
+                    // Membuat setiap awal kata pada nama aplikasi menggunakan huruf kapital
                     'nama' => ucwords($row['nama_aplikasi'])
                 ]);
 
@@ -361,12 +366,9 @@ class BackLogsController extends Controller
                     'catatan' => $row['catatan']
                 ]);
                 
+                // catat id dari backlog yang baru dibuat
+                array_push($backlogs_id, $backlog->id_backlog);
             }
-            // Catat semua id backlog baru
-            // ID ini kita butuhkan untuk menghitung total backlog yang berhasil diimport
-            $backlogs_id = [];
-            // catat id dari backlog yang baru dibuat
-            array_push($backlogs_id, $backlog->id_backlog);
         }
         // Ambil semua backlog yang baru dibuat
         $backlogs = Backlog::whereIn('id_backlog', $backlogs_id)->get();
@@ -378,7 +380,7 @@ class BackLogsController extends Controller
             ]);
             return redirect()->back();
         }
-        // set alert
+        // Membuat alert
         Session::flash("flash_notification", [
             "level" => "success",
             "message" => "Berhasil mengimport " . $backlogs->count() . " Backlog."
