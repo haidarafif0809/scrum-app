@@ -29,14 +29,14 @@ class AplicationsController extends Controller
             return '<a href="'.route('aplikasi.show', $aplication->id).'">'.$aplication->nama.'</a>';
         })
            ->addColumn('action', function($aplications){
-               return view('datatable._action', [
+            return view('datatable._action_aplikasi', [
                 'model'    => $aplications,
-                'id_aplikasi'    => $aplications->id,
+                'id_aplikasi' => $aplications->id,
                 'form_url' => route('aplikasi.destroy', $aplications->id),
                 'edit_url' => route('aplikasi.edit', $aplications->id),
                 'confirm_message' => 'Yakin mau menghapus '."$aplications->nama.?"
             ]);
-           })->make(true);
+        })->make(true);
        }
        $html = $htmlBuilder
        ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
