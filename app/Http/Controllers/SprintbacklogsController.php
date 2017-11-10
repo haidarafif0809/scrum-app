@@ -128,6 +128,7 @@ class SprintbacklogsController extends Controller
                 ]); 
 
 
+
             })
             // ->addColumn('finish', function($sprint) { 
             //     return view('datatable._finish', [ 
@@ -165,219 +166,220 @@ class SprintbacklogsController extends Controller
     
     public function update(Request $request, $id) 
     { 
-     $this->validate($request, [
-        'id_backlog' => 'required|exists:backlogs,id_backlog',
-        'isi_kepentingan' => 'required',
-        'perkiraan_waktu' => 'required'
-    ]);
-     $angka = $request->perkiraan_waktu;
-     $sliceAngka = explode(',', trim($angka));
-     $array_angka = [];
-     foreach ($sliceAngka as $num) {
-        array_push($array_angka, $num);
+        $this->validate($request, [
+            'id_backlog' => 'required|exists:backlogs,id_backlog',
+            'isi_kepentingan' => 'required',
+            'perkiraan_waktu' => 'required'
+        ]);
+        $angka = $request->perkiraan_waktu;
+        $sliceAngka = explode(',', trim($angka));
+        $array_angka = [];
+
+        foreach ($sliceAngka as $num) {
+            array_push($array_angka, $num);
+        }
+        $hasil = array_sum($array_angka);
+        $hasil = $hasil / count($sliceAngka);
+        $sprintbacklog = Sprintbacklog::find($id); 
+        $sprintbacklog->update([
+            'id_sprint' => $request->id_sprint,
+            'id_backlog' => $request->id_backlog,
+            'isi_kepentingan' => $request->isi_kepentingan,
+            'perkiraan_waktu' => $hasil
+        ]);
+        Session::flash("flash_notification", [ 
+            "level"=>"success", 
+            "message"=>"Berhasil menyimpan data" 
+        ]); 
+
+        return redirect()->route('sprintbacklogs.show',['sprint'=>$request->id_sprint])->with(compact('sprints'));  
     }
-    $hasil = array_sum($array_angka);
-    $hasil = $hasil / count($sliceAngka);
-    $sprintbacklog = Sprintbacklog::find($id); 
-    $sprintbacklog->update([
-        'id_sprint' => $request->id_sprint,
-        'id_backlog' => $request->id_backlog,
-        'isi_kepentingan' => $request->isi_kepentingan,
-        'perkiraan_waktu' => $hasil
-    ]);
-    Session::flash("flash_notification", [ 
-        "level"=>"success", 
-        "message"=>"Berhasil menyimpan data" 
-    ]); 
 
-    return redirect()->route('sprintbacklogs.show',['sprint'=>$request->id_sprint])->with(compact('sprints'));  
-}
+    public function destroy(Request $request, $id) 
+    { 
+        $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
+        Sprintbacklog::destroy($id); 
+        Session::flash("flash_notification", [ 
+            "level" => "success", 
+            "message" => "Data Berhasil Di Hapus" 
+        ]); 
+        return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
+    } 
 
-public function destroy(Request $request, $id) 
-{ 
-    $sprintbacklogs = Sprintbacklog::select('id_sprint')->where('id', $id)->first();
-    Sprintbacklog::destroy($id); 
-    Session::flash("flash_notification", [ 
-        "level" => "success", 
-        "message" => "Data Berhasil Di Hapus" 
-    ]); 
-    return redirect()->route('sprintbacklogs.show',['sprint'=>$sprintbacklogs->id_sprint]); 
-} 
+    public function assign($id) 
+    {
+        $sprintbacklog = Sprintbacklog::find($id);
+        $backlog = Backlog::find($sprintbacklog->id_backlog);
+        $sprintbacklog->update([
+            'assign' => 1,
+            'assign_user_id' => Auth::user()->id
+        ]);
+        Session::flash("flash_notification", [ 
+            'level'=>'success', 
+            'message'=>'Backlog "'. $backlog->nama_backlog .'" berhasil di-assign' 
+        ]); 
+        return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
+    } 
 
-public function assign($id) 
-{
-    $sprintbacklog = Sprintbacklog::find($id);
-    $backlog = Backlog::find($sprintbacklog->id_backlog);
-    $sprintbacklog->update([
-        'assign' => 1,
-        'assign_user_id' => Auth::user()->id
-    ]);
-    Session::flash("flash_notification", [ 
-        'level'=>'success', 
-        'message'=>'Backlog "'. $backlog->nama_backlog .'" berhasil di-assign' 
-    ]); 
-    return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
-} 
+    public function unassign($id) {
+        $sprintbacklog = Sprintbacklog::find($id);
+        $backlog = Backlog::find($sprintbacklog->id_backlog);
+        $sprintbacklog->update([
+            'assign' => 0,
+            'assign_user_id' => 0
+        ]);
+        Session::flash("flash_notification", [ 
+            'level'=>'success', 
+            'message'=>'Backlog "'. $backlog->nama_backlog .'" berhasil di-unassign' 
+        ]); 
+        return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
+        
+    }
 
-public function unassign($id) {
-    $sprintbacklog = Sprintbacklog::find($id);
-    $backlog = Backlog::find($sprintbacklog->id_backlog);
-    $sprintbacklog->update([
-        'assign' => 0,
-        'assign_user_id' => 0
-    ]);
-    Session::flash("flash_notification", [ 
-        'level'=>'success', 
-        'message'=>'Backlog "'. $backlog->nama_backlog .'" berhasil di-unassign' 
-    ]); 
-    return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
-    
-}
+    public function finish()
+    { 
 
-public function finish()
-{ 
+    }
 
-}
-
-public function export($id) {
-    return view('sprintbacklogs.export',['sprint'=>$id]);
-}
-public function exportPost(Request $request)
-{
+    public function export($id) {
+        return view('sprintbacklogs.export',['sprint'=>$id]);
+    }
+    public function exportPost(Request $request)
+    {
         // validasi
-    $this->validate($request, [
-        'id_backlog'=>'required',
-    ], [
-        'id_backlog.required'=>'Anda belum memilih data. Pilih minimal 1 data.'
-    ]);
-    $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_backlog', $request->id_backlog)->where('id_sprint', $request->id_sprint)->get();
-    Excel::create('Data Di Sprintbacklog', function($excel) use ($sprintbacklogs) {
+        $this->validate($request, [
+            'id_backlog'=>'required',
+        ], [
+            'id_backlog.required'=>'Anda belum memilih data. Pilih minimal 1 data.'
+        ]);
+        $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_backlog', $request->id_backlog)->where('id_sprint', $request->id_sprint)->get();
+        Excel::create('Data Di Sprintbacklog', function($excel) use ($sprintbacklogs) {
 
             // Set property
-        $excel->setTitle('Data Sprintbacklog')
-        ->setCreator(Auth::user()->name);
-        $excel->sheet('Data Sprintbacklog', function($sheet) use ($sprintbacklogs) {
-            $row = 1;
-            $sheet->row($row, [
-                'Nama Backlog',
-                'Isi Kepentingan',
-                'Perkiraan Waktu'
-            ]);
-
-            foreach ($sprintbacklogs as $sprintbacklog) {
-                $sheet->row(++$row, [
-                    $sprintbacklog->backlog->nama_backlog,
-                    $sprintbacklog->isi_kepentingan,
-                    $sprintbacklog->perkiraan_waktu
+            $excel->setTitle('Data Sprintbacklog')
+            ->setCreator(Auth::user()->name);
+            $excel->sheet('Data Sprintbacklog', function($sheet) use ($sprintbacklogs) {
+                $row = 1;
+                $sheet->row($row, [
+                    'Nama Backlog',
+                    'Isi Kepentingan',
+                    'Perkiraan Waktu'
                 ]);
-            }
-        });
-    })->export('xls');
-}
 
-public function exportAllPost($id) {
+                foreach ($sprintbacklogs as $sprintbacklog) {
+                    $sheet->row(++$row, [
+                        $sprintbacklog->backlog->nama_backlog,
+                        $sprintbacklog->isi_kepentingan,
+                        $sprintbacklog->perkiraan_waktu
+                    ]);
+                }
+            });
+        })->export('xls');
+    }
+
+    public function exportAllPost($id) {
             // DB::enableQueryLog();
-    $Sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id)->get();
+        $Sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id)->get();
             // dd(DB::getQueryLog());
             // exit;
-    Excel::create('Data Sprintbacklog', function($excel) use ($Sprintbacklogs) {
+        Excel::create('Data Sprintbacklog', function($excel) use ($Sprintbacklogs) {
             // Set property
-        $excel->setTitle('Data Sprintbacklog')
-        ->setCreator(Auth::user()->name);
-        $excel->sheet('Data Sprintbacklog', function($sheet) use ($Sprintbacklogs) {
-            $row = 1;
-            $sheet->row($row, [
-                'Nama Backlog',
-                'Isi Kepentingan',
-                'Perkiraan Waktu',
-            ]);
-            foreach ($Sprintbacklogs as $sprintbacklog) {
-                $sheet->row(++$row, [
-                    $sprintbacklog->backlog->nama_backlog,
-                    $sprintbacklog->isi_kepentingan,
-                    $sprintbacklog->perkiraan_waktu,
+            $excel->setTitle('Data Sprintbacklog')
+            ->setCreator(Auth::user()->name);
+            $excel->sheet('Data Sprintbacklog', function($sheet) use ($Sprintbacklogs) {
+                $row = 1;
+                $sheet->row($row, [
+                    'Nama Backlog',
+                    'Isi Kepentingan',
+                    'Perkiraan Waktu',
                 ]);
-            }
-        });
-    })->export('xls');
-    
-}
+                foreach ($Sprintbacklogs as $sprintbacklog) {
+                    $sheet->row(++$row, [
+                        $sprintbacklog->backlog->nama_backlog,
+                        $sprintbacklog->isi_kepentingan,
+                        $sprintbacklog->perkiraan_waktu,
+                    ]);
+                }
+            });
+        })->export('xls');
+        
+    }
 
-public function generateExcelTemplate()
-{
-    Excel::create('Template Import Sprintbacklog', function($excel) {
+    public function generateExcelTemplate()
+    {
+        Excel::create('Template Import Sprintbacklog', function($excel) {
         // Set the properties
-        $excel->setTitle('Template Import Sprintbacklog')
-        ->setCreator('Sprintbacklog')
-        ->setCompany('Sprintbacklog')
-        ->setDescription('Template import data di Sprintbacklog');
-        $excel->sheet('Data Sprintbacklog', function($sheet) {
-            $row = 1;
-            $sheet->row($row, [
-                'ID Sprint',
-                'Nama Backlog',
-                'Isi Kepentingan',
-                'Perkiraan Waktu'
-            ]);
-        });
-    })->export('xlsx');
-}
+            $excel->setTitle('Template Import Sprintbacklog')
+            ->setCreator('Sprintbacklog')
+            ->setCompany('Sprintbacklog')
+            ->setDescription('Template import data di Sprintbacklog');
+            $excel->sheet('Data Sprintbacklog', function($sheet) {
+                $row = 1;
+                $sheet->row($row, [
+                    'ID Sprint',
+                    'Nama Backlog',
+                    'Isi Kepentingan',
+                    'Perkiraan Waktu'
+                ]);
+            });
+        })->export('xlsx');
+    }
 
-public function importExcel(Request $request) {
+    public function importExcel(Request $request) {
         // validasi untuk memastikan file yang diupload adalah excel
-    $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
+        $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
         // ambil file yang baru diupload
-    $excel = $request->file('excel');
+        $excel = $request->file('excel');
         // baca sheet pertama
-    $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
+        $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
         // options, jika ada
-    })->get();
+        })->get();
         // rule untuk validasi setiap row pada file excel
-    $rowRules = [
-        'ID Sprint',
-        'Nama Backlog',
-        'Isi Kepentingan' => 'required',
-        'Perkiraan Waktu' => 'required',
-    ];
+        $rowRules = [
+            'ID Sprint',
+            'Nama Backlog',
+            'Isi Kepentingan' => 'required',
+            'Perkiraan Waktu' => 'required',
+        ];
         // Catat semua id sprintbacklog
         // ID ini kita butuhkan untuk menghitung yang berhasil diimport
-    $sprintbacklogs_id = [];
+        $sprintbacklogs_id = [];
             // looping setiap baris, mulai dari baris ke 2 (karena baris ke 1 adalah nama kolom)
-    foreach ($excels as $row) {
+        foreach ($excels as $row) {
             // Membuat validasi untuk row di excel
             // Disini kita ubah baris yang sedang di proses menjadi array
-        $validator = Validator::make($row->toArray(), $rowRules);
+            $validator = Validator::make($row->toArray(), $rowRules);
             // buat sprintbacklog baru
-        $sprintbacklog = Sprintbacklog::create([
-            'id_sprint' => $row['id_sprint'],
-            'id_backlog' => $row['nama_backlog'],
-            'isi_kepentingan' => $row['isi_kepentingan'],
-            'perkiraan_waktu' => $row['perkiraan_waktu']
-        ]);
+            $sprintbacklog = Sprintbacklog::create([
+                'id_sprint' => $row['id_sprint'],
+                'id_backlog' => $row['nama_backlog'],
+                'isi_kepentingan' => $row['isi_kepentingan'],
+                'perkiraan_waktu' => $row['perkiraan_waktu']
+            ]);
 
             // $backlog = Backlog::create([
 
             //     'id_backlog' => $sprintbacklog->id,
             // ]);
             // catat id dari sprintbacklog yang baru dibuat
-        array_push($sprintbacklogs_id, $sprintbacklog->id);
-    }
+            array_push($sprintbacklogs_id, $sprintbacklog->id);
+        }
         // Ambil semua spritnbacklog yang baru dibuat
-    $sprintbacklogs = Sprintbacklog::whereIn('id', $sprintbacklogs_id)->get();
+        $sprintbacklogs = Sprintbacklog::whereIn('id', $sprintbacklogs_id)->get();
         // redirect ke form jika tidak data sprintbacklog yang berhasil diimport
-    if ($sprintbacklogs->count() == 0) {
-        Session::flash("flash_notification", [
-            "level" => "danger",
-            "message" => "Tidak ada buku yang berhasil diimport."
-        ]);
-        return redirect()->back();
-    }
+        if ($sprintbacklogs->count() == 0) {
+            Session::flash("flash_notification", [
+                "level" => "danger",
+                "message" => "Tidak ada buku yang berhasil diimport."
+            ]);
+            return redirect()->back();
+        }
         // set feedback
-    Session::flash("flash_notification", [
-        "level" => "success",
-        "message" => "Berhasil mengimport "
-    ]);
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil mengimport "
+        ]);
         // Tampilkan index sprintbacklog
-    return redirect()->route('sprintbacklogs.show', $row['id_sprint']);
-}
+        return redirect()->route('sprintbacklogs.show', $row['id_sprint']);
+    }
 }
