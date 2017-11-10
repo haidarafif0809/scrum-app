@@ -144,11 +144,16 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'sprintbacklogs.assign', 
 		'uses' => 'SprintbacklogsController@assign'
 	]);
+	Route::get('/sprintbacklogs/unassign/{id}', [
+		'middleware' => ['auth'], 
+		'as' => 'sprintbacklogs.unassign', 
+		'uses' => 'SprintbacklogsController@unassign'
+	]);
 	Route::get('/sprintbacklogs/finish/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'sprintbacklogs.finish', 
 		'uses' => 'SprintbacklogsController@finish'
-]);
+	]);
 	Route::post('export/backlog', [
 		'as' => 'export.backlog.post',
 		'uses' => 'BacklogsController@exportPost'
