@@ -1,23 +1,22 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
-@section('title', 'Tambah Sprint Backlog')
- 
-@section('content') 
-  <div class="container"> 
-    <div class="row"> 
-      <div class="col-md-12"> 
-        <ul class="breadcrumb"> 
-          <li><a href="{{ url('/home') }}">Dashboard</a></li> 
-          <li><a href="{{ url('/sprintbacklogs') }}">Sprint Backlog</a></li> 
-          <li class="active">Tambah Sprint Backlog</li> 
-        </ul> 
-         
-        <div class="panel panel-default"> 
-          <div class="panel-heading"> 
-            <h2 class="panel-title">Tambah Sprint Backlog</h2> 
-          </div> 
-         
-         <div class="panel-body">
+@section('title', 'Tambah Sprintbacklog')
+
+@section('content')
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="breadcrumb">
+        <li><a href="{{ url('/home') }}">Dashboard</a></li>
+        <li><a href="{{ url('/sprintbacklogs' , $sprint) }}">Sprintbacklog</a></li>
+        <li class="active">Tambah Sprintbacklog</li>
+      </ul>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">Tambah Sprintbacklog</h2>
+        </div>
+
+        <div class="panel-body">
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
               <a href="#form" aria-controls="form" role="tab" data-toggle="tab">
@@ -39,7 +38,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="upload">
-              {!! Form::open(['url' => route('import.sprintbacklogs'),
+              {!! Form::open(['url' => route('import.sprintbacklogs',$sprint),
               'method' => 'post', 'files'=>'true', 'class'=>'form-horizontal']) !!}
               @include('sprintbacklogs._import')
               {!! Form::close() !!}

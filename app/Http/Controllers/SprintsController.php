@@ -37,11 +37,10 @@ class SprintsController extends Controller
             })->make(true); 
         } 
         
-
         $html = $htmlBuilder 
-       // ->addColumn(['data' => 'durasi', 'name' =>  'durasi', 'title' =>  'Durasi']) 
-        //->addColumn(['data' => 'waktu_mulai', 'name' =>  'waktu_mulai', 'title' =>  'Waktu Mulai']) 
-        //->addColumn(['data' => 'nilai_sp', 'name' =>'nilai_sp', 'title'   =>'Nilai SP']) 
+        // ->addColumn(['data' => 'durasi', 'name' =>  'durasi', 'title' =>  'Durasi']) 
+        // ->addColumn(['data' => 'waktu_mulai', 'name' =>  'waktu_mulai', 'title' =>  'Waktu Mulai']) 
+        // ->addColumn(['data' => 'nilai_sp', 'name' =>'nilai_sp', 'title'   =>'Nilai SP']) 
         ->addColumn(['data' => 'tanggal_mulai', 'name' =>  'tanggal_mulai', 'title' =>  'Tanggal Mulai'])
         ->addColumn(['data' => 'team.nama_team', 'name' => 'team.nama_team', 'title' => 'Teamku'])
         ->addColumn(['data' => 'nama_sprint', 'name' =>'nama_sprint', 'title'   =>'Nama Sprint']) 
@@ -60,6 +59,41 @@ class SprintsController extends Controller
     } 
     
     public function store(Request $request, Sprint $sfrint) 
+    { 
+        $this->validate($request, [ 
+            'tanggal_mulai' => 'required', 
+            'durasi' => 'required',
+            'waktu_mulai' => 'required' , 
+            'team_id' => 'required|exists:teams,id', 
+            'kode_sprint' => 'required|unique:sprints' , 
+            'nama_sprint' => 'required|unique:sprints',
+            'nilai_sp' => 'required',
+            'goal' => 'required'
+
+        ]); 
+
+        // $tanggalMulai = $request->tanggal_mulai;
+        // $tanggalMulai = explode("-", $tanggalMulai);
+        // $tanggalMulai = $tanggalMulai[2] .'-'. $tanggalMulai[1] .'-'. $tanggalMulai[0];
+
+        $sprint = Sprint::create([
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'durasi' => $request->durasi,
+            'waktu_mulai' => $request->waktu_mulai,
+            'team_id' => $request->team_id,
+            'kode_sprint' => $request->kode_sprint,
+            'nama_sprint' => $request->nama_sprint,
+            'nilai_sp' => $request->nilai_sp,
+            'goal' => $request->goal
+        ]); 
+        Session::flash("flash_notification", [ 
+            "level" => "success", 
+            "message" => "Berhasil menyimpan Sprint "
+        ]);
+
+        return redirect()->route('sprints.index'); 
+
+    }     public function stores(Request $request, Sprint $sfrint) 
     { 
         $this->validate($request, [ 
             'tanggal_mulai' => 'required', 

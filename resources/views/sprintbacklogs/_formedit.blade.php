@@ -19,7 +19,7 @@
 <div class="form-group{{ $errors->has('perkiraan_waktu') ? ' has-error' : '' }}"> 
   {!! Form::label('perkiraan_waktu', 'Perkiraan Waktu', ['class'=>'col-md-2 control-label']) !!} 
   <div class="col-md-4"> 
-    {!! Form::number('perkiraan_waktu', null, ['class'=>'form-control']) !!} 
+    {!! Form::text('perkiraan_waktu', null, ['class'=>'form-control']) !!} 
     {!! $errors->first('perkiraan_waktu', '<p class="help-block">:message</p>') !!} 
   </div> 
 </div>

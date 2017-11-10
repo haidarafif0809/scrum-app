@@ -6,10 +6,10 @@
 			<div class="col-md-12">
 				<ul class="breadcrumb">
 					<li><a href="{{ url('/home') }}">Dashboard</a></li>
-					<li><a href="{{ url('/sprintbacklogs') }}">Sprintbacklog</a></li>
+					<li><a href="{{ url('/sprintbacklogs' , $sprint) }}">Sprintbacklog</a></li>
 					<li class="active">Export Sprintbacklog</li>
 				</ul>
-
+				
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h2 class="panel-title">Export Sprintbacklog</h2>
@@ -23,7 +23,7 @@
 							{!! Form::label('id_backlog', 'Nama Backlog', ['class'=>'col-md-2 control-label']) !!}
 													
 							<div class="col-md-4">
-								{!! Form::select('id_backlog', [''=>'']+App\Backlog::pluck('nama_backlog','id_backlog')->all(), null, [
+								{!! Form::select('id_backlog', [''=>'']+App\Sprintbacklog::pluck('nama_backlog','id_backlog')->all(), null, [
 									'class'=>'js-selectize-reguler',
 									'multiple',
 									'placeholder' => 'Pilih Backlog']) !!}

@@ -17,15 +17,15 @@
           </div> 
            
           <div class="panel-body"> 
-            <p> <a class="btn btn-primary" href="{{ route('sprints.create') }}">Tambah</a>  
-          {!! $html->table(['class'=>'table-striped']) !!}
+            <p> <a class="btn btn-primary" href="{{ route('sprints.create') }}">Tambah</a> 
+          {!! $html->table(['class'=>'table-striped']) !!} 
         </div> 
       </div> 
     </div> 
   </div> 
 </div> 
 @endsection 
-
+ 
 @section('scripts') 
   {!! $html->scripts() !!} 
 @endsection

@@ -57,8 +57,8 @@ class UsersController extends Controller
                 ]);
             })
             ->addColumn('otoritas', function($member){
-             return $member->roleUser->role->name;
-         })
+               return $member->roleUser->role->name;
+           })
             ->addColumn('team', function($member){
 
                 $teams = TeamUser::where('user_id', $member->id)->get();
@@ -98,8 +98,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-     return view('users.create');
- }
+       return view('users.create');
+   }
 
     /**
      * Store a newly created resource in storage.
@@ -110,7 +110,7 @@ class UsersController extends Controller
     public function store(Request $request)
     {
 
-        // untuk proses tambah user
+
         $this->validate($request, [
             'name' => 'required:users',
             'email' => 'required|unique:users',

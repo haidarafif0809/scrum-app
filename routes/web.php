@@ -144,6 +144,11 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'sprintbacklogs.assign', 
 		'uses' => 'SprintbacklogsController@assign'
 	]);
+	Route::get('/sprintbacklogs/finish/{id}', [
+		'middleware' => ['auth'], 
+		'as' => 'sprintbacklogs.finish', 
+		'uses' => 'SprintbacklogsController@finish'
+]);
 	Route::post('export/backlog', [
 		'as' => 'export.backlog.post',
 		'uses' => 'BacklogsController@exportPost'
@@ -163,13 +168,11 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'exportall.sprintbacklogs.post',
 		'uses' => 'SprintbacklogsController@exportAllPost'
 	]);
-
-	Route::get('template/sprintbacklogs', [
+	Route::get('template/sprintbacklogs/{id}', [
 		'as' => 'template.sprintbacklogs',
 		'uses' => 'SprintbacklogsController@generateExcelTemplate'
 	]);
-	
-	Route::post('import/sprintbacklogs', [
+	Route::post('import/sprintbacklogs/{id}', [
 		'as' => 'import.sprintbacklogs',
 		'uses' => 'SprintbacklogsController@importExcel'
 	]);
@@ -183,6 +186,7 @@ Route::get('/sprints/sd/detail_sd', [
 	'as' => 'sprints.detail_sd',
 	'uses' => 'SprintsController@detailSd'
 ]);
+
 
 Route::get('/', function () {
 	return view('welcome');
