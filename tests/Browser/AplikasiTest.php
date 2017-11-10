@@ -21,24 +21,24 @@ class AplikasiTest extends DuskTestCase
     ->type('nama', 'Aplikasi Browser Test')
     ->press('Simpan')
     ->assertSee('Berhasil Menambahkan Aplikasi Browser Test');
-  });
- }
+});
+}
 
- public function testEditAplikasi()
- {
+public function testEditAplikasi()
+{
   $aplikasi = Aplication::select('id')->orderBy('id','DESC')->first();
 
   $this->browse(function($browser)use($aplikasi){
     $browser->with('.table-striped',function($table)use($aplikasi){
       $table->assertSee("Aplikasi Browser Test")
       ->press('#btnEdit-'.$aplikasi->id);
-    })
+  })
     ->assertSee('Ubah')
     ->type('kode', '22222')
     ->type('nama', 'Aplikasi Browser Test Diedit')
     ->press('Simpan')
     ->assertSee('Berhasil Mengubah Aplikasi Browser Test Diedit');
-  });
+});
 }
 
 public function testHapusAplikasi(){
@@ -47,15 +47,15 @@ public function testHapusAplikasi(){
   $this->browse(function ($first)use($aplikasi){
     $first->whenAvailable('.js-confirm', function ($table) { 
       ;
-    })
+  })
     ->with('.table-striped', function ($table) use($aplikasi){
       $table->assertSee(''.$aplikasi->nama.'')
       ->press('#btnHapus-'.$aplikasi->id)
       ->assertDialogOpened('Yakin mau menghapus '.$aplikasi->nama.'.?');
-    })->driver->switchTo()->alert()->accept();
+  })->driver->switchTo()->alert()->accept();
 
     $first->assertSee('Aplikasi berhasil dihapus');
-  });
+});
 }
 }
 
@@ -80,3 +80,5 @@ public function testHapusAplikasi()
    $browser->assertSee('Aplikasi');
  });
 }*/
+
+
