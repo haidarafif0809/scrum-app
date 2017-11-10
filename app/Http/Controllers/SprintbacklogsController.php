@@ -106,15 +106,20 @@ class SprintbacklogsController extends Controller
                 if ($sprint->assign_user_id != 0) {
                     $user = User::find($sprint->assign_user_id);
                     $namaUser = $user->name;
+                    $idUser = $user->id;
                 }
                 else {
                     $namaUser = "";
+                    $idUser = "";
                 }
 
                 $model = '';
                 $backlog = Backlog::find($sprint->id_backlog);
                 return view('datatable._assign', [
                     'model' => $model,
+                    // ID user yg sedang online
+                    'user_id' => Auth::user()->id,
+                    'idUser' => $idUser,
                     'assignUrl' => route('sprintbacklogs.assign', $sprint->id),
                     'namaUser' => $namaUser,
                     'assign' => $sprint->assign,
