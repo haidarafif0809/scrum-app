@@ -83,6 +83,8 @@ class UsersController extends Controller
         ->addColumn(['data' => 'email', 'name'=>'email', 'title'=>'Email'])
         ->addColumn(['data' => 'team', 'name'=>'team', 'title'=>'Team', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'otoritas', 'name'=>'otoritas', 'title'=>'Otoritas', 'orderable'=>false, 'searchable'=>false])
+        ->addColumn(['data' => 'jml_assign', 'name' => 'jml_assign', 'title' => 'Total Assign'])
+        ->addColumn(['data' => 'jml_finish', 'name' => 'jml_finish', 'title' => 'Total Finish'])
         ->addColumn(['data' => 'konfirmasi', 'name'=>'konfirmasi', 'title'=>'Konfirmasi', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 're_pass', 'name'=>'re_pass', 'title'=>'Reset password', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
@@ -244,15 +246,19 @@ class UsersController extends Controller
         $user = User::find($id);
         $password = 'rahasiaku';
         if ($user->password == true) {
-            $user->update(['password' => $password]);
+            $user->update([
+                'password' => $password
+            ]);
         }
         return redirect()->route('users.index');
     }
 
-    // untuk proses export berdasarkan id
+    // proses export berdasarkan id
     public function export() {
         return view('users.export');
     }
+
+    // proses export 
     public function exportPost(Request $request) {
         // validasi
         $this->validate($request, [
@@ -376,3 +382,4 @@ class UsersController extends Controller
 
     }
 }
+
