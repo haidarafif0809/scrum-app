@@ -30,7 +30,8 @@ abstract class DuskTestCase extends BaseTestCase
     protected function driver()
     {
         $options = (new ChromeOptions)->addArguments([
-            '--disable-gpu'
+            '--disable-gpu',
+            
         ]);
 
         return RemoteWebDriver::create(
