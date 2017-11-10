@@ -22,21 +22,33 @@ class BacklogTest extends DuskTestCase
     //     });
     // }
     public function testTambahBacklog() {
-        $this->browse(function ($first, $second){
-
+        $this->browse(function ($first) {
             $first->loginAs(User::find(1))
             ->visit('/backlog')
-            ->clickLink('Tambah');
-            
+            ->clickLink("Tambah");
             $first->script("document.getElementById('aplikasi_id').selectize.setValue('1');");
-            $first->assertSee('Aplikasi Absen Siswa')
-            ->type('nama_backlog', 'Backlog Testing')
+            $first->type('nama_backlog', 'Backlog Testing')
             ->type('demo', 'Testing demo untuk backlog testing')
             ->type('catatan', 'Testing catatan untuk backlog testing')
-            ->pause(1000);
-
-            $first->press('Simpan')
-            ->assertSee('Berhasil menyimpan "Backlog Testing" !');
+            ->pause(1000)
+            ->press('.btn-primary')
+            ->assertSee('Berhasil menyimpan team3');
         });
+        // $this->browse(function ($first, $second){
+
+        //     $first->loginAs(User::find(1))
+        //     ->visit('/backlog')
+        //     ->clickLink('Tambah');
+        
+        //     $first->script("document.getElementById('aplikasi_id').selectize.setValue('1');");
+        //     $first->assertSee('Aplikasi Absen Siswa')
+        //     ->type('nama_backlog', 'Backlog Testing')
+        //     ->type('demo', 'Testing demo untuk backlog testing')
+        //     ->type('catatan', 'Testing catatan untuk backlog testing')
+        //     ->pause(1000);
+
+        //     $first->press('Simpan')
+        //     ->assertSee('Berhasil menyimpan "Backlog Testing" !');
+        // });
     }
 }
