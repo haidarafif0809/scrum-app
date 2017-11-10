@@ -127,7 +127,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
  <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
  @else
  <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
    {{ Auth::user()->name }} <span class="caret"></span>
  </a>
 
