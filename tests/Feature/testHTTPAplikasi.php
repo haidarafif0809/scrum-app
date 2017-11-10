@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 use App\Aplication;
-class testHTTPAplikasi extends TestCase
+class TestHTTPAplikasi extends TestCase
 {
 	use DatabaseTransactions;
     /**u
