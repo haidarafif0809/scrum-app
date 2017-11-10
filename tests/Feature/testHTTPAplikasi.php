@@ -49,11 +49,11 @@ class TestHTTPAplikasi extends TestCase
      //PROSES EDIT BANK
     public function testAplikasiUpdate(){
 
-     $aplikasiku = Aplication::create(["nama" => "AplikasiTest", "kode" => "05"]);
+     $aplikasi = Aplication::create(["nama" => "AplikasiTest", "kode" => "05"]);
         //login user -> admin
      $user = User::find(1);
 
-     $response = $this->actingAs($user)->json('POST', route('aplikasi.update',$aplikasiku->id), ['_method' => 'PUT','nama' => 'AplikasiHttp', 'kode' => '05']);
+     $response = $this->actingAs($user)->json('POST', route('aplikasi.update',$aplikasi->id), ['_method' => 'PUT','nama' => 'AplikasiHttp', 'kode' => '05']);
 
      $response->assertStatus(302)
      ->assertRedirect(route('aplikasi.index'));
@@ -63,12 +63,12 @@ class TestHTTPAplikasi extends TestCase
    }
    //HAPUS BANK
    public function testAplikasiHapus(){
-    $aplikasiku = Aplication::create(["nama" => "AplikasiHttp", "kode" => "05"]);
+    $aplikasi = Aplication::create(["nama" => "AplikasiHttp", "kode" => "05"]);
 
        //login user -> admin
     $user = User::find(1);
 
-    $response = $this->actingAs($user)->json('POST', route('aplikasi.destroy',$aplikasiku->id), ['_method' => 'DELETE']);
+    $response = $this->actingAs($user)->json('POST', route('aplikasi.destroy',$aplikasi->id), ['_method' => 'DELETE']);
 
     $response->assertStatus(302)
     ->assertRedirect(route('aplikasi.index'));
