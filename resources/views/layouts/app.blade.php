@@ -32,6 +32,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 
   <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
   <link href="{{ asset('css/detail.css') }}" rel="stylesheet"> 
+  <link href="{{ asset('css/about.css') }}" rel="stylesheet"> 
   <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
   <link href="{{ asset('') }}css/bootstrap<?=(isset($_COOKIE['tema']) && $_COOKIE['tema'] != 'default' ? '-'. $_COOKIE['tema'] : '.min');?>.css" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
@@ -159,6 +160,28 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 @yield('content')
 </div>
 
+<!-- footer -->
+<footer class="text-center">
+  <a class="up-arrow" id="back-to-top" href="#" data-toggle="tooltip" title="TO TOP">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a><br><br>
+  <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id">Andaglos Global Teknologi</a></p> 
+</footer>
+<script>            
+  $(window).scroll(function() {
+    if($(this).scrollTop() &gt; 200) {
+      $(&#39;#back-to-top&#39;).fadeIn();
+    } else {
+      $(&#39;#back-to-top&#39;).fadeOut();
+    }
+  });
+
+  $(&#39;#back-to-top&#39;).hide().click(function() {
+    $(&#39;html, body&#39;).animate({scrollTop:0}, 1000);
+    return false;
+  });
+</script>
+<!-- akhir footer -->
 <!-- Scripts -->
 
 <!-- <script src="{{ asset('js/app.js') }}"></script> -->

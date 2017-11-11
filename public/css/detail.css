@@ -50,3 +50,11 @@
 .ulli ul li span:hover{
 	background:#f9f9f9;
 }
+footer {
+	background-color: #2d2d30;
+	color: #f5f5f5;
+	padding: 32px;
+}
+footer a:hover{
+	text-decoration: none;
+}
