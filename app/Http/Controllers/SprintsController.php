@@ -23,7 +23,7 @@ class SprintsController extends Controller
                 ]); 
             })
             ->addColumn('action', function($sprint) { 
-                return view('datatable._action', [ 
+                return view('datatable._action_sprint', [ 
                     'model' => $sprint, 
                     'form_url' => route('sprints.destroy', $sprint->id), 
                     'edit_url'=>route('sprints.edit', $sprint->id), 
