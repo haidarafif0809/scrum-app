@@ -84,8 +84,7 @@ class SprintbacklogsController extends Controller
         return redirect()->route('sprintbacklogs.show',$request->id_sprint); 
     } 
     public function testing() {
-        $jumlahAssign = Sprintbacklog::where('assign_user_id', 1)->count();
-        echo $jumlahAssign;
+        echo now();
     }
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
@@ -115,7 +114,7 @@ class SprintbacklogsController extends Controller
 
                 $model = '';
                 $backlog = Backlog::find($sprint->id_backlog);
-                return view('datatable._assign', [
+                return view('datatable._assign_sprintbacklog', [
                     'model' => $model,
                     // ID user yg sedang online
                     'user_id' => Auth::user()->id,
@@ -141,6 +140,14 @@ class SprintbacklogsController extends Controller
             // //     ]); 
             // // })
             ->escapeColumns([])
+            ->addColumn('finish', function($sprint) {
+
+
+                return view('datatable._finish_sprintbacklog', [
+                    'assign' => $sprint->assign,
+                    'finishUrl' => route('sprintbacklogs.finish', $sprint->id)
+                ]);
+            })
 
             ->addColumn('detail', function($backlog) {
                 return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';      
@@ -152,6 +159,7 @@ class SprintbacklogsController extends Controller
         ->addColumn(['data' => 'isi_kepentingan', 'name'=>'isi_kepentingan', 'title'=>'Isi Kepentingan']) 
         ->addColumn(['data' => 'perkiraan_waktu', 'name'=>'perkiraan_waktu', 'title'=>'Perkiraan Waktu']) 
         ->addColumn(['data' => 'assign', 'name'=>'assign', 'title'=>'Assign', 'orderable'=>false, 'searchable'=>false]) 
+        ->addColumn(['data' => 'finish', 'name'=>'finish', 'title'=>'Finish', 'orderable'=>false, 'searchable'=>false]) 
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
         
         return view('sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
@@ -212,7 +220,8 @@ class SprintbacklogsController extends Controller
         $backlog = Backlog::find($sprintbacklog->id_backlog);
         $sprintbacklog->update([
             'assign' => 1,
-            'assign_user_id' => Auth::user()->id
+            'assign_user_id' => Auth::user()->id,
+            'waktu_mulai' => $time
         ]);
         Session::flash("flash_notification", [ 
             'level'=>'success', 
@@ -226,7 +235,8 @@ class SprintbacklogsController extends Controller
         $backlog = Backlog::find($sprintbacklog->id_backlog);
         $sprintbacklog->update([
             'assign' => 0,
-            'assign_user_id' => 0
+            'assign_user_id' => 0,
+            'waktu_mulai' => ''
         ]);
         Session::flash("flash_notification", [ 
             'level'=>'success', 
