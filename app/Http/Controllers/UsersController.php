@@ -34,8 +34,9 @@ class UsersController extends Controller
             ->escapeColumns([])
         // ->addColumn($member->role_user->role)
             ->addColumn('action', function($member){
-                return view('datatable._action', [
+                return view('datatable._action_user', [
                     'model' => $member,
+                    'id_member' => $member->id,
                     'form_url' => route('users.destroy', $member->id),
                     'edit_url' => route('users.edit', $member->id),
                     'confirm_message' => 'Yakin akan menghapus ' . $member->name . ' ?'
@@ -130,7 +131,7 @@ class UsersController extends Controller
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"<p>Berhasil menyimpan user " . $user->name . "</p>"
+            "message"=>"Berhasil menyimpan user $user->name"
         ]);
         return redirect()->route('users.index');
 
