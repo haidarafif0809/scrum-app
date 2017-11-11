@@ -84,7 +84,20 @@ class SprintbacklogsController extends Controller
         return redirect()->route('sprintbacklogs.show',$request->id_sprint); 
     } 
     public function testing() {
-        echo now();
+        $sb = Sprintbacklog::find(1); 
+        // echo ceil(time());
+        $mulai = $sb->waktu_mulai;
+        $finish = $sb->waktu_finish;
+        $waktunya = $finish - $mulai;
+        echo waktuFinishSprintBacklog($mulai, $finish);
+        // echo (ceil(($finish - $mulai) / 201600) - 1);
+        // echo ceil(1767068 / 28800) - 1 ." hari";
+        // echo "<br>";
+        // echo ceil(1767068 / 201600) - 1 . " minggu";
+        // echo "<br>";
+        // echo ceil(1767068 / 864000) - 1 ." bulan";
+        // echo $waktunya;
+        // echo ceil((201600 / 28800) - 1);
     }
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
@@ -142,9 +155,13 @@ class SprintbacklogsController extends Controller
             ->escapeColumns([])
             ->addColumn('finish', function($sprint) {
 
+                $waktu_mulai = $sprint->waktu_mulai;
+                $waktu_finish = $sprint->waktu_finish;
 
                 return view('datatable._finish_sprintbacklog', [
                     'assign' => $sprint->assign,
+                    'finish' => $sprint->finish,
+                    'waktu_selesai' => $sprint->waktuFinishSprintBacklog($waktu_mulai, $waktu_finish),
                     'finishUrl' => route('sprintbacklogs.finish', $sprint->id)
                 ]);
             })
@@ -161,7 +178,7 @@ class SprintbacklogsController extends Controller
         ->addColumn(['data' => 'assign', 'name'=>'assign', 'title'=>'Assign', 'orderable'=>false, 'searchable'=>false]) 
         ->addColumn(['data' => 'finish', 'name'=>'finish', 'title'=>'Finish', 'orderable'=>false, 'searchable'=>false]) 
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
-        
+
         return view('sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
     }
 
@@ -171,7 +188,7 @@ class SprintbacklogsController extends Controller
         $sprintbacklog = Sprintbacklog::find($id); 
         return view('sprintbacklogs.edit')->with(compact('sprintbacklog')); 
     } 
-    
+
     public function update(Request $request, $id) 
     { 
         $this->validate($request, [
@@ -221,7 +238,7 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update([
             'assign' => 1,
             'assign_user_id' => Auth::user()->id,
-            'waktu_mulai' => $time
+            'waktu_mulai' => time()
         ]);
         Session::flash("flash_notification", [ 
             'level'=>'success', 
@@ -236,19 +253,29 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update([
             'assign' => 0,
             'assign_user_id' => 0,
-            'waktu_mulai' => ''
+            'waktu_mulai' => 0
         ]);
         Session::flash("flash_notification", [ 
             'level'=>'success', 
             'message'=>'Backlog "'. $backlog->nama_backlog .'" berhasil di-unassign' 
         ]); 
         return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
-        
+
     }
 
-    public function finish()
+    public function finish($id)
     { 
-
+        $sprintbacklog = Sprintbacklog::find($id);
+        $backlog = Backlog::find($sprintbacklog->id_backlog);
+        $sprintbacklog->update([
+            'finish' => 1,
+            'waktu_finish' => time()
+        ]);
+        Session::flash("flash_notification", [ 
+            'level'=>'success', 
+            'message'=>'Backlog "'. $backlog->nama_backlog .'" telah selesai' 
+        ]); 
+        return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
     }
 
     public function export($id) {
@@ -312,7 +339,7 @@ class SprintbacklogsController extends Controller
                 }
             });
         })->export('xls');
-        
+
     }
 
     public function generateExcelTemplate()

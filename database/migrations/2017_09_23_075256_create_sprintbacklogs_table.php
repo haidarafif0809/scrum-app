@@ -16,7 +16,10 @@ class CreateSprintbacklogsTable extends Migration
             $table->integer('id_sprint');
             $table->integer('id_backlog');
             $table->integer('assign')->default(0);
+            $table->integer('finish')->default(0);
             $table->integer('assign_user_id')->default(0);
+            $table->integer('waktu_mulai')->default(0);
+            $table->integer('waktu_finish')->default(0);
             $table->integer('created_by')->nullable()->index();
             $table->integer('updated_by')->nullable()->index();
             $table->timestamps(); 
