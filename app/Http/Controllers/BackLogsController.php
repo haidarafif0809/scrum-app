@@ -26,7 +26,7 @@ class BackLogsController extends Controller
             return Datatables::of($backlogs)
             ->escapeColumns([])
             ->addColumn('action', function($backlog) {
-                return view('datatable._action', [
+                return view('datatable._action_backlog', [
                     'model' => $backlog,
                     'form_url' => route('backlog.destroy', $backlog->id_backlog),
                     'edit_url' => route('backlog.edit', $backlog->id_backlog),
