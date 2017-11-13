@@ -85,19 +85,11 @@ class SprintbacklogsController extends Controller
     } 
     public function testing() {
         $sb = Sprintbacklog::find(1); 
-        // echo ceil(time());
-        $mulai = $sb->waktu_mulai;
-        $finish = $sb->waktu_finish;
-        $waktunya = $finish - $mulai;
-        echo waktuFinishSprintBacklog($mulai, $finish);
-        // echo (ceil(($finish - $mulai) / 201600) - 1);
-        // echo ceil(1767068 / 28800) - 1 ." hari";
-        // echo "<br>";
-        // echo ceil(1767068 / 201600) - 1 . " minggu";
-        // echo "<br>";
-        // echo ceil(1767068 / 864000) - 1 ." bulan";
-        // echo $waktunya;
-        // echo ceil((201600 / 28800) - 1);
+        $b = Backlog::all()->first();
+        // $lastday = mktime(0, 0, 0, 3, 0, 2000);
+        // echo $lastday;
+        // echo date('Y-m-d', $lastday);
+        echo $b->translateTextTime(date('D, d M Y \p\u\k\u\l H:i', strtotime($sb->created_at)));
     }
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
@@ -135,6 +127,7 @@ class SprintbacklogsController extends Controller
                     'assignUrl' => route('sprintbacklogs.assign', $sprint->id),
                     'namaUser' => $namaUser,
                     'assign' => $sprint->assign,
+                    'finish' => $sprint->finish,
                     'unAssignUrl' => route('sprintbacklogs.unassign', $sprint->id),
                     'confirm_message' => 'Apakah Anda yakin ingin meng-unassign backlog "'. $backlog->nama_backlog .'" ?'
                 ]); 
