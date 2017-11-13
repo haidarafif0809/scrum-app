@@ -16,19 +16,20 @@
                 <div class="panel-body">
                     <center>
                         <div class="bulet">
-                            4
+                            {{ $jumlah_not_checkout }}
                         </div>
                     </center>
                     <br>
                     <div class="ulli">
                         <ul>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
+                            @foreach($namaBacklogNC as $nbnc)
+                            <li>{{ $nbnc->nama_backlog }}</li>
+                            @endforeach
                         </ul>
                     </div>
+                    @if($dataNotCheckOut->count() == 0)
+                    <center><h3>Tidak Ada Data</h3></center>
+                    @endif
                 </div>
             </div>
         </div>
@@ -41,19 +42,19 @@
                 <div class="panel-body">
                     <center>
                         <div class="bulet">
-                            9
-                        </div>
+                        {{ $jumlah_checkout }}                       </div>
                     </center>
                     <br>
                     <div class="ulli">
                         <ul>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
+                            @foreach($namaBacklogC as $nbc)
+                            <li>{{ $nbc->nama_backlog }}</li>
+                            @endforeach
                         </ul>
                     </div>
+                    @if($dataCheckOut->count() == 0)
+                    <center><h3>Tidak Ada Data</h3></center>
+                    @endif
                 </div>
             </div>
         </div>
@@ -66,19 +67,20 @@
                 <div class="panel-body">
                     <center>
                         <div class="bulet">
-                            54
+                            {{ $jumlah_finish }}
                         </div>
                     </center>
                     <br>
                     <div class="ulli">
                         <ul>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
-                            <li>Contoh Detail Sprint</li>
+                            @foreach($namaBacklogF as $nbf)
+                            <li>{{ $nbf->nama_backlog }}</li>
+                            @endforeach
                         </ul>
                     </div>
+                    @if($dataFinish->count() == 0)
+                    <center><h3>Tidak Ada Data</h3></center>
+                    @endif
                 </div>
             </div>
         </div>
