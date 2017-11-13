@@ -130,12 +130,12 @@ class SprintbacklogsController extends Controller
                 return view('datatable._assign_sprintbacklog', [
                     'model' => $model,
                     // ID user yg sedang online
-                    'user_id' => Auth::user()->id,
+                    'idUserOnline' => Auth::user()->id,
                     'idUser' => $idUser,
                     'assignUrl' => route('sprintbacklogs.assign', $sprint->id),
                     'namaUser' => $namaUser,
                     'assign' => $sprint->assign,
-                    'unassignUrl' => route('sprintbacklogs.unassign', $sprint->id),
+                    'unAssignUrl' => route('sprintbacklogs.unassign', $sprint->id),
                     'confirm_message' => 'Apakah Anda yakin ingin meng-unassign backlog "'. $backlog->nama_backlog .'" ?'
                 ]); 
 
@@ -158,11 +158,25 @@ class SprintbacklogsController extends Controller
                 $waktu_mulai = $sprint->waktu_mulai;
                 $waktu_finish = $sprint->waktu_finish;
 
+                if ($sprint->assign_user_id != 0) {
+                    $idUser = $sprint->assign_user_id;
+                }
+                else {
+                    $idUser = "";
+                }
+
+                $model = '';
+                $backlog = Backlog::find($sprint->id_backlog);
                 return view('datatable._finish_sprintbacklog', [
+                    'model' => $model,
                     'assign' => $sprint->assign,
                     'finish' => $sprint->finish,
+                    'idUserOnline' => Auth::user()->id,
+                    'idUser' => $idUser,
                     'waktu_selesai' => $sprint->waktuFinishSprintBacklog($waktu_mulai, $waktu_finish),
-                    'finishUrl' => route('sprintbacklogs.finish', $sprint->id)
+                    'finishUrl' => route('sprintbacklogs.finish', $sprint->id),
+                    'unFinishUrl' => route('sprintbacklogs.unfinish', $sprint->id),
+                    'confirm_message' => 'Apakah Anda yakin ingin membatalkan finish backlog "'. $backlog->nama_backlog .'" ?'
                 ]);
             })
 
@@ -253,7 +267,9 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update([
             'assign' => 0,
             'assign_user_id' => 0,
-            'waktu_mulai' => 0
+            'waktu_mulai' => 0,
+            'finish' => 0,
+            'waktu_finish' => 0
         ]);
         Session::flash("flash_notification", [ 
             'level'=>'success', 
@@ -276,6 +292,21 @@ class SprintbacklogsController extends Controller
             'message'=>'Backlog "'. $backlog->nama_backlog .'" telah selesai' 
         ]); 
         return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
+    }
+    public function unfinish($id)
+    {
+        $sprintbacklog = Sprintbacklog::find($id);
+        $backlog = Backlog::find($sprintbacklog->id_backlog);
+        $sprintbacklog->update([
+            'finish' => 0,
+            'waktu_finish' => 0
+        ]);
+        Session::flash("flash_notification", [ 
+            'level'=>'success', 
+            'message'=>'Pernyataan selesai Backlog "'. $backlog->nama_backlog .'" berhasil dibatalkan' 
+        ]); 
+        return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]); 
+
     }
 
     public function export($id) {

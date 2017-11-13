@@ -154,6 +154,11 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'sprintbacklogs.finish', 
 		'uses' => 'SprintbacklogsController@finish'
 	]);
+	Route::get('/sprintbacklogs/unfinish/{id}', [
+		'middleware' => ['auth'], 
+		'as' => 'sprintbacklogs.unfinish', 
+		'uses' => 'SprintbacklogsController@unfinish'
+	]);
 	Route::post('export/backlog', [
 		'as' => 'export.backlog.post',
 		'uses' => 'BacklogsController@exportPost'
