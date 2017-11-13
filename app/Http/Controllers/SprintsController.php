@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers; 
 
+use Session; 
+use App\Team; 
+use App\Sprint; 
+use App\Backlog; 
+use App\Sprintbacklog;
 use Illuminate\Http\Request; 
 use Yajra\DataTables\Html\Builder; 
 use Yajra\DataTables\Datatables; 
-use App\Sprint; 
-use Session; 
-use App\Team; 
 
 class SprintsController extends Controller 
 {
@@ -192,6 +194,41 @@ class SprintsController extends Controller
         return redirect()->route('sprints.index'); 
     } 
     public function detailSd(){
-        return view('sprints.detail_sd');
+        //jumlah assign
+        $jumlah_not_checkout = Sprintbacklog::where('assign',0)->count();
+        $jumlah_checkout = Sprintbacklog::where([
+            ['assign', '=', 1],
+            ['finish', '=', 0]
+        ])->count();
+        $jumlah_finish = Sprintbacklog::where('finish',1)->count();
+
+        //list not checkout
+        $dataNotCheckOut = Sprintbacklog::select('id_backlog')->where('assign', 0)->get();
+        $arr = [];
+        foreach ($dataNotCheckOut as $dataNC) {
+            array_push($arr, $dataNC->id_backlog);
+        }
+        $namaBacklogNC = Backlog::whereIn('id_backlog', $arr)->get();
+        
+        //list checkout
+        $dataCheckOut = Sprintbacklog::select('id_backlog')->where([
+            ['assign', '=', 1],
+            ['finish', '=', 0]
+        ])->get();
+        $arr = [];
+        foreach ($dataCheckOut as $dataC) {
+            array_push($arr, $dataC->id_backlog);
+        }
+        $namaBacklogC = Backlog::whereIn('id_backlog', $arr)->get();
+
+        //list finish
+        $dataFinish = Sprintbacklog::select('id_backlog')->where('finish', 1)->get();
+        $arr = [];
+        foreach ($dataFinish as $dataF) {
+            array_push($arr, $dataF->id_backlog);
+        }
+        $namaBacklogF = Backlog::whereIn('id_backlog', $arr)->get();
+
+        return view('sprints.detail_sd',compact('jumlah_not_checkout','jumlah_checkout','jumlah_finish', 'namaBacklogNC','namaBacklogC','namaBacklogF','dataNotCheckOut','dataCheckOut','dataFinish'));
     }
 }

@@ -15,7 +15,7 @@
 				<div class="row">
 					<div class="col-sm-4 layar-kecil">
 						<div class="ih-item circle effect10 top_to_bottom">
-							<a href="https://www.facebook.com/sepko.scout" target="_blank">
+							<a href="https://www.facebook.com/" target="_blank">
 								<div class="img">
 									<img src="https://4.bp.blogspot.com/-8GiQ56vczVw/Wfw7RqDZZ3I/AAAAAAAAAnc/p-6oQT-q99UWIMiJYW2jn8LVtf-ORk4VgCLcBGAs/s1600/sepko.jpg" alt="img">
 								</div>
@@ -45,7 +45,7 @@
 
 					<div class="col-sm-4 layar-kecil">
 						<div class="ih-item circle effect10 top_to_bottom">
-							<a href="#">
+							<a href="https://www.facebook.com/" target="_blank">
 								<div class="img">
 									<img src="https://1.bp.blogspot.com/-7opUkk5rEPc/Wfw58-6Sz4I/AAAAAAAAAnE/5mixPkn6yoMY1v-kXZH2yyJpGl5gPkPYgCLcBGAs/s1600/irul.jpg" alt="img">
 								</div>
@@ -77,7 +77,7 @@
 
 					<div class="col-sm-4 layar-kecil">
 						<div class="ih-item circle effect10 bottom_to_top">
-							<a href="#">
+							<a href="https://www.facebook.com/" target="_blank">
 								<div class="img">
 									<img src="https://3.bp.blogspot.com/-cYy6B2clMTM/Wfw5_d3mKNI/AAAAAAAAAnM/7GUYRM3GbRA9kNJhq7_rKfKYAtQP_2SEACLcBGAs/s1600/anwar.jpg" alt="img">
 								</div>
@@ -92,7 +92,7 @@
 
 					<div class="col-sm-4">
 						<div class="ih-item circle effect10 bottom_to_top">
-							<a href="#">
+							<a href="https://www.facebook.com/" target="_blank">
 								<div class="img">
 									<img src="https://4.bp.blogspot.com/-Mp_w6wHS66E/Wfw5-YongvI/AAAAAAAAAnI/MtJvM6IV0xka0GOjsggOGodEhztTJPIxACLcBGAs/s1600/galang.jpg" alt="img">
 								</div>
