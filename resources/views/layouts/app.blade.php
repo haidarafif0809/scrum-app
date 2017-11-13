@@ -1,17 +1,63 @@
 <?php
-// $httpHost = @$_SERVER['HTTP_HOST'];
-// $https = @$_SERVER['HTTPS'];
 $requestURI = @$_SERVER['REQUEST_URI'];
-
-// if ($httpHost == 'localhost') {
-//   $pathApp = explode('/', $_SERVER['PHP_SELF']);
-//   $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
-
-// }
-// $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
-// print_r($_SERVER);
-// echo $requestURI; 
-// echo $url;
+function ckeditor() {
+  switch ($_COOKIE['tema']) {
+    case 'default':
+    return 'ckeditor_moono_lisa';
+    break;
+    case 'cerulean':
+    return 'ckeditor_kama';
+    break;
+    case 'cosmo':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'cyborg':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'darkly':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'flatly':
+    return 'ckeditor_moono_blue';
+    break;
+    case 'journal':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'lumen':
+    return 'ckeditor_kama';
+    break;
+    case 'paper':
+    return 'ckeditor_flat';
+    break;
+    case 'readable':
+    return 'ckeditor_office_2013';
+    break;
+    case 'sandstone':
+    return 'ckeditor_moono_color';
+    break;
+    case 'simplex':
+    return 'ckeditor_moono';
+    break;
+    case 'slate':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'solar':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'spacelab':
+    return 'ckeditor_office_2013';
+    break;
+    case 'superhero':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'united':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'yeti':
+    return 'ckeditor_moono';
+    break;
+  }
+}
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +104,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
       document.write(title);
     });
   </script>
+  <!-- {{ asset('js') }} -->
   <div id="app">
    <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
@@ -97,24 +144,24 @@ $requestURI = @$_SERVER['REQUEST_URI'];
    <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
     <ul class="dropdown-menu">
-     <li <?=(null == @$_COOKIE['tema'] || @$_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
+     <li <?=(null == $_COOKIE['tema'] || $_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
+     <li <?=($_COOKIE['tema'] == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
+     <li <?=($_COOKIE['tema'] == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
+     <li <?=($_COOKIE['tema'] == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
+     <li <?=($_COOKIE['tema'] == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
+     <li <?=($_COOKIE['tema'] == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
+     <li <?=($_COOKIE['tema'] == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
+     <li <?=($_COOKIE['tema'] == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
+     <li <?=($_COOKIE['tema'] == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
+     <li <?=($_COOKIE['tema'] == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
+     <li <?=($_COOKIE['tema'] == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
+     <li <?=($_COOKIE['tema'] == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
+     <li <?=($_COOKIE['tema'] == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
+     <li <?=($_COOKIE['tema'] == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
+     <li <?=($_COOKIE['tema'] == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
+     <li <?=($_COOKIE['tema'] == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
+     <li <?=($_COOKIE['tema'] == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
+     <li <?=($_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
    </ul>
  </li>
  @endif
@@ -193,7 +240,8 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 <script src="{{ asset('js/selectize.min.js') }}"></script>
 <script src="{{ asset('js/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/jquery-ui-timepicker-addon.min.js') }}"></script>
-<script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+<!-- <script src="{{ asset('js/ckeditor_moono_lisa/ckeditor.js') }}"></script> -->
+<script src="{{ asset('js') }}/<?=ckeditor();?>/ckeditor.js"></script>
 
 @yield('scripts')
 
