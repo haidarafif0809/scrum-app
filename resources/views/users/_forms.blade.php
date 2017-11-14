@@ -1,5 +1,5 @@
 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-{!! Form::label('name', 'Nama', ['class'=>'col-md-2 control-label']) !!}
+	{!! Form::label('name', 'Nama', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::text('name', null, ['class'=>'form-control']) !!}
 		{!! $errors->first('name', '<p class="help-block">:message</p>') !!}
@@ -7,7 +7,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-{!! Form::label('email', 'Email', ['class'=>'col-md-2 control-label']) !!}
+	{!! Form::label('email', 'Email', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::email('email', null, ['class'=>'form-control']) !!}
 		{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
@@ -17,7 +17,7 @@
 <div class="form-group {!! $errors->has('otoritas') ? 'has-error' : '' !!}">
 	{!! Form::label('otoritas', 'Otoritas', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::select('otoritas', [''=>'']+App\Role::pluck('name', 'id')->all(), null, [ 'class'=>'form-control js-selectize-reguler', 'placeholder' => '--PILIH  OTORITAS--']) !!}
+		{!! Form::select('otoritas', [''=>'']+App\Role::pluck('name', 'id')->all(), null, [ 'class'=>'form-control js-selectize-reguler', 'placeholder' => '--PILIH  OTORITAS--', 'id' => 'otoritas']) !!}
 		
 		{!! $errors->first('otoritas', '<p class="help-block">:message</p>') !!}
 	</div>
@@ -26,7 +26,7 @@
 <div class="form-group {!! $errors->has('team_id') ? 'has-error' : '' !!}">
 	{!! Form::label('team_id', 'Nama Team', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
-		{!! Form::select('team_id[]', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, ['class'=>'form-control js-selectize-multi', 'placeholder' => '--PILIH TEAM--']) !!}
+		{!! Form::select('team_id[]', [''=>'']+App\Team::pluck('nama_team','id')->all(), null, ['class'=>'form-control js-selectize-multi', 'placeholder' => '--PILIH TEAM--', 'id' => 'team_id']) !!}
 		{!! $errors->first('team_id', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>

@@ -1,17 +1,63 @@
 <?php
-// $httpHost = @$_SERVER['HTTP_HOST'];
-// $https = @$_SERVER['HTTPS'];
 $requestURI = @$_SERVER['REQUEST_URI'];
-
-// if ($httpHost == 'localhost') {
-//   $pathApp = explode('/', $_SERVER['PHP_SELF']);
-//   $pathApp = '/'. $pathApp['1'] .'/'. $pathApp['2'] .'/';
-
-// }
-// $url = ($httpHost == 'localhost' ? 'http://'. $httpHost . $pathApp : (!empty($https) && ('on' == $https) ? 'https://' : 'http://') . $httpHost .'/');
-// print_r($_SERVER);
-// echo $requestURI; 
-// echo $url;
+function ckeditor() {
+  switch ($_COOKIE['tema']) {
+    case 'default':
+    return 'ckeditor_moono_lisa';
+    break;
+    case 'cerulean':
+    return 'ckeditor_kama';
+    break;
+    case 'cosmo':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'cyborg':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'darkly':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'flatly':
+    return 'ckeditor_moono_blue';
+    break;
+    case 'journal':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'lumen':
+    return 'ckeditor_kama';
+    break;
+    case 'paper':
+    return 'ckeditor_flat';
+    break;
+    case 'readable':
+    return 'ckeditor_office_2013';
+    break;
+    case 'sandstone':
+    return 'ckeditor_moono_color';
+    break;
+    case 'simplex':
+    return 'ckeditor_moono';
+    break;
+    case 'slate':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'solar':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'spacelab':
+    return 'ckeditor_office_2013';
+    break;
+    case 'superhero':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'united':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'yeti':
+    return 'ckeditor_moono';
+    break;
+  }
+}
 ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +104,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
       document.write(title);
     });
   </script>
+  <!-- {{ asset('js') }} -->
   <div id="app">
    <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
@@ -97,24 +144,24 @@ $requestURI = @$_SERVER['REQUEST_URI'];
    <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
     <ul class="dropdown-menu">
-     <li <?=(null == @$_COOKIE['tema'] || @$_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
-     <li <?=(@$_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
+     <li <?=(null == $_COOKIE['tema'] || $_COOKIE['tema'] == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
+     <li <?=($_COOKIE['tema'] == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
+     <li <?=($_COOKIE['tema'] == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
+     <li <?=($_COOKIE['tema'] == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
+     <li <?=($_COOKIE['tema'] == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
+     <li <?=($_COOKIE['tema'] == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
+     <li <?=($_COOKIE['tema'] == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
+     <li <?=($_COOKIE['tema'] == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
+     <li <?=($_COOKIE['tema'] == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
+     <li <?=($_COOKIE['tema'] == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
+     <li <?=($_COOKIE['tema'] == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
+     <li <?=($_COOKIE['tema'] == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
+     <li <?=($_COOKIE['tema'] == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
+     <li <?=($_COOKIE['tema'] == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
+     <li <?=($_COOKIE['tema'] == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
+     <li <?=($_COOKIE['tema'] == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
+     <li <?=($_COOKIE['tema'] == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
+     <li <?=($_COOKIE['tema'] == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
    </ul>
  </li>
  @endif
@@ -128,11 +175,12 @@ $requestURI = @$_SERVER['REQUEST_URI'];
  <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
  @else
  <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
-   {{ Auth::user()->name }} <span class="caret"></span>
- </a>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o fa-spin fa-1x fa-fw" aria-hidden="true"></i>
+    <span class="sr-only">Saving. Hang tight!</span>
+    {{ Auth::user()->name }} <span class="caret"></span>
+  </a>
 
- <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu" role="menu">
    <li>
     <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
   </li>
@@ -161,25 +209,13 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 </div>
 
 <!-- footer -->
-<footer class="text-center">
+<footer class="text-center"> 
   <a class="up-arrow" id="back-to-top" href="#" data-toggle="tooltip" title="TO TOP">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a><br><br>
   <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id">Andaglos Global Teknologi</a></p> 
 </footer>
 <script>            
-  $(window).scroll(function() {
-    if($(this).scrollTop() &gt; 200) {
-      $(&#39;#back-to-top&#39;).fadeIn();
-    } else {
-      $(&#39;#back-to-top&#39;).fadeOut();
-    }
-  });
-
-  $(&#39;#back-to-top&#39;).hide().click(function() {
-    $(&#39;html, body&#39;).animate({scrollTop:0}, 1000);
-    return false;
-  });
 </script>
 <!-- akhir footer -->
 <!-- Scripts -->
@@ -193,23 +229,11 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 <script src="{{ asset('js/selectize.min.js') }}"></script>
 <script src="{{ asset('js/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/jquery-ui-timepicker-addon.min.js') }}"></script>
-<script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+<!-- <script src="{{ asset('js/ckeditor_moono_lisa/ckeditor.js') }}"></script> -->
+<script src="{{ asset('js') }}/<?=ckeditor();?>/ckeditor.js"></script>
 
 @yield('scripts')
 
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/5a051b4b198bd56b8c03a4f2/default';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-  })();
-</script>
-<!--End of Tawk.to Script-->
 </body>
 </html>
 

@@ -177,10 +177,12 @@ class BackLogsController extends Controller
                         'Demo',
                         'Catatan'
                     ]);
+                    $backlog = Backlog::all()->first();
                     for ($u = 0; $u < count($arrayData[1]); $u++) {   
                         $sheet->row(++$row, [
                             $arrayData[1][$u]['nama_backlog'],
-                            $arrayData[1][$u]['created_at'],
+                            $backlog->translateTextTime($arrayData[1][$u]['created_at']),
+                            // $arrayData[1][$u]['created_at'],
                             $arrayData[1][$u]['demo'],
                             // Menyaring tag html
                             strip_tags($arrayData[1][$u]['catatan'])
@@ -235,10 +237,11 @@ class BackLogsController extends Controller
                         'Demo',
                         'Catatan'
                     ]);
+                    $backlog = Backlog::all()->first();
                     for ($u = 0; $u < count($arrayData[1]); $u++) {   
                         $sheet->row(++$row, [
                             $arrayData[1][$u]['nama_backlog'],
-                            $arrayData[1][$u]['created_at'],
+                            $backlog->translateTextTime($arrayData[1][$u]['created_at']),
                             $arrayData[1][$u]['demo'],
                             // Menyaring tag html
                             strip_tags($arrayData[1][$u]['catatan'])

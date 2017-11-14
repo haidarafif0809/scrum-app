@@ -29,6 +29,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'users.repass',
 		'uses' => 'UsersController@repass'
 	]);
+	// untuk membuat detail
+	Route::get('/users/detai_user/{id}', [
+		'middleware' => ['auth'],
+		'as' => 'users.detailUser',
+		'uses' => 'UsersController@detailUser'
+	]);
 	Route::get('/teams/lists/{id}', [
 		'middleware' => ['auth'],
 		'as' => 'teams.lists',
