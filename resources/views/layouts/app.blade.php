@@ -128,11 +128,12 @@ $requestURI = @$_SERVER['REQUEST_URI'];
  <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
  @else
  <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
-   {{ Auth::user()->name }} <span class="caret"></span>
- </a>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o fa-spin fa-1x fa-fw" aria-hidden="true"></i>
+    <span class="sr-only">Saving. Hang tight!</span>
+    {{ Auth::user()->name }} <span class="caret"></span>
+  </a>
 
- <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu" role="menu">
    <li>
     <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
   </li>
