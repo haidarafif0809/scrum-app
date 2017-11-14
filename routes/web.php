@@ -192,7 +192,29 @@ Route::group(['middleware' => ['auth']], function () {
 		'as' => 'import.sprintbacklogs',
 		'uses' => 'SprintbacklogsController@importExcel'
 	]);
+	Route::get('export/sprints', [ 
+		'middleware' => ['auth'],  
+		'as' => 'export.spritns', 
+		'uses' => 'SprintsController@export' 
+	]); 
 	
+	Route::post('export/sprints', [ 
+		'as' => 'export.sprints.post', 
+		'uses' => 'SprintsController@exportPost' 
+	]); 
+	Route::get('exportall/sprints', [ 
+		'middleware' => ['auth'],  
+		'as' => 'exportall.sprints.post', 
+		'uses' => 'SprintsController@exportAllPost' 
+	]); 
+	Route::get('template/sprints', [ 
+		'as' => 'template.sprints', 
+		'uses' => 'SprintsController@generateExcelTemplate' 
+	]); 
+	Route::post('import/sprints', [ 
+		'as' => 'import.sprints', 
+		'uses' => 'SprintsController@importExcel' 
+	]); 
 });
 
 

@@ -10,6 +10,9 @@ use App\Sprintbacklog;
 use Illuminate\Http\Request; 
 use Yajra\DataTables\Html\Builder; 
 use Yajra\DataTables\Datatables; 
+use Excel;  
+use Validator;  
+use DB;  
 
 class SprintsController extends Controller 
 {
@@ -31,6 +34,9 @@ class SprintsController extends Controller
                     'edit_url'=>route('sprints.edit', $sprint->id), 
                     'confirm_message' => 'Yakin anda ingin menghapus' . $sprint->nama_sprint . '?'  
                 ]); 
+            })
+            ->addColumn('nama_sprint', function($sprint) {
+                return '<a title="Detail Sprint" href="'.route('sprints.show', $sprint->id).'">'.$sprint->nama_sprint.'</a>';
             })
             ->addColumn('backlog', function($sprint) { 
                 return view('datatable._backlog', [ 
@@ -133,7 +139,8 @@ class SprintsController extends Controller
     } 
     public function show($id) 
     { 
-
+        $sprint = Sprint::find($id);
+        return view('sprints.show', compact('sprint'));
     } 
     public function edit($id) 
     { 
@@ -231,4 +238,160 @@ class SprintsController extends Controller
 
         return view('sprints.detail_sd',compact('jumlah_not_checkout','jumlah_checkout','jumlah_finish', 'namaBacklogNC','namaBacklogC','namaBacklogF','dataNotCheckOut','dataCheckOut','dataFinish'));
     }
+    public function export() {  
+        return view('sprints.export'); 
+    } 
+    public function exportPost(Request $request){  
+        $request->validate([  
+            'nama_sprint' => 'required',  
+        ], [  
+            'nama_sprint.required' => 'Silahkan pilih minimal satu Data.'  
+        ]);  
+        $team = Sprint::whereIn('id', $request->get('nama_sprint'))->get();  
+        Excel::create('Data Master Data Sprint', function($excel) use ($team){  
+            $excel->setTitle('Data Master Data Sprint')  
+            ->setCreator(Auth::user()->name);  
+            $excel->sheet('Data Sprint', function($sheet) use ($team){  
+              $row = 1;  
+              $sheet->row($row,[  
+                'Tanggal Mulai', 
+                'Durasi', 
+                'Waktu Mulai',  
+                'Team', 
+                'Kode Sprint',  
+                'Nama Sprint',  
+                'Nilai SP',  
+                'Goal' 
+            ]);  
+              foreach ($team as $app) {  
+                $sheet->row(++$row, [  
+                  $app->tanggal_mulai,  
+                  $app->durasi,  
+                  $app->waktu_mulai,  
+                  $app->team_id,  
+                  $app->kode_sprint,  
+                  $app->nama_sprint,  
+                  $app->nilai_sp,  
+                  $app->goal  
+              ]);  
+            }  
+        });  
+        })->export('xls');  
+    }  
+
+
+    public function exportAllPost() {  
+        $data = Sprint::select('tanggal_mulai', 'durasi', 'waktu_mulai', 'team_id', 'kode_sprint', 'nama_sprint', 'nilai_sp', 'goal')->get();  
+        Excel::create('Semua Data Sprint', function($excel) use ($data) {  
+            $excel->sheet('Data Sprint', function($sheet) use ($data) {  
+                $sheet->fromArray($data);  
+            });  
+
+        })->download('xls');  
+    }  
+
+    public function generateExcelTemplate() {  
+      Excel::create('Template Import Sprint', function($excel) { 
+                // Set the properties 
+        $excel->setTitle('Template Import Sprint') 
+        ->setCreator('Sprint') 
+        ->setCompany('Sprint') 
+        ->setDescription('Template import data untuk Sprint'); 
+
+        $excel->sheet('Data Sprint', function($sheet) { 
+          $row = 1; 
+          $sheet->row($row, [ 
+            'tanggal_mulai', 
+            'durasi', 
+            'waktu_mulai', 
+            'team_id', 
+            'kode_sprint', 
+            'nama_sprint', 
+            'nilai_sp', 
+            'goal' 
+        ]); 
+      }); 
+
+    })->export('xlsx'); 
+  } 
+
+  public function importExcel(Request $request) { 
+              //validasi untuk memastikan file yang diupload adalah excel 
+      $this->validate($request, ['excel'=>'required|mimes:xls,xlsx']); 
+            //ambil file yang baru di upload 
+      $excel = $request->file('excel'); 
+            //baca sheet pertama 
+      $excels = Excel::selectSheetsByIndex(0)->load($excel,function($reader){ 
+              //option ,jika ada 
+      })->get(); 
+
+
+           //rule untuk validasi setiap row pada file excel 
+      $rowRules = [ 
+        'tanggal_mulai' => 'required', 
+        'durasi' => 'required', 
+        'waktu_mulai' => 'required', 
+        'team_id' => 'required', 
+        'kode_sprint' => 'required', 
+        'nama_sprint' => 'required', 
+        'nilai_sp' => 'required', 
+        'goal' => 'required' 
+    ]; 
+
+           //Catat semua id team baru 
+            //ID ini kita butuhkan untuk menghitung total team yang berhasil di import 
+    $teams_id = []; 
+
+           //looping setiap baris ,mulai dari baris ke 2 (karena baris ke 1 adlah nama kolom ) 
+    foreach ($excels as $row) { 
+              //membuat validasi untuk row di excel 
+              //Dsini kita ubah baris yang sedang di proses menjadi array 
+        $validator = Validator::make($row->toArray(),$rowRules); 
+
+             //Skip baris ini jadi tidak valid , langsung ke baris selajutnya 
+        if ($validator->fails()) continue; 
+
+             //buat team baru 
+        $team = Sprint::create([ 
+          'tanggal_mulai' => $row['tanggal_mulai'], 
+          'durasi' => $row['durasi'], 
+          'waktu_mulai' => $row['waktu_mulai'], 
+          'team_id' => $row['team_id'], 
+          'kode_sprint' => $row['kode_sprint'], 
+          'nama_sprint' => $row['nama_sprint'], 
+          'nilai_sp' => $row['nilai_sp'], 
+          'goal' => $row['goal'], 
+
+      ]); 
+
+             //catat id dari team yang baru dibuat 
+        array_push($teams_id, $team->id); 
+
+    } 
+
+           //ambil semua team yang baru dibuat 
+    $teams = Sprint::whereIn('id',$teams_id)->get(); 
+
+           //redirect ke form jika tidak ada team yang berhasil di import 
+    if($teams->count() == 0){ 
+        Session::flash('flash_notification',[ 
+          'level' =>'danger', 
+          'message'=>'Tidak ada Team yang diimport' 
+
+      ]); 
+        return redirect()->back(); 
+    } 
+
+           //set feedback 
+    Session::flash('flash_notification',[ 
+        'level' =>'success', 
+        'message'=>"Berhasil mengimport ".$teams->count()." Team" 
+
+    ]); 
+
+           //Tampilkan index team 
+    return redirect()->route('sprints.index'); 
+} 
+
+
 }
