@@ -18,8 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('jml_assign')->nullable();
-            $table->integer('jml_finish')->nullable();
             $table->boolean('is_verified')->default(0);
             $table->integer('created_by')->nullable()->index();
             $table->integer('updated_by')->nullable()->index();
