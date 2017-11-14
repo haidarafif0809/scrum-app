@@ -161,7 +161,7 @@ $requestURI = @$_SERVER['REQUEST_URI'];
 </div>
 
 <!-- footer -->
-<footer class="text-center">
+<footer class="text-center"> 
   <a class="up-arrow" id="back-to-top" href="#" data-toggle="tooltip" title="TO TOP">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a><br><br>
