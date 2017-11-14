@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 // mengunakan Exel
 use Excel;
+use App\Sprintbacklog;
 
 class UsersController extends Controller
 {
@@ -49,7 +50,8 @@ class UsersController extends Controller
                     'confirm_message' => 'Apakah Anda Yakin akan mengkonfimasi ' . $member->name . ' ?',
                     'confirm_messages' => 'Apakah Anda Yakin akan membatalkan konfirmasi ' . $member->name . ' ?'
                 ]);
-            })        
+            })  
+
             ->addColumn('re_pass', function($member){
                 return view('datatable.re_pass', [
                     'model' => $member, 
@@ -57,9 +59,19 @@ class UsersController extends Controller
                     'confirm_message' => 'Apakah Anda Yakin akan me-reset password ' . $member->name . ' ?',
                 ]);
             })
+
             ->addColumn('otoritas', function($member){
-               return $member->roleUser->role->name;
-           })
+                return $member->roleUser->role->name;
+            })
+
+            ->addColumn('detail', function($member){
+                return view('datatable.detail_user', [
+                    // 'model' => $member, 
+                    'detail_user' => route('users.detailUser', $member->id),
+                ]);
+            })
+
+
             ->addColumn('team', function($member){
 
                 $teams = TeamUser::where('user_id', $member->id)->get();
@@ -76,6 +88,22 @@ class UsersController extends Controller
                 }
                 return $data_team;
                 
+            })
+
+            ->addColumn('total_assign', function($member) {
+                $jumlahAssign = Sprintbacklog::where('assign_user_id', $member->id)->count();
+                // if ($jumlahAssign == 0) {
+                //     $jumlahAssign = "BELUM ADA";
+                // }
+                return $jumlahAssign;
+            })
+
+            ->addColumn('total_finish', function($member) {
+                $jumlahFinish = Sprintbacklog::where('finish', $member->id)->count();
+                // if ($jumlahAssign == 0) {
+                //     $jumlahAssign = "BELUM ADA";
+                // }
+                return $jumlahFinish;
             })->make(true);
         }
         
@@ -84,11 +112,12 @@ class UsersController extends Controller
         ->addColumn(['data' => 'email', 'name'=>'email', 'title'=>'Email'])
         ->addColumn(['data' => 'team', 'name'=>'team', 'title'=>'Team', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'otoritas', 'name'=>'otoritas', 'title'=>'Otoritas', 'orderable'=>false, 'searchable'=>false])
-        ->addColumn(['data' => 'jml_assign', 'name' => 'jml_assign', 'title' => 'Total Assign'])
-        ->addColumn(['data' => 'jml_finish', 'name' => 'jml_finish', 'title' => 'Total Finish'])
+        ->addColumn(['data' => 'total_assign', 'name' => 'total_assign', 'title' => 'Total Assign'])
+        ->addColumn(['data' => 'total_finish', 'name' => 'total_finish', 'title' => 'Total Finish'])
         ->addColumn(['data' => 'konfirmasi', 'name'=>'konfirmasi', 'title'=>'Konfirmasi', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 're_pass', 'name'=>'re_pass', 'title'=>'Reset password', 'orderable'=>false, 'searchable'=>false])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
+        // ->addColumn(['data' => 'detail', 'name'=>'detail', 'title'=>'Detail', 'orderable'=>false, 'searchable'=>false]);
         return view('users.index', compact('html'));
     }
 
@@ -99,8 +128,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-       return view('users.create');
-   }
+     return view('users.create');
+ }
 
     /**
      * Store a newly created resource in storage.
@@ -380,6 +409,13 @@ class UsersController extends Controller
         ]);
         // Tampilkan index buku
         return redirect()->route('users.index');
+
+    }
+
+    public function jmlAssign() {
+
+    }
+    public function jmlFinish() {
 
     }
 }
