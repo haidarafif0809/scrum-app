@@ -2,7 +2,7 @@
 	{!! Form::label('kode_team', 'Kode Team', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::text('kode_team', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('kode_team', '<p class="help-block">:message</p>') !!}
+		{!! $errors->first('kode_team', '<p class="help-block" id="kode_team_error">:message</p>') !!}
 	</div>
 </div>
 
@@ -10,7 +10,7 @@
 	{!! Form::label('nama_team', 'Nama Team', ['class'=>'col-md-2 control-label']) !!}
 	<div class="col-md-4">
 		{!! Form::text('nama_team', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('nama_team', '<p class="help-block">:message</p>') !!}
+		{!! $errors->first('nama_team', '<p class="help-block" id="nama_team_error">:message</p>') !!}
 	</div>
 </div>
 
