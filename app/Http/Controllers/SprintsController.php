@@ -200,17 +200,29 @@ class SprintsController extends Controller
         
         return redirect()->route('sprints.index'); 
     } 
-    public function detailSd(){
+    public function detailSd($id){
+        //nama sprint di breadcrumb
+        $nama_sprint = Sprint::find($id);
         //jumlah assign
-        $jumlah_not_checkout = Sprintbacklog::where('assign',0)->count();
+        $jumlah_not_checkout = Sprintbacklog::where([
+            ['id_sprint', '=', $id],
+            ['assign', '=',0]
+        ])->count();
         $jumlah_checkout = Sprintbacklog::where([
+            ['id_sprint', '=', $id],
             ['assign', '=', 1],
             ['finish', '=', 0]
         ])->count();
-        $jumlah_finish = Sprintbacklog::where('finish',1)->count();
+        $jumlah_finish = Sprintbacklog::where([
+            ['id_sprint', '=', $id],
+            ['finish', '=',1]
+        ])->count();
 
         //list not checkout
-        $dataNotCheckOut = Sprintbacklog::select('id_backlog')->where('assign', 0)->get();
+        $dataNotCheckOut = Sprintbacklog::select('id_backlog')->where([
+            ['id_sprint', '=', $id],
+            ['assign', '=', 0]
+        ])->get();
         $arr = [];
         foreach ($dataNotCheckOut as $dataNC) {
             array_push($arr, $dataNC->id_backlog);
@@ -219,6 +231,7 @@ class SprintsController extends Controller
         
         //list checkout
         $dataCheckOut = Sprintbacklog::select('id_backlog')->where([
+            ['id_sprint', '=', $id],
             ['assign', '=', 1],
             ['finish', '=', 0]
         ])->get();
@@ -229,14 +242,30 @@ class SprintsController extends Controller
         $namaBacklogC = Backlog::whereIn('id_backlog', $arr)->get();
 
         //list finish
-        $dataFinish = Sprintbacklog::select('id_backlog')->where('finish', 1)->get();
+        $dataFinish = Sprintbacklog::select('id_backlog')->where([
+            ['id_sprint', '=', $id],
+            ['finish', '=', 1]
+        ])->get();
         $arr = [];
         foreach ($dataFinish as $dataF) {
             array_push($arr, $dataF->id_backlog);
         }
         $namaBacklogF = Backlog::whereIn('id_backlog', $arr)->get();
 
-        return view('sprints.detail_sd',compact('jumlah_not_checkout','jumlah_checkout','jumlah_finish', 'namaBacklogNC','namaBacklogC','namaBacklogF','dataNotCheckOut','dataCheckOut','dataFinish'));
+        //rasio sprintbacklog
+        $data_seluruh_sb = Sprintbacklog::where('id_sprint',$id)->count();
+        $dataNotFinish = Sprintbacklog::select('id_sprint')->where([
+            ['id_sprint', '=', $id],
+            ['finish', '=', 0]
+        ])->count();
+        if($data_seluruh_sb > 0){
+            $persen = $data_seluruh_sb - $dataNotFinish;
+            $hasil= $persen / $data_seluruh_sb * 100 . '%';
+        }
+        else{
+            $hasil = "\"Tidak ada Sprintbacklog !\"";
+        }
+        return view('sprints.detail_sd',compact('jumlah_not_checkout','jumlah_checkout','jumlah_finish', 'namaBacklogNC','namaBacklogC','namaBacklogF','dataNotCheckOut','dataCheckOut','dataFinish','nama_sprint','hasil','data_seluruh_sb'));
     }
     public function export() {  
         return view('sprints.export'); 

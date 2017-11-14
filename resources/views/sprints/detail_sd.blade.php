@@ -1,12 +1,35 @@
 @extends('layouts.app')
 @section('title', 'Detail Sprint')
 @section('content')
+<style>
+.massive-font{font-size: 22px;text-align: center;}
+.progress{height:30px;text-align:center;background-color: #ffffff;}
+.progress-bar {padding:10px;}
+</style>
 <div class="container">
     <ul class="breadcrumb">
         <li><a href="{{ url('/home') }}">Dashboard</a></li>
         <li><a href="{{ url('/sprints') }}">Sprint</a></li>
-        <li class="active">Detail Sprint</li>
+        <li class="active">{{ $nama_sprint->nama_sprint }}</li>
     </ul>
+    <div class="jumbotron text-center">
+        <h2>Detail sprint "{{ $nama_sprint->nama_sprint }}"</h2>
+        <hr>
+        @if($data_seluruh_sb > 0)
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active massive-font" role="progressbar" aria-valuenow="{{ $hasil }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ $hasil }}">
+                @if($hasil > 25)
+                <p>Progress Mencapai {{ $hasil }} </p>
+                @else
+                <p>{{ $hasil }}</p>
+                @endif
+            </div>
+        </div>
+        @else
+        <h3>{{ $hasil }}</h3>
+        @endif
+    </div>
+
     <div class="row">
         <div class="col-md-4">
             <div class="panel panel-danger">

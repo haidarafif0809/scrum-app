@@ -216,18 +216,6 @@ function ckeditor() {
   <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id">Andaglos Global Teknologi</a></p> 
 </footer>
 <script>            
-  $(window).scroll(function() {
-    if($(this).scrollTop() &gt; 200) {
-      $(&#39;#back-to-top&#39;).fadeIn();
-    } else {
-      $(&#39;#back-to-top&#39;).fadeOut();
-    }
-  });
-
-  $(&#39;#back-to-top&#39;).hide().click(function() {
-    $(&#39;html, body&#39;).animate({scrollTop:0}, 1000);
-    return false;
-  });
 </script>
 <!-- akhir footer -->
 <!-- Scripts -->
@@ -246,19 +234,6 @@ function ckeditor() {
 
 @yield('scripts')
 
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/5a051b4b198bd56b8c03a4f2/default';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-  })();
-</script>
-<!--End of Tawk.to Script-->
 </body>
 </html>
 
