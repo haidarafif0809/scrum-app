@@ -26,15 +26,15 @@
                 </div>
                 <div class="panel-body">
                     <strong>
-                     Jumlah Team {{ $jumlah_team }}
-                 </strong>
-             </div>
-         </div>
-     </div>
+                       Jumlah Team {{ $jumlah_team }}
+                   </strong>
+               </div>
+           </div>
+       </div>
 
 
 
-     <div class="col-md-3">
+       <div class="col-md-3">
         <div class="panel panel-success">
             <div class="panel-heading"><span class="glyphicon glyphicon-object-align-left"></span>
                 <strong>Sprint</strong>

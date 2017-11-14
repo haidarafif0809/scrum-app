@@ -192,10 +192,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/tema/{tema}', 'TemaController@AturTema');
 
-Route::get('/sprints/sd/detail_sd', [
+Route::get('/sprints/sd/detail_sd/{id}', [
 	'as' => 'sprints.detail_sd',
 	'uses' => 'SprintsController@detailSd'
 ]);
+
+
 
 
 Route::get('/', function () {
