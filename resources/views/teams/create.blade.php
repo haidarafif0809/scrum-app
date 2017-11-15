@@ -31,6 +31,7 @@
 					</ul>
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="form">
+							<br>
 							{!! Form::open(['url' => route('teams.store'),
 							'method' => 'post', 'files'=>'true', 'class'=>'form-horizontal']) !!}
 							@include('teams._form')
@@ -38,6 +39,7 @@
 						</div>
 
 						<div role="tabpanel" class="tab-pane" id="upload">
+							<br>
 							{!! Form::open(['url' => route('import.teams'),
 							'method' => 'post', 'files'=>'true', 'class'=>'form-horizontal']) !!}
 							@include('teams._import')
