@@ -1,8 +1,7 @@
 <?php
 $requestURI = @$_SERVER['REQUEST_URI'];
 $tema = @$_COOKIE['tema'];
-function ckeditor() {
-  global $tema;
+function ckeditor($tema) {
   switch ($tema) {
     case 'default':
     return 'ckeditor_moono_lisa';
@@ -243,7 +242,7 @@ function ckeditor() {
 <script src="{{ asset('js/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/jquery-ui-timepicker-addon.min.js') }}"></script>
 <!-- <script src="{{ asset('js/ckeditor_moono_lisa/ckeditor.js') }}"></script> -->
-<script src="{{ asset('js') }}/<?=ckeditor();?>/ckeditor.js"></script>
+<script src="{{ asset('js') }}/<?=ckeditor($tema);?>/ckeditor.js"></script>
 <script>
   // Start of Tawk.to Script
   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
