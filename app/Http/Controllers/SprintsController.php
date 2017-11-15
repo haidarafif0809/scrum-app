@@ -7,6 +7,7 @@ use App\Team;
 use App\Sprint; 
 use App\Backlog; 
 use App\Sprintbacklog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request; 
 use Yajra\DataTables\Html\Builder; 
 use Yajra\DataTables\Datatables; 
@@ -35,8 +36,8 @@ class SprintsController extends Controller
                     'confirm_message' => 'Yakin anda ingin menghapus' . $sprint->nama_sprint . '?'  
                 ]); 
             })
-            ->addColumn('nama_sprint', function($sprint) {
-                return '<a title="Detail Sprint" href="'.route('sprints.show', $sprint->id).'">'.$sprint->nama_sprint.'</a>';
+            ->addColumn('nilai_sp', function($sprint) {
+                return '<a title="Detail Sprint" href="'.route('sprints.show', $sprint->id).'">'.$sprint->nilai_sp.'</a>';
             })
             ->addColumn('backlog', function($sprint) { 
                 return view('datatable._backlog', [ 
@@ -52,7 +53,7 @@ class SprintsController extends Controller
         ->addColumn(['data' => 'tanggal_mulai', 'name' =>  'tanggal_mulai', 'title' =>  'Tanggal Mulai'])
         ->addColumn(['data' => 'team.nama_team', 'name' => 'team.nama_team', 'title' => 'Teamku'])
         ->addColumn(['data' => 'nama_sprint', 'name' =>'nama_sprint', 'title'   =>'Nama Sprint']) 
-        ->addColumn(['data' => 'goal', 'name' =>'goal', 'title'   =>'Goal']) 
+        ->addColumn(['data' => 'nilai_sp', 'name' =>'nilai_sp', 'title'   =>'Nilai SP']) 
         ->addColumn(['data' => 'backlog',      'name' =>  'backlog', 'title'      => 'Sprint Backlog', 'orderable' => false, 'searchable' => false])
         ->addColumn(['data' => 'action', 'name'      =>  'action', 'title'      => 'Aksi', 'orderable' => false, 'searchable' => false])
         ->addColumn(['data' => 'detail',      'name' =>  'detail', 'title'      => '

@@ -18,7 +18,7 @@
           <div class="form-group {!! $errors->has('nama_sprint') ? ' has-error':'' !!}"> 
             {!! Form::label('nama_sprint','Nama Sprint',['class'=>'col-md-2 control-label']) !!} 
             <div class="col-md-4"> 
-              {!! Form::select('nama_sprint',[''=>'']+App\Sprint::pluck('nama_sprint','id')->all(), null, [ 
+              {!! Form::select('nama_sprint[]',[''=>'']+App\Sprint::pluck('nama_sprint','id')->all(), null, [ 
               'class'      => 'form-control js-selectize-reguler', 
               'multiple', 
               'placeholder'=> 'Pilih Sprint' 

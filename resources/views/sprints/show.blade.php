@@ -22,9 +22,9 @@
             {{ $sprint->kode_sprint }}
           </div>
           <div class="col-md-3">
-            <b>Nilai SP:</b>
+            <b>Waktu Mulai:</b>
             <br>
-            {!! $sprint->nilai_sp !!}
+            {!! $sprint->waktu_mulai !!}
           </div>
           <div class="col-md-3">
             <b>Durasi:</b>
@@ -32,9 +32,9 @@
             {!! $sprint->durasi !!}
           </div>
           <div class="col-md-3">
-            <b>Waktu Mulai:</b>
+            <b>Goal:</b>
             <br>
-            {!! $sprint->waktu_mulai !!}
+            {!! $sprint->goal !!}
           </div>
         </p>
       </div>
