@@ -14,15 +14,15 @@
 </div>
 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
 	{!! Form::label('demo', 'Demo', ['class'=>'col-md-2 control-label']) !!}
-	<div class="col-md-4">
+	<div class="col-md-10">
 		{!! Form::textarea('demo', null, ['class'=>'form-control', 'size' => '20x2']) !!}
 		{!! $errors->first('demo', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
 	{!! Form::label('catatan', 'Catatan', ['class'=>'col-md-2 control-label']) !!}
-	<div class="col-md-10">
-		{!! Form::textarea('catatan', null, ['class'=>'form-control', 'size' => '20x2', 'id' => 'editorCatatan']) !!}
+	<div class="col-md-4">
+		{!! Form::textarea('catatan', null, ['class'=>'form-control', 'size' => '10x2']) !!}
 		{!! $errors->first('catatan', '<p class="help-block">:message</p>') !!}
 
 	</div>
