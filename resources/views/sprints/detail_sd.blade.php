@@ -19,7 +19,7 @@ fieldset {font-family: sans-serif;border: 5px solid #1F497D;background: #ddd;bor
         <fieldset style="min-height:100px;">
             <legend><b> Detail sprint "{{ $nama_sprint->nama_sprint }}" </b> </legend>
             @if($data_seluruh_sb > 0)
-            <h2><center>Capaian Progress</center></h2>
+            <h2><center>Progress Pencapaian</center></h2>
             <hr>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped active massive-font" role="progressbar" aria-valuenow="{{ $hasil }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ $hasil }}">
