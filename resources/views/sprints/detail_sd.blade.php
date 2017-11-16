@@ -2,11 +2,13 @@
 @section('title', 'Detail Sprint')
 @section('content')
 <style>
-.progress{height:30px;text-align:center;background-color: #ffffff;}
+.progress{height:30px;text-align:center;background-color:#ffffff;}
 .progress-bar {padding:5px;}
-fieldset {font-family: sans-serif;border: 5px solid #1F497D;background: #ddd;border-radius: 5px;
+fieldset {
+    font-family:sans-serif;border:5px solid #1F497D;background:#ddd;border-radius:5px;
     padding: 15px;}
-    fieldset legend {background: #1F497D;color: #fff;padding: 5px 10px ;
+    fieldset legend {
+        background: #1F497D;color: #fff;padding: 5px 10px ;
         font-size: 32px;border-radius: 5px;box-shadow: 0 0 0 5px #ddd;margin-left: 20px;}
     </style>
     <div class="container">
@@ -70,7 +72,8 @@ fieldset {font-family: sans-serif;border: 5px solid #1F497D;background: #ddd;bor
                     <div class="panel-body">
                         <center>
                             <div class="bulet">
-                            {{ $jumlah_checkout }}                       </div>
+                                {{ $jumlah_checkout }}                       
+                            </div>
                         </center>
                         <br>
                         <div class="ulli">

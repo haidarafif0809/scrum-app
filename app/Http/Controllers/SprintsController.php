@@ -261,7 +261,8 @@ class SprintsController extends Controller
         ])->count();
         if($data_seluruh_sb > 0){
             $persen = $data_seluruh_sb - $dataNotFinish;
-            $hasil= $persen / $data_seluruh_sb * 100 . '%';
+            $hasil= $persen / $data_seluruh_sb * 100;
+            $hasil = (ceil($hasil) - 1) . '%';
         }
         else{
             $hasil = "\"Tidak ada Sprintbacklog !\"";
