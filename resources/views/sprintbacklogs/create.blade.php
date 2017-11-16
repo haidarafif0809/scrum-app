@@ -32,6 +32,7 @@
           </ul>
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="form">
+              <br>
               {!! Form::open(['url' => route('sprintbacklogs.store'),
               'method' => 'post', 'files'=>'true', 'class'=>'form-horizontal']) !!}
               @include('sprintbacklogs._form')
@@ -39,6 +40,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="upload">
+              <br>
               {!! Form::open(['url' => route('import.sprintbacklogs',$sprint),
               'method' => 'post', 'files'=>'true', 'class'=>'form-horizontal']) !!}
               @include('sprintbacklogs._import')
