@@ -14,7 +14,7 @@ class Sprintbacklog extends Model
 	}
 	public function backlog()
 	{
-		return $this->belongsTo('App\backlog','id_backlog', 'id_backlog');
+		return $this->belongsTo('App\Backlog','id_backlog', 'id_backlog');
 	}
 	public function waktuFinishSprintBacklog($waktuMulai, $waktuFinish)
 	{

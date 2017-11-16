@@ -91,7 +91,10 @@ class UsersController extends Controller
             })
 
             ->addColumn('total_assign', function($member) {
-                $jumlahAssign = Sprintbacklog::where('assign_user_id', $member->id)->count();
+                $jumlahAssign = Sprintbacklog::where([
+                    ['assign_user_id', '=', $member->id],
+                    ['assign', '=', 1]
+                ])->count();
                 // if ($jumlahAssign == 0) {
                 //     $jumlahAssign = "BELUM ADA";
                 // }
@@ -99,7 +102,10 @@ class UsersController extends Controller
             })
 
             ->addColumn('total_finish', function($member) {
-                $jumlahFinish = Sprintbacklog::where('finish', $member->id)->count();
+                $jumlahFinish = Sprintbacklog::where([
+                    ['assign_user_id', '=', $member->id],
+                    ['finish', '=', 1]
+                ])->count();
                 // if ($jumlahAssign == 0) {
                 //     $jumlahAssign = "BELUM ADA";
                 // }
@@ -128,8 +134,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-     return view('users.create');
- }
+       return view('users.create');
+   }
 
     /**
      * Store a newly created resource in storage.

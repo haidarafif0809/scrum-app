@@ -53,6 +53,6 @@
 
 	@section('scripts')
 	<script type="text/javascript">
-		CKEDITOR.replace('catatan');
+		CKEDITOR.replace('demo');
 	</script>
 	@endsection
