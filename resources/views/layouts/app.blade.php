@@ -131,15 +131,15 @@ function ckeditor($tema) {
      @if (Auth::check())
      <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
      @role('admin')
-     <li class="dropdown <?=(preg_match("/(users|teams|aplikasi)/", $requestURI) ? 'active' : '');?>">
+     <li class="dropdown <?=(preg_match("/(users|teams)/", $requestURI) ? 'active' : '');?>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
       <ul class="dropdown-menu">
        <li<?=(preg_match("/users/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/users') }}">Users</a></li>
        <li<?=(preg_match("/teams/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/teams') }}">Team</a></li>
-       <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/aplikasi') }}">Aplikasi</a></li>
      </ul>
    </li>
    @endrole
+   <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/aplikasi') }}">Aplikasi</a></li>
    <li<?=(preg_match("/^\/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
    <li class="dropdown">
