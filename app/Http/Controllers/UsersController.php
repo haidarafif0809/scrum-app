@@ -134,8 +134,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-       return view('users.create');
-   }
+     return view('users.create');
+ }
 
     /**
      * Store a newly created resource in storage.
@@ -247,6 +247,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $teamLama = TeamUser::where('user_id', $id)->delete();
         User::destroy($id);
         Session::flash('flash_notification', [
             "level" => "danger", 
