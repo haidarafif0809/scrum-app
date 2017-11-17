@@ -33,4 +33,26 @@ $(document).ready(function () {
 		$('#timepicker').timepicker();
 	});
 
+
+	// Alert semua Backlog telah ditambahkan pada Sprint saat ini
+	$('#backlogHabis').click(function () {
+		var divContainer = document.createElement('div');
+		divContainer.setAttribute('class', 'container');
+		var divAlert = document.createElement('div');
+		var teksAlert = document.createTextNode('Semua Backlog sudah ditambahkan pada Sprint ini.');
+		var button = document.createElement('button');
+		var dismissLink = document.createTextNode('×');
+		var container = document.getElementsByClassName('container')[1];
+		button.setAttribute('type', 'button');
+		button.setAttribute('class', 'close');
+		button.setAttribute('data-dismiss', 'alert');
+		button.setAttribute('aria-hidden', 'true');
+		button.appendChild(dismissLink);
+		divAlert.setAttribute('id', 'blockWarning');
+		divAlert.setAttribute('class', 'alert alert-danger');
+		divAlert.appendChild(teksAlert);
+		divAlert.appendChild(button);
+		divContainer.appendChild(divAlert);
+		container.before(divContainer);
+	});
 });

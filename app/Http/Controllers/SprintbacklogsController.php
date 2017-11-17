@@ -50,8 +50,17 @@ class SprintbacklogsController extends Controller
     } 
     public function create_sprintbacklog($id) 
     { 
-        $sprint = $id;
-        return view('sprintbacklogs.create',['sprint'=>$id]); 
+        $sprintbacklog = Sprintbacklog::where('id_sprint', $id)->get();
+        $idBacklog = [];
+        foreach ($sprintbacklog as $sb) {
+            array_push($idBacklog, $sb->id_backlog);
+        }
+        $backlog = Backlog::whereNotIn('id_backlog', $idBacklog)->count();
+        // print_r($backlog);
+        // echo($backlog);
+
+        // return;
+        return view('sprintbacklogs.create', ['sprint' => $id, 'idBacklog' => $idBacklog]); 
     } 
     public function store(Request $request) 
     { 
@@ -61,7 +70,7 @@ class SprintbacklogsController extends Controller
             'isi_kepentingan' => 'required', 
             'perkiraan_waktu' => 'required',
         ]);  
-        
+
         $angka = $request->perkiraan_waktu;
         $sliceAngka = explode(',', trim($angka));
         $array_angka = [];
@@ -76,7 +85,7 @@ class SprintbacklogsController extends Controller
             'isi_kepentingan' => $request->isi_kepentingan,
             'perkiraan_waktu' => $hasil
         ]);
-        
+
         Session::flash("flash_notification", [ 
             "level" => "success", 
             "message" =>" Berhasil menyimpan data" 
@@ -185,8 +194,15 @@ class SprintbacklogsController extends Controller
         ->addColumn(['data' => 'assign', 'name'=>'assign', 'title'=>'Assign', 'orderable'=>false, 'searchable'=>false]) 
         ->addColumn(['data' => 'finish', 'name'=>'finish', 'title'=>'Finish', 'orderable'=>false, 'searchable'=>false]) 
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false, 'searchable'=>false]);
-
-        return view('sprintbacklogs.show',['sprint'=>$id])->with(compact('html')); 
+        $sprintbacklog = Sprintbacklog::where('id_sprint', $id)->get();
+        $idBacklog = [];
+        foreach ($sprintbacklog as $sb) {
+            array_push($idBacklog, $sb->id_backlog);
+        }
+        $backlog = Backlog::whereNotIn('id_backlog', $idBacklog)->count();
+        // echo($backlog);
+        // return;
+        return view('sprintbacklogs.show', ['sprint' => $id, 'jumlahBacklog' => $backlog])->with(compact('html')); 
     }
 
 
