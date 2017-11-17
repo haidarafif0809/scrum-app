@@ -14,7 +14,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 	Route::resource('users', 'UsersController');
 	// route untuk membuat team
 	route::resource('teams', 'TeamsController');
-	route::resource('aplikasi', 'AplicationsController');
 
 
 	// route konfirmasi user
@@ -89,6 +88,15 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'uses' => 'TeamsController@importExcel'
 	]);
 
+});
+
+
+
+Route::group(['middleware' => ['auth']], function () {
+	route::resource('aplikasi', 'AplicationsController');
+	Route::resource('backlog', 'BackLogsController');
+	Route::resource('sprints', 'SprintsController'); 
+	Route::resource('sprintbacklogs', 'SprintbacklogsController');
 	Route::get('export/aplikasi', [
 		'as' => 'export.aplikasi',
 		'uses' => 'AplicationsController@export'
@@ -127,14 +135,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth', 'role:admin']], function
 		'as' => 'export.backlog.all',
 		'uses' => 'BackLogsController@exportAll'
 	]);
-});
-
-
-
-Route::group(['middleware' => ['auth']], function () {
-	Route::resource('backlog', 'BackLogsController');
-	Route::resource('sprints', 'SprintsController'); 
-	Route::resource('sprintbacklogs', 'SprintbacklogsController');
 	Route::get('/sprintbacklogs/create/{id}', [
 		'middleware' => ['auth'], 
 		'as' => 'sprintbacklogs.create_sprintbacklog', 
