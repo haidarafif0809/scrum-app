@@ -103,7 +103,7 @@ class SprintbacklogsController extends Controller
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
         if ($request->ajax()) { 
-            $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id);
+            $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id)->orderBy('id','desc');
             return Datatables::of($sprintbacklogs)
             ->addColumn('action', function($sprintbacklog){ 
                 return view('datatable._actionSprintBacklog', [ 

@@ -22,13 +22,13 @@ class AplicationsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-           $aplications = Aplication::select(['id', 'kode', 'nama']);
-           return Datatables::of($aplications)
-           ->escapeColumns([])
-           ->addColumn('nama', function($aplication) {
+         $aplications = Aplication::select(['id', 'kode', 'nama'])->orderBy('id','desc');
+         return Datatables::of($aplications)
+         ->escapeColumns([])
+         ->addColumn('nama', function($aplication) {
             return '<a href="'.route('aplikasi.show', $aplication->id).'">'.$aplication->nama.'</a>';
         })
-           ->addColumn('action', function($aplications){
+         ->addColumn('action', function($aplications){
             return view('datatable._action_aplikasi', [
                 'model'    => $aplications,
                 'id_aplikasi' => $aplications->id,
@@ -37,15 +37,15 @@ class AplicationsController extends Controller
                 'confirm_message' => 'Yakin mau menghapus '."$aplications->nama.?"
             ]);
         })->make(true);
-       }
-       $html = $htmlBuilder
-       ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
-       ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
-       ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false,'searchable'=>false]);
+     }
+     $html = $htmlBuilder
+     ->addColumn(['data' => 'kode', 'name'=>'kode', 'title'=>'Kode Aplikasi'])
+     ->addColumn(['data' => 'nama', 'name'=>'nama', 'title'=>'Nama Aplikasi'])
+     ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'Aksi', 'orderable'=>false,'searchable'=>false]);
 
 
-       return view('aplikasi.index')->with(compact('html'));
-   }
+     return view('aplikasi.index')->with(compact('html'));
+ }
 
     /**
      * Show the form for creating a new resource.

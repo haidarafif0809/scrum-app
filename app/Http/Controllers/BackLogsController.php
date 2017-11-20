@@ -22,7 +22,7 @@ class BackLogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $backlogs = Backlog::with('aplikasi')->get();
+            $backlogs = Backlog::with('aplikasi')->orderBy('id_backlog','desc');
             return Datatables::of($backlogs)
             ->escapeColumns([])
             ->addColumn('action', function($backlog) {

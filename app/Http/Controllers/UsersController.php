@@ -30,7 +30,7 @@ class UsersController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $members = User::with('team');
+            $members = User::with('team')->orderBy('id','desc');
             return Datatables::of($members)
             ->escapeColumns([])
         // ->addColumn($member->role_user->role)
@@ -134,8 +134,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-     return view('users.create');
- }
+       return view('users.create');
+   }
 
     /**
      * Store a newly created resource in storage.

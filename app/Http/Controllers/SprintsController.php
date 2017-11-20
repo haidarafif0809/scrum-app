@@ -20,7 +20,7 @@ class SprintsController extends Controller
     public function index(Request $request, Builder $htmlBuilder) 
     { 
         if ($request->ajax()) { 
-            $sprints = Sprint::with('team')->get();
+            $sprints = Sprint::with('team')->orderBy('id','desc');
             return Datatables::of($sprints)
             ->escapeColumns([])
             ->addColumn('detail', function($sprint) { 
