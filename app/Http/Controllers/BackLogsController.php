@@ -93,11 +93,12 @@ class BackLogsController extends Controller
             ]);
 
             $idBacklogTerbaru = DB::table('backlogs')->orderBy('id_backlog', 'desc')->limit(1)->first();
-            $sprintbacklog = Sprintbacklog::create([
+            $sprintbacklog = Sprintbacklog::all()->first();
+            $sprintbacklog->create([
                 'id_sprint' => $request->sprint_id,
                 'id_backlog' => $idBacklogTerbaru->id_backlog,
                 'isi_kepentingan' => $request->isi_kepentingan,
-                'perkiraan_waktu' => $request->perkiraan_waktu
+                'perkiraan_waktu' => $sprintbacklog->hitungPerkiraanWaktu($request->perkiraan_waktu)
             ]);
         }
         Session::flash("flash_notification", [

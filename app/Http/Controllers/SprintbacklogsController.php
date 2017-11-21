@@ -71,19 +71,13 @@ class SprintbacklogsController extends Controller
             'perkiraan_waktu' => 'required',
         ]);  
 
+        $sprintbacklog = Sprintbacklog::all()->first();
         $angka = $request->perkiraan_waktu;
-        $sliceAngka = explode(',', trim($angka));
-        $array_angka = [];
-        foreach ($sliceAngka as $num) {
-            array_push($array_angka, $num);
-        }
-        $hasil = array_sum($array_angka);
-        $hasil = $hasil / count($sliceAngka);
         $sprintbacklogs = Sprintbacklog::create([
             'id_sprint' => $request->id_sprint,
             'id_backlog' => $request->id_backlog,
             'isi_kepentingan' => $request->isi_kepentingan,
-            'perkiraan_waktu' => $hasil
+            'perkiraan_waktu' => $sprintbacklog->hitungPerkiraanWaktu($angka)
         ]);
 
         Session::flash("flash_notification", [ 
