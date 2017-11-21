@@ -120,13 +120,17 @@ $(document).ready(function () {
 
 		// Jika select Sprint berisi nilai maka jalankan..
 		else {
-			// Sembunyikan element penampung inputan untuk Sprint terlebih dahulu
-			// Supaya efek slide downnya terlihat
-			conInputanSprint.hide();
-			// Isi element dengan element yang dibutuhkan oleh Sprint
-			conInputanSprint.html(inputanSprint);
-			// Lalu munculkan element dengan efek slide down
-			conInputanSprint.slideDown(200);
+
+			// Mencegah slide ulang ketika user mengganti nilai dari select Sprint
+			if ($(this).val() != '' && conInputanSprint.html() == '') {
+				// Sembunyikan element penampung inputan untuk Sprint terlebih dahulu
+				// Supaya efek slide downnya terlihat
+				conInputanSprint.hide();
+				// Isi element dengan element yang dibutuhkan oleh Sprint
+				conInputanSprint.html(inputanSprint);
+				// Lalu munculkan element dengan efek slide down
+				conInputanSprint.slideDown(200);
+			}
 
 			// Mendapatkan element untuk memunculkan error
 			var errIsiKepentingan = $('#errorIsiKepentingan');
@@ -231,31 +235,43 @@ $(document).ready(function () {
 
 				// Jika inputan isi kepentingan kosong
 				if (isiKepentingan.val() == '') {
-					isiKepentingan.attr('style', 'border: 1px solid red;').fadeIn();
-					errIsiKepentingan.hide();
-					errIsiKepentingan.css('color', 'red');
-					errIsiKepentingan.html('Perkiraan waktu harus diisi!').slideDown(200);
-
+					if (errIsiKepentingan.html() == '') {
+						isiKepentingan.attr('style', 'border: 1px solid red;').fadeIn();
+						errIsiKepentingan.hide();
+						errIsiKepentingan.css('color', 'red');
+						errIsiKepentingan.html('Perkiraan waktu harus diisi!').slideDown(200);
+					}
+					else {
+						return;
+					}
 				}
 				// Jika inputan perkiraan waktu kosong
 				if (perkiraanWaktu.val() == '') {
-					perkiraanWaktu.attr('style', 'border: 1px solid red;').fadeIn();
-					errPerkiraanWaktu.hide();
-					errPerkiraanWaktu.css('color', 'red');
-					errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
-
+					if (errPerkiraanWaktu.html() == '') {
+						perkiraanWaktu.attr('style', 'border: 1px solid red;').fadeIn();
+						errPerkiraanWaktu.hide();
+						errPerkiraanWaktu.css('color', 'red');
+						errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
+					}
+					else {
+						return;
+					}
 				}
 				// Jika kedua inputan kosong
 				if (isiKepentingan.val() == '' && perkiraanWaktu.val() == '') {
-					isiKepentingan.attr('style', 'border: 1px solid red;').fadeIn();
-					errIsiKepentingan.hide();
-					errIsiKepentingan.css('color', 'red');
-					errIsiKepentingan.html('Perkiraan waktu harus diisi!').slideDown(200);
-					perkiraanWaktu.attr('style', 'border: 1px solid red;').fadeIn();
-					errPerkiraanWaktu.hide();
-					errPerkiraanWaktu.css('color', 'red');
-					errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
-
+					if (errIsiKepentingan.html() == '' && errPerkiraanWaktu.html() == '') {
+						isiKepentingan.attr('style', 'border: 1px solid red;').fadeIn();
+						errIsiKepentingan.hide();
+						errIsiKepentingan.css('color', 'red');
+						errIsiKepentingan.html('Perkiraan waktu harus diisi!').slideDown(200);
+						perkiraanWaktu.attr('style', 'border: 1px solid red;').fadeIn();
+						errPerkiraanWaktu.hide();
+						errPerkiraanWaktu.css('color', 'red');
+						errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
+					}
+					else {
+						return;
+					}
 				}
 			});
 		}
