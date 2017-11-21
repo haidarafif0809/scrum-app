@@ -140,6 +140,8 @@ $(document).ready(function () {
 			var isiKepentingan = $('#isi_kepentingan');
 			var perkiraanWaktu = $('#perkiraan_waktu');
 
+			var errTextIsiKepentingan = "Isi kepentingan harus diisi!";
+			var errTextPerkiraanWaktu = "Perkiraan waktu harus diisi!";
 			// Ketika inputan untuk isi kepentingan blur maka jalankan..
 			isiKepentingan.blur(function() {
 				// Jika inputan isi kepentingan kosong
@@ -153,7 +155,7 @@ $(document).ready(function () {
 						// Ubah warna teks menjadi merah
 						errIsiKepentingan.css('color', 'red');
 						// Masukkan teks dan munculkan dengan efek slide down
-						errIsiKepentingan.html('Isi kepentingan harus diisi!').slideDown(200);
+						errIsiKepentingan.html(errTextIsiKepentingan).slideDown(200);
 					}
 					// Jika error isi kepentingan tidak kosong
 					// Maka hentikan script
@@ -198,7 +200,7 @@ $(document).ready(function () {
 						// Ubah warna teks menjadi merah
 						errPerkiraanWaktu.css('color', 'red');
 						// Masukkan teks dan munculkan dengan efek slide down
-						errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
+						errPerkiraanWaktu.html(errTextPerkiraanWaktu).slideDown(200);
 					}
 
 					// Jika error perkiraan waktu tidak kosong
@@ -239,7 +241,7 @@ $(document).ready(function () {
 						isiKepentingan.attr('style', 'border: 1px solid red;').fadeIn();
 						errIsiKepentingan.hide();
 						errIsiKepentingan.css('color', 'red');
-						errIsiKepentingan.html('Perkiraan waktu harus diisi!').slideDown(200);
+						errIsiKepentingan.html(errTextIsiKepentingan).slideDown(200);
 					}
 					else {
 						return;
@@ -251,7 +253,7 @@ $(document).ready(function () {
 						perkiraanWaktu.attr('style', 'border: 1px solid red;').fadeIn();
 						errPerkiraanWaktu.hide();
 						errPerkiraanWaktu.css('color', 'red');
-						errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
+						errPerkiraanWaktu.html(errTextPerkiraanWaktu).slideDown(200);
 					}
 					else {
 						return;
@@ -263,11 +265,11 @@ $(document).ready(function () {
 						isiKepentingan.attr('style', 'border: 1px solid red;').fadeIn();
 						errIsiKepentingan.hide();
 						errIsiKepentingan.css('color', 'red');
-						errIsiKepentingan.html('Perkiraan waktu harus diisi!').slideDown(200);
+						errIsiKepentingan.html(errTextIsiKepentingan).slideDown(200);
 						perkiraanWaktu.attr('style', 'border: 1px solid red;').fadeIn();
 						errPerkiraanWaktu.hide();
 						errPerkiraanWaktu.css('color', 'red');
-						errPerkiraanWaktu.html('Perkiraan waktu harus diisi!').slideDown(200);
+						errPerkiraanWaktu.html(errTextPerkiraanWaktu).slideDown(200);
 					}
 					else {
 						return;
