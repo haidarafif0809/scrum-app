@@ -97,4 +97,14 @@ class Sprintbacklog extends Model
 		if (!empty($str)) return $str;
 		else return null;
 	}
+	public function hitungPerkiraanWaktu($angka) {
+		$sliceAngka = explode(',', trim($angka));
+		$array_angka = [];
+		foreach ($sliceAngka as $num) {
+			array_push($array_angka, $num);
+		}
+		$hasil = array_sum($array_angka);
+		$hasil = ceil($hasil / count($sliceAngka));
+		return $hasil;
+	}
 }

@@ -1,5 +1,13 @@
 menambahkan tombol assign pada tabel sprintbacklog
-	ketika di klik menampilkan nama user (pada kolom sebagai ganti tombol assign) dan menambahkan id user serta waktu mulainya ke tabel sprintbacklog
+-ketika di klik menampilkan nama user (pada kolom sebagai ganti tombol assign) dan menambahkan id user serta waktu mulainya ke tabel sprintbacklog
+
 menambahkan tombol finish pada kolom action
-	ketika di klik menambahkan waktu selesai pada tabel sprintbacklog dan menampilkan hasil waktu selesai (sebagai ganti tombol finish)
+-ketika di klik menambahkan waktu selesai pada tabel sprintbacklog dan menampilkan hasil waktu selesai (sebagai ganti tombol finish)
+
 menambahkan jumlah assign dan finish pada tabel user
+
+
+
+tambahkan fitur migrasi sprintbacklog ke sprint selanjutnya
+-fitur untuk dapat memindahkan sisa sprintbacklog yang belum selesai ke sprint yang baru
+berdasarkan sprint

@@ -131,72 +131,72 @@ function ckeditor($tema) {
      @if (Auth::check())
      <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
      @role('admin')
-     <li class="dropdown <?=(preg_match("/(users|teams|aplikasi)/", $requestURI) ? 'active' : '');?>">
+     <li class="dropdown <?=(preg_match("/(users|teams)/", $requestURI) ? 'active' : '');?>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
       <ul class="dropdown-menu">
-       <li<?=(preg_match("/users/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/users') }}">Users</a></li>
-       <li<?=(preg_match("/teams/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/teams') }}">Team</a></li>
-       <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/admin/aplikasi') }}">Aplikasi</a></li>
+        <li<?=(preg_match("/users/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('users.index') }}">Users</a></li>
+        <li<?=(preg_match("/teams/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('teams.index') }}">Team</a></li>
+      </ul>
+    </li>
+    @endrole
+    <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
+    <li<?=(preg_match("/^\/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('backlog.index') }}">Backlog</a></li>
+    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('sprints.index') }}">Sprint</a></li>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+       <li <?=(null == $tema || $tema == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
+       <li <?=($tema == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
+       <li <?=($tema == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
+       <li <?=($tema == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
+       <li <?=($tema == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
+       <li <?=($tema == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
+       <li <?=($tema == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
+       <li <?=($tema == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
+       <li <?=($tema == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
+       <li <?=($tema == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
+       <li <?=($tema == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
+       <li <?=($tema == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
+       <li <?=($tema == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
+       <li <?=($tema == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
+       <li <?=($tema == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
+       <li <?=($tema == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
+       <li <?=($tema == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
+       <li <?=($tema == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
      </ul>
    </li>
-   @endrole
-   <li<?=(preg_match("/^\/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/backlog') }}">Backlog</a></li>
-   <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/sprints') }}">Sprint</a></li>
+   @endif
+ </ul>
+
+ <!-- Right Side Of Navbar -->
+ <ul class="nav navbar-nav navbar-right">
+   <!-- Authentication Links -->
+   @if (Auth::guest())
+   <li<?=(preg_match("/login/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('login') }}">Masuk</a></li>
+   <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('register') }}">Mendaftar</a></li>
+   @else
    <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-     <li <?=(null == $tema || $tema == 'default' ? 'class="active"' : '');?>><a href="{{ url('tema/default') }}">Default</a></li>
-     <li <?=($tema == 'cerulean' ? 'class="active"' : '');?>><a href="{{ url('tema/cerulean') }}">Cerulean</a></li>
-     <li <?=($tema == 'cosmo' ? 'class="active"' : '');?>><a href="{{ url('tema/cosmo') }}">Cosmo</a></li>
-     <li <?=($tema == 'cyborg' ? 'class="active"' : '');?>><a href="{{ url('tema/cyborg') }}">Cyborg</a></li>
-     <li <?=($tema == 'darkly' ? 'class="active"' : '');?>><a href="{{ url('tema/darkly') }}">Darkly</a></li>
-     <li <?=($tema == 'flatly' ? 'class="active"' : '');?>><a href="{{ url('tema/flatly') }}">Flatly</a></li>
-     <li <?=($tema == 'journal' ? 'class="active"' : '');?>><a href="{{ url('tema/journal') }}">Journal</a></li>
-     <li <?=($tema == 'lumen' ? 'class="active"' : '');?>><a href="{{ url('tema/lumen') }}">Lumen</a></li>
-     <li <?=($tema == 'paper' ? 'class="active"' : '');?>><a href="{{ url('tema/paper') }}">Paper</a></li>
-     <li <?=($tema == 'readable' ? 'class="active"' : '');?>><a href="{{ url('tema/readable') }}">Readable</a></li>
-     <li <?=($tema == 'sandstone' ? 'class="active"' : '');?>><a href="{{ url('tema/sandstone') }}">Sandstone</a></li>
-     <li <?=($tema == 'simplex' ? 'class="active"' : '');?>><a href="{{ url('tema/simplex') }}">Simplex</a></li>
-     <li <?=($tema == 'slate' ? 'class="active"' : '');?>><a href="{{ url('tema/slate') }}">Slate</a></li>
-     <li <?=($tema == 'solar' ? 'class="active"' : '');?>><a href="{{ url('tema/solar') }}">Solar</a></li>
-     <li <?=($tema == 'spacelab' ? 'class="active"' : '');?>><a href="{{ url('tema/spacelab') }}">Spacelab</a></li>
-     <li <?=($tema == 'superhero' ? 'class="active"' : '');?>><a href="{{ url('tema/superhero') }}">SuperHero</a></li>
-     <li <?=($tema == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
-     <li <?=($tema == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
-   </ul>
- </li>
- @endif
-</ul>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o fa-spin fa-1x fa-fw" aria-hidden="true"></i>
+      <span class="sr-only">Saving. Hang tight!</span>
+      {{ Auth::user()->name }} <span class="caret"></span>
+    </a>
 
-<!-- Right Side Of Navbar -->
-<ul class="nav navbar-nav navbar-right">
- <!-- Authentication Links -->
- @if (Auth::guest())
- <li<?=(preg_match("/login/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/login') }}">Masuk</a></li>
- <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/register') }}">Mendaftar</a></li>
- @else
- <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-circle-o fa-spin fa-1x fa-fw" aria-hidden="true"></i>
-    <span class="sr-only">Saving. Hang tight!</span>
-    {{ Auth::user()->name }} <span class="caret"></span>
-  </a>
+    <ul class="dropdown-menu" role="menu">
+     <li>
+      <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
+    </li>
+    <li>
+      <a href="{{ url('/logout') }}"
+      onclick="event.preventDefault();
+      document.getElementById('logout-form').submit();">
+      <i class="glyphicon glyphicon-log-out"></i> Logout
+    </a>
 
-  <ul class="dropdown-menu" role="menu">
-   <li>
-    <a href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
+    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+      {{ csrf_field() }}
+    </form>
+
   </li>
-  <li>
-    <a href="{{ url('/logout') }}"
-    onclick="event.preventDefault();
-    document.getElementById('logout-form').submit();">
-    <i class="glyphicon glyphicon-log-out"></i> Logout
-  </a>
-
-  <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-    {{ csrf_field() }}
-  </form>
-
-</li>
 </ul>
 </li>
 @endif

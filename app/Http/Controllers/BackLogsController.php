@@ -22,7 +22,7 @@ class BackLogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $backlogs = Backlog::with('aplikasi')->get();
+            $backlogs = Backlog::with('aplikasi')->orderBy('id_backlog','desc');
             return Datatables::of($backlogs)
             ->escapeColumns([])
             ->addColumn('action', function($backlog) {
@@ -61,13 +61,46 @@ class BackLogsController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'aplikasi_id' => 'required|exists:aplications,id',
-            'nama_backlog' => 'required',
-            'demo' => '',
-            'catatan' => ''
-        ]);
-        $backlog = Backlog::create($request->all());
+        if (!$request->sprint_id) {
+            $this->validate($request, [
+                'aplikasi_id' => 'required|exists:aplications,id',
+                'nama_backlog' => 'required',
+                'demo' => '',
+                'catatan' => ''
+            ]);
+            $backlog = Backlog::create([
+                'aplikasi_id' => $request->aplikasi_id,
+                'nama_backlog' => $request->nama_backlog,
+                'demo' => $request->demo,
+                'catatan' => $request->catatan
+            ]);
+        }
+        else {
+            $this->validate($request, [
+                'aplikasi_id' => 'required|exists:aplications,id',
+                'nama_backlog' => 'required',
+                'demo' => '',
+                'catatan' => '',
+                'sprint_id' => '',
+                'isi_kepentingan' => 'required',
+                'perkiraan_waktu' => 'required'
+            ]);
+            $backlog = Backlog::create([
+                'aplikasi_id' => $request->aplikasi_id,
+                'nama_backlog' => $request->nama_backlog,
+                'demo' => $request->demo,
+                'catatan' => $request->catatan
+            ]);
+
+            $idBacklogTerbaru = DB::table('backlogs')->orderBy('id_backlog', 'desc')->limit(1)->first();
+            $sprintbacklog = Sprintbacklog::all()->first();
+            $sprintbacklog->create([
+                'id_sprint' => $request->sprint_id,
+                'id_backlog' => $idBacklogTerbaru->id_backlog,
+                'isi_kepentingan' => $request->isi_kepentingan,
+                'perkiraan_waktu' => $sprintbacklog->hitungPerkiraanWaktu($request->perkiraan_waktu)
+            ]);
+        }
         Session::flash("flash_notification", [
             "level"=>"success", 
             "message"=>'Berhasil menyimpan "' . $backlog->nama_backlog . '" !'

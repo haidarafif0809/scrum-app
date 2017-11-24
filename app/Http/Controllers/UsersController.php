@@ -30,7 +30,7 @@ class UsersController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $members = User::with('team');
+            $members = User::with('team')->orderBy('id','desc');
             return Datatables::of($members)
             ->escapeColumns([])
         // ->addColumn($member->role_user->role)
@@ -247,6 +247,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $teamLama = TeamUser::where('user_id', $id)->delete();
         User::destroy($id);
         Session::flash('flash_notification', [
             "level" => "danger", 
