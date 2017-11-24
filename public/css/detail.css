@@ -55,10 +55,39 @@
 /* FOOTER */
 
 footer {
-	background-color: #2d2d30;
-	color: #f5f5f5;
+	background-color: #2D2D30;
 	padding: 32px;
+	bottom: 0px;
 }
 footer a:hover{
 	text-decoration: none;
+}
+
+
+html {
+	height: 100%;
+	box-sizing: border-box;
+}
+*,*:before,*:after {
+	box-sizing: inherit;
+}
+body {
+	margin: 0;
+	position: relative;
+	padding-bottom: 6rem;
+	min-height: 100%;
+}
+.content {
+	margin: 0 auto;
+	padding-top: 30px;
+	max-width: 1100px;
+}
+.footer {
+	color: #ffffff;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 20px;
+	text-align: center;
 }

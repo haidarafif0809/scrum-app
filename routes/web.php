@@ -225,8 +225,10 @@ Route::get('/sprints/sd/detail_sd/{id}', [
 	'uses' => 'SprintsController@detailSd'
 ]);
 
-
-
+Route::get('/sprints/chart/{id}',[
+	'as' => 'sprints.chart',
+	'uses' => 'SprintsController@chart'
+]);
 
 Route::get('/', function () {
 	return view('welcome');

@@ -1,0 +1,1 @@
+<a href="{{ $chart }}" class="btn btn-xs btn-primary">Chart</a>
