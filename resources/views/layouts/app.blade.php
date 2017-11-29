@@ -209,12 +209,13 @@ function ckeditor($tema) {
 @yield('content')
 </div>
 
+
 <!-- footer -->
-<footer class="text-center"> 
+<footer class="text-center footer"> 
   <a class="up-arrow" id="back-to-top" href="#" data-toggle="tooltip" title="TO TOP">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a><br><br>
-  <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id">Andaglos Global Teknologi</a></p> 
+  <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id" target="_blank">Andaglos Global Teknologi</a></p> 
 </footer>
 <script>   
  $(window).scroll(function() {
