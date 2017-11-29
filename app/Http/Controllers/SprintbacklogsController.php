@@ -89,10 +89,14 @@ class SprintbacklogsController extends Controller
     public function testing() {
         $sb = Sprintbacklog::find(1); 
         $b = Backlog::all()->first();
+        $as = 1511593962;
+        $fi = 1511861398;
+        echo $sb->waktuFinishSprintBacklog($as, $fi);
+        // echo ($fi - $as);
         // $lastday = mktime(0, 0, 0, 3, 0, 2000);
         // echo $lastday;
         // echo date('Y-m-d', $lastday);
-        echo $b->translateTextTime(date('D, d M Y \p\u\k\u\l H:i', strtotime($sb->created_at)));
+        // echo $b->translateTextTime(date('D, d M Y \p\u\k\u\l H:i', strtotime($sb->created_at)));
     }
     public function Show(Request $request, Builder $htmlBuilder, $id) 
     { 
