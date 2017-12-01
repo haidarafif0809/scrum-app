@@ -15,10 +15,10 @@
 					<h2 class="panel-title">Backlog</h2>
 				</div>
 				<div class="panel-body">
-					<p> 
+					<p>
 						<a class="btn btn-primary" href="{{ route('backlog.create') }}">Tambah</a>
 						<a class="btn btn-primary" href="{{ route('export.backlog') }}">Export</a>
-						<a class="btn btn-primary" href="{{ route('export.backlog.all') }}">Export Semua</a>
+						<a class="btn btn-primary" href="{{ route('export.backlog.all') }}">Export All</a>
 					</p>
 					{!! $html->table(['class'=>'table-striped']) !!}
 				</div>
