@@ -8,7 +8,7 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/aplikasi') }}">Aplikasi</a></li>
+				<li><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
 				<li class="active">List Backlog</li>
 			</ul>
 			<div class="panel panel-default">
@@ -16,7 +16,7 @@
 					<h2 class="panel-title">List Backlog <b>{{ $aplikasi->nama }} :</b></h2>
 				</div>
 				<div class="panel-body">
-					<table class="table table-condensed table-striped">		
+					<table class="table table-condensed table-striped">
 						<div class="ulli">
 							<ul>
 								@foreach ($listBacklog as $backlog)
@@ -36,4 +36,3 @@
 	</div>
 </div>
 @endsection
-

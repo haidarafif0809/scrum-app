@@ -9,7 +9,7 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/aplikasi') }}">Aplikasi</a></li>
+				<li><a href="{{ url('/aplikasi') }}">Aplikasi</a></li>
 				<li class="active">Tambah Aplikasi</li>
 			</ul>
 			<div class="panel panel-default">
