@@ -100,12 +100,13 @@ $(document).ready(function() {
 			// Sembunyikan element dengan efek slide up
 			conInputanSprint.slideUp(200);
 			// Kosongkan element
-			conInputanSprint.html('');
+			conInputanSprint.html(' ');
 		}
 		// Jika select Sprint berisi nilai maka jalankan..
 		else {
+			console.log(conInputanSprint.html().length);
 			// Mencegah slide ulang ketika user mengganti nilai dari select Sprint
-			if ($(this).val() != '' && conInputanSprint.html() == '') {
+			if (conInputanSprint.html().length == 1) {
 				// Sembunyikan element penampung inputan untuk Sprint terlebih dahulu
 				// Supaya efek slide downnya terlihat
 				conInputanSprint.hide();

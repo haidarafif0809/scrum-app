@@ -9,35 +9,35 @@ class Sprintbacklog extends Model
 {
     use AuditableTrait;
 
-	public function sprint()
-	{
-		return $this->belongsTo('App\Sprint','id_sprint', 'id');
-	}
-	public function backlog()
-	{
-		return $this->belongsTo('App\Backlog','id_backlog', 'id_backlog');
-	}
-	public function waktuFinishSprintBacklog($waktuMulai, $waktuFinish)
-	{
-		// Waktu mulai
-		$mulai = $waktuMulai;
-		// Waktu finish
-		$finish = $waktuFinish;
+    public function sprint()
+    {
+        return $this->belongsTo('App\Sprint', 'id_sprint', 'id');
+    }
+    public function backlog()
+    {
+        return $this->belongsTo('App\Backlog', 'id_backlog', 'id_backlog');
+    }
+    public function waktuFinishSprintBacklog($waktuMulai, $waktuFinish)
+    {
+        // Waktu mulai
+        $mulai = $waktuMulai;
+        // Waktu finish
+        $finish = $waktuFinish;
 
-		// Jumlah waktu (dalam detik) dalam menyelesaikan satu backlog
-		$hasilWaktu = ceil($finish - $mulai);
+        // Jumlah waktu (dalam detik) dalam menyelesaikan satu backlog
+        $hasilWaktu = ceil($finish - $mulai);
 
-		// Jika kurang dari 1 menit
-		if ($hasilWaktu < 59) {
-			// Maka tampilkan jumlah detiknya
-			$str = 'Selesai dalam '. $hasilWaktu .' detik';
-		}
+        // Jika kurang dari 1 menit
+        if ($hasilWaktu < 59) {
+            // Maka tampilkan jumlah detiknya
+            $str = 'Selesai dalam ' . $hasilWaktu . ' detik';
+        }
 
-		// Jika lebih dari 1 menit dan kurang dari 1 jam
-		else if ($hasilWaktu > 59 && $hasilWaktu < 3600) {
-			// Maka tampilkan jumlah menitnya
-			$str = 'Selesai dalam '. (ceil(($hasilWaktu / 60)) - 1) .' menit';
-		}
+        // Jika lebih dari 1 menit dan kurang dari 1 jam
+        else if ($hasilWaktu > 59 && $hasilWaktu < 3600) {
+            // Maka tampilkan jumlah menitnya
+            $str = 'Selesai dalam ' . (ceil(($hasilWaktu / 60)) - 1) . ' menit';
+        }
 
         // Jika lebih dari 1 menit dan kurang dari 1 jam
         else if ($hasilWaktu > 59 && $hasilWaktu < 3600) {
@@ -79,17 +79,24 @@ class Sprintbacklog extends Model
         // Jika lebih dari 1 bulan
         else if ($hasilWaktu > 2592000) {
 
-		if (!empty($str)) return $str;
-		else return null;
-	}
-	public function hitungPerkiraanWaktu($angka) {
-		$sliceAngka = explode(',', trim($angka));
-		$array_angka = [];
-		foreach ($sliceAngka as $num) {
-			array_push($array_angka, $num);
-		}
-		$hasil = array_sum($array_angka);
-		$hasil = ceil($hasil / count($sliceAngka));
-		return $hasil;
-	}
+            if (!empty($str)) {
+                return $str;
+            } else {
+                return null;
+            }
+
+        }
+    }
+
+    public static function hitungPerkiraanWaktu($angka)
+    {
+        $sliceAngka  = explode(',', trim($angka));
+        $array_angka = [];
+        foreach ($sliceAngka as $num) {
+            array_push($array_angka, $num);
+        }
+        $hasil = array_sum($array_angka);
+        $hasil = ceil($hasil / count($sliceAngka));
+        return $hasil;
+    }
 }
