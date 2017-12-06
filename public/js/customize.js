@@ -104,7 +104,6 @@ $(document).ready(function() {
 		}
 		// Jika select Sprint berisi nilai maka jalankan..
 		else {
-			console.log(conInputanSprint.html().length);
 			// Mencegah slide ulang ketika user mengganti nilai dari select Sprint
 			if (conInputanSprint.html().length == 1) {
 				// Sembunyikan element penampung inputan untuk Sprint terlebih dahulu
@@ -205,10 +204,25 @@ $(document).ready(function() {
 					simpanBacklog.html(spanSubmit);
 				}
 			});
-			$('#simpanBacklog').mousemove(function() {
+			isiKepentingan.mouseleave(function() {
 				if (isiKepentingan.val() != '' && perkiraanWaktu.val() != '') {
 					// Ganti tombol dengan button asli
 					$(this).html(buttonSubmit);
+					isiKepentingan.blur();
+					perkiraanWaktu.blur();
+				}
+				// Jika inputan kosong
+				else {
+					// Ganti tombol dengan button palsu
+					$(this).html(spanSubmit);
+				}
+			});
+			perkiraanWaktu.mouseleave(function() {
+				if (isiKepentingan.val() != '' && perkiraanWaktu.val() != '') {
+					// Ganti tombol dengan button asli
+					$(this).html(buttonSubmit);
+					isiKepentingan.blur();
+					perkiraanWaktu.blur();
 				}
 				// Jika inputan kosong
 				else {
