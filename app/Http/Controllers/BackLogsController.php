@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Datatables;
-
+use App\Aplication;
 use App\Backlog;
 use App\Sprintbacklog;
-use App\Aplication;
-use Session;
-use Excel;
-use Auth;
-use Validator;
 use App\User;
+use Auth;
 use DB;
+use Excel;
+use Illuminate\Http\Request;
+use Session;
+use Validator;
+use Yajra\DataTables\Datatables;
+use Yajra\DataTables\Html\Builder;
 
 class BackLogsController extends Controller
 {
@@ -22,35 +21,35 @@ class BackLogsController extends Controller
     public function index(Request $request, Builder $htmlBuilder)
     {
         if ($request->ajax()) {
-            $backlogs = Backlog::with('aplikasi')->orderBy('id_backlog','desc');
+            $backlogs = Backlog::with('aplikasi')->orderBy('id_backlog', 'desc');
             return Datatables::of($backlogs)
-            ->escapeColumns([])
-            ->addColumn('action', function($backlog) {
-                return view('datatable._action_backlog', [
-                    'model' => $backlog,
-                    'form_url' => route('backlog.destroy', $backlog->id_backlog),
-                    'edit_url' => route('backlog.edit', $backlog->id_backlog),
-                    'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama_backlog . '?'
-                ]);
-            })
-            ->addColumn('nama_backlog', function($backlog) {
-                return '<a title="Detail Backlog" href="'.route('backlog.show', $backlog->id_backlog).'">'.$backlog->nama_backlog.'</a>';
+                ->escapeColumns([])
+                ->addColumn('action', function ($backlog) {
+                    return view('datatable._action_backlog', [
+                        'model'           => $backlog,
+                        'form_url'        => route('backlog.destroy', $backlog->id_backlog),
+                        'edit_url'        => route('backlog.edit', $backlog->id_backlog),
+                        'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama_backlog . '?',
+                    ]);
+                })
+                ->addColumn('nama_backlog', function ($backlog) {
+                    return '<a title="Detail Backlog" href="' . route('backlog.show', $backlog->id_backlog) . '">' . $backlog->nama_backlog . '</a>';
 
-            // })->addColumn('no_urut', function($backlog) {
-            // return view('datatable._noUrut', [
-            //     'angka' => $backlog->getKolomAttribute()
-            // ]);
-            // return $backlog->getKolomAttribute();
+                    // })->addColumn('no_urut', function($backlog) {
+                    // return view('datatable._noUrut', [
+                    //     'angka' => $backlog->getKolomAttribute()
+                    // ]);
+                    // return $backlog->getKolomAttribute();
 
-            })->make(true);
+                })->make(true);
         }
         $html = $htmlBuilder
         // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
         ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
-        ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
+            ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
         // ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
         // ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
-        ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
+            ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
     }
 
@@ -63,47 +62,46 @@ class BackLogsController extends Controller
     {
         if (!$request->sprint_id) {
             $this->validate($request, [
-                'aplikasi_id' => 'required|exists:aplications,id',
+                'aplikasi_id'  => 'required|exists:aplications,id',
                 'nama_backlog' => 'required',
-                'demo' => '',
-                'catatan' => ''
+                'demo'         => '',
+                'catatan'      => '',
             ]);
             $backlog = Backlog::create([
-                'aplikasi_id' => $request->aplikasi_id,
+                'aplikasi_id'  => $request->aplikasi_id,
                 'nama_backlog' => $request->nama_backlog,
-                'demo' => $request->demo,
-                'catatan' => $request->catatan
+                'demo'         => $request->demo,
+                'catatan'      => $request->catatan,
             ]);
-        }
-        else {
+        } else {
             $this->validate($request, [
-                'aplikasi_id' => 'required|exists:aplications,id',
-                'nama_backlog' => 'required',
-                'demo' => '',
-                'catatan' => '',
-                'sprint_id' => '',
+                'aplikasi_id'     => 'required|exists:aplications,id',
+                'nama_backlog'    => 'required',
+                'demo'            => '',
+                'catatan'         => '',
+                'sprint_id'       => '',
                 'isi_kepentingan' => 'required',
-                'perkiraan_waktu' => 'required'
+                'perkiraan_waktu' => 'required',
             ]);
             $backlog = Backlog::create([
-                'aplikasi_id' => $request->aplikasi_id,
+                'aplikasi_id'  => $request->aplikasi_id,
                 'nama_backlog' => $request->nama_backlog,
-                'demo' => $request->demo,
-                'catatan' => $request->catatan
+                'demo'         => $request->demo,
+                'catatan'      => $request->catatan,
             ]);
 
             $idBacklogTerbaru = DB::table('backlogs')->orderBy('id_backlog', 'desc')->limit(1)->first();
-            $sprintbacklog = Sprintbacklog::all()->first();
+            $sprintbacklog    = Sprintbacklog::all()->first();
             $sprintbacklog->create([
-                'id_sprint' => $request->sprint_id,
-                'id_backlog' => $idBacklogTerbaru->id_backlog,
+                'id_sprint'       => $request->sprint_id,
+                'id_backlog'      => $idBacklogTerbaru->id_backlog,
                 'isi_kepentingan' => $request->isi_kepentingan,
-                'perkiraan_waktu' => $sprintbacklog->hitungPerkiraanWaktu($request->perkiraan_waktu)
+                'perkiraan_waktu' => $sprintbacklog->hitungPerkiraanWaktu($request->perkiraan_waktu),
             ]);
         }
         Session::flash("flash_notification", [
-            "level"=>"success", 
-            "message"=>'Berhasil menyimpan "' . $backlog->nama_backlog . '" !'
+            "level"   => "success",
+            "message" => 'Berhasil menyimpan "' . $backlog->nama_backlog . '" !',
         ]);
         return redirect()->route('backlog.index');
     }
@@ -116,23 +114,54 @@ class BackLogsController extends Controller
 
     public function edit($id)
     {
-        $backlog = Backlog::find($id);
+        $backlog = Backlog::with('sprintBacklog')->find($id);
         return view('backlog.edit')->with(compact('backlog'));
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'aplikasi_id' => 'required|exists:aplications,id',
-            'nama_backlog' => 'required',
-            'demo' => 'required',
-            'catatan' => ''
-        ]);
         $backlog = Backlog::find($id);
-        $backlog->update($request->all());
+        if (!$request->sprint_id) {
+            $this->validate($request, [
+                'aplikasi_id'  => 'required|exists:aplications,id',
+                'nama_backlog' => 'required',
+                'demo'         => '',
+                'catatan'      => '',
+            ]);
+            $backlog->update([
+                'aplikasi_id'  => $request->aplikasi_id,
+                'nama_backlog' => $request->nama_backlog,
+                'demo'         => $request->demo,
+                'catatan'      => $request->catatan,
+            ]);
+        } else {
+            $this->validate($request, [
+                'aplikasi_id'     => 'required|exists:aplications,id',
+                'nama_backlog'    => 'required',
+                'demo'            => '',
+                'catatan'         => '',
+                'sprint_id'       => '',
+                'isi_kepentingan' => 'required',
+                'perkiraan_waktu' => 'required',
+            ]);
+            $backlog->update([
+                'aplikasi_id'  => $request->aplikasi_id,
+                'nama_backlog' => $request->nama_backlog,
+                'demo'         => $request->demo,
+                'catatan'      => $request->catatan,
+            ]);
+
+            $sprintbacklog = Sprintbacklog::where('id_backlog', $id)->update([
+                'id_sprint'       => $request->sprint_id,
+                'id_backlog'      => $id,
+                'isi_kepentingan' => $request->isi_kepentingan,
+                'perkiraan_waktu' => Sprintbacklog::hitungPerkiraanWaktu($request->perkiraan_waktu),
+            ]);
+        }
+
         Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => 'Berhasil menyimpan "'. $backlog->nama_backlog .'"'
+            "level"   => "success",
+            "message" => 'Berhasil menyimpan "' . $backlog->nama_backlog . '"',
         ]);
         return redirect()->route('backlog.index');
     }
@@ -145,19 +174,18 @@ class BackLogsController extends Controller
         if ($sprintBacklog > 0) {
 
             Session::flash("flash_notification", [
-                "level"=>"danger",
-                "message"=>"Backlog Tidak Bisa Dihapus. Karena Sudah Terpakai."
+                "level"   => "danger",
+                "message" => "Backlog Tidak Bisa Dihapus. Karena Sudah Terpakai.",
             ]);
 
             return redirect()->route('backlog.index');
-        }
-        else {
+        } else {
 
             $backlog = Backlog::find($id);
             $backlog->delete();
             Session::flash("flash_notification", [
-                "level" => "success",
-                "message" => 'Backlog "'. $backlog->nama_backlog .'" berhasil dihapus'
+                "level"   => "success",
+                "message" => 'Backlog "' . $backlog->nama_backlog . '" berhasil dihapus',
             ]);
 
             return redirect()->route('backlog.index');
@@ -173,14 +201,14 @@ class BackLogsController extends Controller
     {
         // validasi
         $this->validate($request, [
-            'id'=>'required'
-        ], 
-        [
-            'id.required'=>'Anda belum memilih Aplikasi. Pilih minimal 1 Aplikasi.'
-        ]);
+            'id' => 'required',
+        ],
+            [
+                'id.required' => 'Anda belum memilih Aplikasi. Pilih minimal 1 Aplikasi.',
+            ]);
 
         $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
-        Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($aplikasi) {
+        Excel::create('Data Backlog Aplikasi Scrum', function ($excel) use ($aplikasi) {
             $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
 
             // Merapikan data dari id-id aplikasi yg dikirim
@@ -202,35 +230,36 @@ class BackLogsController extends Controller
                 // Memasukkan array $dataApp dan $backlog ke array $arrayData
                 array_push($arrayData, $dataApp, $backlog);
 
-                $excel->sheet($arrayData[0][0]['nama'], function($sheet) use ($arrayData) {
+                $excel->sheet($arrayData[0][0]['nama'], function ($sheet) use ($arrayData) {
                     $row = 1;
                     $sheet->row($row, [
                         'Nama Backlog',
                         'Waktu Dibuat',
                         'Demo',
-                        'Catatan'
+                        'Catatan',
                     ]);
                     $backlog = Backlog::all()->first();
-                    for ($u = 0; $u < count($arrayData[1]); $u++) {   
+                    for ($u = 0; $u < count($arrayData[1]); $u++) {
                         $sheet->row(++$row, [
                             $arrayData[1][$u]['nama_backlog'],
                             $backlog->translateTextTime($arrayData[1][$u]['created_at']),
                             // $arrayData[1][$u]['created_at'],
                             $arrayData[1][$u]['demo'],
                             // Menyaring tag html
-                            strip_tags($arrayData[1][$u]['catatan'])
+                            strip_tags($arrayData[1][$u]['catatan']),
                         ]);
                     }
                 });
             }
         })->export('xls');
     }
-    public function exportAll() {
+    public function exportAll()
+    {
         // $aplikasi = Aplication::whereIn('id', $request->get('id'))->get();
         $jumlahAplikasi = Aplication::select('id')->count();
-        $aplikasi = Aplication::all();
-        $aplikasi = json_decode($aplikasi, true);
-        $arrayIdApp = [];
+        $aplikasi       = Aplication::all();
+        $aplikasi       = json_decode($aplikasi, true);
+        $arrayIdApp     = [];
         for ($i = 0; $i < $jumlahAplikasi; $i++) {
             array_push($arrayIdApp, $aplikasi[$i]['id']);
         }
@@ -238,9 +267,9 @@ class BackLogsController extends Controller
         // echo print_r($arrayIdApp);
         // echo "</pre>";
         /*
-        */
+         */
         $aplikasi = Aplication::whereIn('id', $arrayIdApp)->get();
-        Excel::create('Data Backlog Aplikasi Scrum', function($excel) use ($aplikasi) {
+        Excel::create('Data Backlog Aplikasi Scrum', function ($excel) use ($aplikasi) {
             $excel->setTitle('Data Backlog Aplikasi Scrum')->setCreator(Auth::user()->nama);
 
             // Merapikan data dari id-id aplikasi yg dikirim
@@ -262,61 +291,63 @@ class BackLogsController extends Controller
                 // Memasukkan array $dataApp dan $backlog ke array $arrayData
                 array_push($arrayData, $dataApp, $backlog);
 
-                $excel->sheet($arrayData[0][0]['nama'], function($sheet) use ($arrayData) {
+                $excel->sheet($arrayData[0][0]['nama'], function ($sheet) use ($arrayData) {
                     $row = 1;
                     $sheet->row($row, [
                         'Nama Backlog',
                         'Waktu Dibuat',
                         'Demo',
-                        'Catatan'
+                        'Catatan',
                     ]);
                     $backlog = Backlog::all()->first();
-                    for ($u = 0; $u < count($arrayData[1]); $u++) {   
+                    for ($u = 0; $u < count($arrayData[1]); $u++) {
                         $sheet->row(++$row, [
                             $arrayData[1][$u]['nama_backlog'],
                             $backlog->translateTextTime($arrayData[1][$u]['created_at']),
                             $arrayData[1][$u]['demo'],
                             // Menyaring tag html
-                            strip_tags($arrayData[1][$u]['catatan'])
+                            strip_tags($arrayData[1][$u]['catatan']),
                         ]);
                     }
                 });
             }
         })->export('xls');
     }
-    public function generateExcelTemplate() {
-        Excel::create('Template Import Backlog', function($excel) {
-        // Set the properties
+    public function generateExcelTemplate()
+    {
+        Excel::create('Template Import Backlog', function ($excel) {
+            // Set the properties
             $excel->setTitle('Template Import Backlog')
-            ->setCreator('Aplikasi Scrum')
-            ->setCompany('Aplikasi Scrum')
-            ->setDescription('Template import Backlog untuk Aplikasi Scrum');
-            $excel->sheet('Data Backlog', function($sheet) {
+                ->setCreator('Aplikasi Scrum')
+                ->setCompany('Aplikasi Scrum')
+                ->setDescription('Template import Backlog untuk Aplikasi Scrum');
+            $excel->sheet('Data Backlog', function ($sheet) {
                 $row = 1;
                 $sheet->row($row, [
                     'Nama Aplikasi',
                     'Nama Backlog',
                     'Demo',
-                    'Catatan'
+                    'Catatan',
                 ]);
             });
         })->export('xlsx');
     }
-    public function importExcel(Request $request) {
+    public function importExcel(Request $request)
+    {
         // validasi untuk memastikan file yang diupload adalah excel
-        $this->validate($request, [ 'excel' => 'required|mimes:xls,xlsx' ]);
+        $this->validate($request, ['excel' => 'required|mimes:xls,xlsx']);
         // ambil file yang baru diupload
         $excel = $request->file('excel');
         // baca sheet pertama
-        $excels = Excel::selectSheetsByIndex(0)->load($excel, function($reader) {
+        $excels = Excel::selectSheetsByIndex(0)->load($excel, function ($reader) {
             // options, jika ada
         })->get();
         // rule untuk validasi setiap row pada file excel
         $rowRules = [
             'Nama Aplikasi' => 'required',
-            'Nama Backlog' => 'required',
-            'Demo' => '',
-            'Catatan' => ''
+            'Nama Backlog'  => 'required',
+            'Demo'          => '',
+            'Catatan'       => '',
         ];
         // Catat semua id backlog baru
         // ID ini kita butuhkan untuk menghitung total backlog yang berhasil diimport
@@ -374,10 +405,10 @@ class BackLogsController extends Controller
                 $backlog = Backlog::create([
                     // Mengambil id aplikasi dari array berdasarkan nama aplikasi yang user masukkan
                     // pada file excel
-                    'aplikasi_id' => $arrNamaIdAplikasi[$importNamaAplikasi],
+                    'aplikasi_id'  => $arrNamaIdAplikasi[$importNamaAplikasi],
                     'nama_backlog' => $row['nama_backlog'],
-                    'demo' => $row['demo'],
-                    'catatan' => $row['catatan']
+                    'demo'         => $row['demo'],
+                    'catatan'      => $row['catatan'],
                 ]);
                 // catat id dari backlog yang baru dibuat
                 array_push($backlogs_id, $backlog->id_backlog);
@@ -388,7 +419,7 @@ class BackLogsController extends Controller
                 // Membuat aplikasi baru
                 $aplikasi = Aplication::create([
                     // Membuat setiap awal kata pada nama aplikasi menggunakan huruf kapital
-                    'nama' => ucwords($row['nama_aplikasi'])
+                    'nama' => ucwords($row['nama_aplikasi']),
                 ]);
 
                 // Mengambil id terbaru dari master data aplikasi
@@ -396,12 +427,12 @@ class BackLogsController extends Controller
 
                 // Membuat backlog baru
                 $backlog = Backlog::create([
-                    'aplikasi_id' => $idAplikasiTerbaru->id,
+                    'aplikasi_id'  => $idAplikasiTerbaru->id,
                     'nama_backlog' => $row['nama_backlog'],
-                    'demo' => $row['demo'],
-                    'catatan' => $row['catatan']
+                    'demo'         => $row['demo'],
+                    'catatan'      => $row['catatan'],
                 ]);
-                
+
                 // catat id dari backlog yang baru dibuat
                 array_push($backlogs_id, $backlog->id_backlog);
             }
@@ -411,20 +442,21 @@ class BackLogsController extends Controller
         // redirect ke form jika tidak ada backlog yang berhasil diimport
         if ($backlogs->count() == 0) {
             Session::flash("flash_notification", [
-                "level" => "danger",
-                "message" => "Tidak ada Backlog yang berhasil diimport."
+                "level"   => "danger",
+                "message" => "Tidak ada Backlog yang berhasil diimport.",
             ]);
             return redirect()->back();
         }
         // Membuat alert
         Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil mengimport " . $backlogs->count() . " Backlog."
+            "level"   => "success",
+            "message" => "Berhasil mengimport " . $backlogs->count() . " Backlog.",
         ]);
         // Tampilkan index backlog
         return redirect()->route('backlog.index');
     }
-    public function tes() {
+    public function tes()
+    {
         // $ar = ['Aku', 'kamu'];
         // if (in_array('kamu', $ar)) {
         //     echo "nilai ada";
@@ -434,8 +466,8 @@ class BackLogsController extends Controller
         // }
         $namaAplikasi = Aplication::select('nama')->get();
         $namaAplikasi = json_decode($namaAplikasi, true);
-        $idAplikasi = Aplication::select('id')->get();
-        $idAplikasi = json_decode($idAplikasi, true);
+        $idAplikasi   = Aplication::select('id')->get();
+        $idAplikasi   = json_decode($idAplikasi, true);
         // print_r($namaAplikasi);
         $arrayNamaAplikasi = [];
         // foreach ($namaAplikasi as $namaApp) {
@@ -452,7 +484,6 @@ class BackLogsController extends Controller
         for ($i = 0; $i < count($arrayNamaAplikasi[1]); $i++) {
             $arr[$arrayNamaAplikasi[0][$i]['nama']] = $arrayNamaAplikasi[1][$i]['id'];
         }
-
 
         // array_push($aaa, $arr);
         // $anu = ['a', 'b', 'c'];
