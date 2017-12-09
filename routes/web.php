@@ -162,6 +162,16 @@ Route::group(['middleware' => ['auth']], function () {
         'as'         => 'sprintbacklogs.unfinish',
         'uses'       => 'SprintbacklogsController@unfinish',
     ]);
+    Route::get('/sprintbacklogs/pause/{id}', [
+        'middleware' => ['auth'],
+        'as'         => 'sprintbacklogs.pause',
+        'uses'       => 'SprintbacklogsController@pause',
+    ]);
+    Route::get('/sprintbacklogs/play/{id}', [
+        'middleware' => ['auth'],
+        'as'         => 'sprintbacklogs.play',
+        'uses'       => 'SprintbacklogsController@play',
+    ]);
     Route::post('export/backlog', [
         'as'   => 'export.backlog.post',
         'uses' => 'BacklogsController@exportPost',

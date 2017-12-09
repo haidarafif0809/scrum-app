@@ -90,7 +90,9 @@ class SprintbacklogsController extends Controller
         $b  = Backlog::all()->first();
         $as = 1511593962;
         $fi = 1511861398;
-        echo $sb->waktuFinishSprintBacklog($as, $fi);
+        // echo $sb->waktuFinishSprintBacklog($as, $fi);
+        $a = (20 + (100 - 30));
+        echo $a;
         // echo ($fi - $as);
         // $lastday = mktime(0, 0, 0, 3, 0, 2000);
         // echo $lastday;
@@ -151,8 +153,7 @@ class SprintbacklogsController extends Controller
                 ->escapeColumns([])
                 ->addColumn('finish', function ($sprint) {
 
-                    $waktu_mulai  = $sprint->waktu_mulai;
-                    $waktu_finish = $sprint->waktu_finish;
+                    $totalWaktu = $sprint->total_waktu;
 
                     if ($sprint->assign_user_id != 0) {
                         $idUser = $sprint->assign_user_id;
@@ -166,10 +167,13 @@ class SprintbacklogsController extends Controller
                         'model'           => $model,
                         'assign'          => $sprint->assign,
                         'finish'          => $sprint->finish,
+                        'pause'           => $sprint->pause,
                         'idUserOnline'    => Auth::user()->id,
                         'idUser'          => $idUser,
-                        'waktu_selesai'   => $sprint->waktuFinishSprintBacklog($waktu_mulai, $waktu_finish),
+                        'waktu_selesai'   => $sprint->waktuFinishSprintBacklog($totalWaktu),
                         'finishUrl'       => route('sprintbacklogs.finish', $sprint->id),
+                        'pauseUrl'        => route('sprintbacklogs.pause', $sprint->id),
+                        'playUrl'         => route('sprintbacklogs.play', $sprint->id),
                         'unFinishUrl'     => route('sprintbacklogs.unfinish', $sprint->id),
                         'confirm_message' => 'Apakah Anda yakin ingin membatalkan finish backlog "' . $backlog->nama_backlog . '" ?',
                     ]);
@@ -256,7 +260,8 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update([
             'assign'         => 1,
             'assign_user_id' => Auth::user()->id,
-            'waktu_mulai'    => time(),
+            'waktu_assign'   => time(),
+            'waktu_play'     => time(),
         ]);
         Session::flash("flash_notification", [
             'level'   => 'success',
@@ -272,9 +277,13 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update([
             'assign'         => 0,
             'assign_user_id' => 0,
-            'waktu_mulai'    => 0,
+            'waktu_assign'   => 0,
+            'waktu_play'     => 0,
+            'waktu_pause'    => 0,
             'finish'         => 0,
             'waktu_finish'   => 0,
+            'pause'          => 0,
+            'total_waktu'    => 0,
         ]);
         Session::flash("flash_notification", [
             'level'   => 'success',
@@ -288,9 +297,19 @@ class SprintbacklogsController extends Controller
     {
         $sprintbacklog = Sprintbacklog::find($id);
         $backlog       = Backlog::find($sprintbacklog->id_backlog);
+
+        if ($sprintbacklog->pause == 1) {
+            $totalWaktu = ($sprintbacklog->total_waktu + ($sprintbacklog->waktu_pause - $sprintbacklog->waktu_play));
+        } else {
+            $totalWaktu = ($sprintbacklog->total_waktu + (time() - $sprintbacklog->waktu_play));
+        }
+
         $sprintbacklog->update([
             'finish'       => 1,
             'waktu_finish' => time(),
+            'pause'        => 1,
+            'waktu_pause'  => time(),
+            'total_waktu'  => $totalWaktu,
         ]);
         Session::flash("flash_notification", [
             'level'   => 'success',
@@ -305,6 +324,8 @@ class SprintbacklogsController extends Controller
         $sprintbacklog->update([
             'finish'       => 0,
             'waktu_finish' => 0,
+            'pause'        => 0,
+            'waktu_play'   => time(),
         ]);
         Session::flash("flash_notification", [
             'level'   => 'success',
@@ -312,6 +333,42 @@ class SprintbacklogsController extends Controller
         ]);
         return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]);
 
+    }
+
+    public function pause($id)
+    {
+        $sprintbacklog = Sprintbacklog::find($id);
+        $backlog       = Backlog::find($sprintbacklog->id_backlog);
+
+        $totalWaktu = ($sprintbacklog->total_waktu + (time() - $sprintbacklog->waktu_play));
+
+        $sprintbacklog->update([
+            'pause'       => 1,
+            'waktu_pause' => time(),
+            'total_waktu' => $totalWaktu,
+
+        ]);
+        Session::flash("flash_notification", [
+            'level'   => 'success',
+            'message' => 'Backlog "' . $backlog->nama_backlog . '" berhasil dijeda',
+        ]);
+        return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]);
+
+    }
+
+    public function play($id)
+    {
+        $sprintbacklog = Sprintbacklog::find($id);
+        $backlog       = Backlog::find($sprintbacklog->id_backlog);
+        $sprintbacklog->update([
+            'pause'      => 0,
+            'waktu_play' => time(),
+        ]);
+        Session::flash("flash_notification", [
+            'level'   => 'success',
+            'message' => 'Backlog "' . $backlog->nama_backlog . '" berhasil dilanjutkan',
+        ]);
+        return redirect()->route('sprintbacklogs.show', ['sprint' => $sprintbacklog->id_sprint]);
     }
 
     public function export($id)
