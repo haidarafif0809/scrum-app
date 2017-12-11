@@ -204,6 +204,7 @@ $(document).ready(function() {
 					simpanBacklog.html(spanSubmit);
 				}
 			});
+			/*
 			var buton = $('#buton');
 			buton.prop('disabled', true);
 			isiKepentingan.onchange(function() {
@@ -216,7 +217,7 @@ $(document).ready(function() {
 					buton.prop('disabled', false);
 				}
 			});
-			/*
+			*/
 			isiKepentingan.mouseleave(function() {
 				if (isiKepentingan.val() != '' && perkiraanWaktu.val() != '') {
 					// Ganti tombol dengan button asli
@@ -243,7 +244,6 @@ $(document).ready(function() {
 					$(this).html(spanSubmit);
 				}
 			});
-			*/
 			// Efek jika button diklik
 			$('#simpanBacklog').click(function() {
 				// Jika inputan isi kepentingan kosong
