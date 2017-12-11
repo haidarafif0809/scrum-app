@@ -25,7 +25,7 @@ class Backlog extends Model
 
     public function sprintBacklog()
     {
-        return $this->hasMany('App\SprintBacklog', 'id', 'backlog_id');
+        return $this->hasMany('App\Sprintbacklog', 'id', 'backlog_id');
     }
 
     public function translateTextTime($time)
