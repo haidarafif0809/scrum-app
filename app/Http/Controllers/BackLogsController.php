@@ -140,7 +140,7 @@ class BackLogsController extends Controller
                 'nama_backlog'    => 'required',
                 'demo'            => '',
                 'catatan'         => '',
-                'sprint_id'       => '',
+                'sprint_id'       => 'required',
                 'isi_kepentingan' => 'required',
                 'perkiraan_waktu' => 'required',
             ]);
@@ -151,12 +151,24 @@ class BackLogsController extends Controller
                 'catatan'      => $request->catatan,
             ]);
 
-            $sprintbacklog = Sprintbacklog::where('id_backlog', $id)->update([
-                'id_sprint'       => $request->sprint_id,
-                'id_backlog'      => $id,
-                'isi_kepentingan' => $request->isi_kepentingan,
-                'perkiraan_waktu' => Sprintbacklog::hitungPerkiraanWaktu($request->perkiraan_waktu),
-            ]);
+            // Cek apakah backlog ini sudah ada atau belum
+            if (Sprintbacklog::select('id_backlog')->where('id_backlog', $id)->count() > 0) {
+                // Jika ada maka update
+                $sprintbacklog = Sprintbacklog::where('id_backlog', $id)->update([
+                    'id_sprint'       => $request->sprint_id,
+                    'id_backlog'      => $id,
+                    'isi_kepentingan' => $request->isi_kepentingan,
+                    'perkiraan_waktu' => Sprintbacklog::hitungPerkiraanWaktu($request->perkiraan_waktu),
+                ]);
+            } else {
+                // Jika belum maka buat
+                $sprintbacklog = Sprintbacklog::create([
+                    'id_sprint'       => $request->sprint_id,
+                    'id_backlog'      => $id,
+                    'isi_kepentingan' => $request->isi_kepentingan,
+                    'perkiraan_waktu' => Sprintbacklog::hitungPerkiraanWaktu($request->perkiraan_waktu),
+                ]);
+            }
         }
 
         Session::flash("flash_notification", [
