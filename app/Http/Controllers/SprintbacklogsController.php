@@ -199,7 +199,8 @@ class SprintbacklogsController extends Controller
         $backlog = Backlog::whereNotIn('id_backlog', $idBacklog)->count();
         // echo($backlog);
         // return;
-        return view('sprintbacklogs.show', ['sprint' => $id, 'jumlahBacklog' => $backlog])->with(compact('html'));
+        $nama_sprint = Sprint::find($id);
+        return view('sprintbacklogs.show', ['sprint' => $id, 'jumlahBacklog' => $backlog])->with(compact('html','nama_sprint'));
     }
 
     public function edit($id)

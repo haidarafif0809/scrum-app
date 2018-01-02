@@ -14,7 +14,7 @@
 
       <div class="panel panel-default"> 
         <div class="panel-heading"> 
-          <h2 class="panel-title">Sprint Backlog </h2> 
+          <h2 class="panel-title">Sprint Backlog "{{ $nama_sprint->nama_sprint }}"</h2> 
         </div> 
 
         <div class="panel-body">
