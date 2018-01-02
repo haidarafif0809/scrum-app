@@ -14,7 +14,7 @@
 				</div>
 				<div class="panel-body">
 					<p> 
-						<a class="btn btn-primary" href="{{ route('aplikasi.create') }}">Tambah</a>
+						<a class="btn btn-primary" href="{{ route('aplikasi.create') }}" id="tambah-aplikasi-tour">Tambah</a>
 						<a class="btn btn-primary" href="{{ route('export.aplikasi') }}">Export</a>
 						<a class="btn btn-primary" href="{{ route('export.aplikasi.all') }}">Export All</a>
 					</p>

@@ -17,7 +17,7 @@
           </div> 
             
           <div class="panel-body"> 
-          <p> <a class="btn btn-primary" href="{{ route('sprintbacklogs.create', $sprintbacklogs->id) }}">Tambah</a> </p> 
+          <p> <a class="btn btn-primary" href="{{ route('sprintbacklogs.create', $sprintbacklogs->id) }}" id="tambah-sprintbacklog-tour">Tambah</a> </p> 
             {!! $html->table(['class'=>'table-striped']) !!} 
           </div> 
         </div> 

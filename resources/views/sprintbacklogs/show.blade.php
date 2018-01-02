@@ -21,7 +21,7 @@
           @if ($jumlahBacklog == 0)
           <span class="btn btn-primary" id="backlogHabis">Tambah SprintBacklog</span>
           @else
-          <a class="btn btn-primary" href="{{ route('sprintbacklogs.create_sprintbacklog', $sprint) }}">Tambah SprintBacklog</a>
+          <a class="btn btn-primary" href="{{ route('sprintbacklogs.create_sprintbacklog', $sprint) }}" id="tambah-sprintbacklog-tour">Tambah SprintBacklog</a>
           @endif
 
           <a class="btn btn-primary" href="{{ url('/export/sprintbacklogs',$sprint) }}">Export</a>
