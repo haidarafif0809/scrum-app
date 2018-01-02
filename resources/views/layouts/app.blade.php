@@ -166,13 +166,13 @@ function ckeditor($tema)
        <li <?=($tema == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
        <li <?=($tema == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
      </ul>
-   </li>
+   </li>{{-- 
    <li>
     <p class="navbar-btn">
       <a href="#" class="btn btn-info" id="start-tour">How to use?</a>
     </p>
     </li>
- 
+  --}}
       @endif
  </ul>
 
