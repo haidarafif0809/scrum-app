@@ -5,7 +5,7 @@
 @section('content') 
 <div class="container"> 
   <div class="row"> 
-    <div class="col-md-12">
+    <div class="col-md-12"> 
       <ul class="breadcrumb"> 
         <li><a href="{{ url('/home') }}">Dashboard</a></li> 
         <li class="active">Sprint</li> 
@@ -17,7 +17,7 @@
         </div> 
         
         <div class="panel-body"> 
-          <p> <a class="btn btn-primary" href="{{ route('sprints.create') }}" id="tambah-sprint-tour">Tambah</a> 
+          <p> <a class="btn btn-primary" href="{{ route('sprints.create') }}">Tambah</a> 
             <a class="btn btn-primary" href="{{ url('/export/sprints') }}">Export</a> 
             <a class="btn btn-primary" href="{{ url('/exportall/sprints') }}">Export All</a>   
             {!! $html->table(['class'=>'table-striped']) !!}

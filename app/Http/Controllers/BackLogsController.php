@@ -20,15 +20,8 @@ class BackLogsController extends Controller
 
     public function index(Request $request, Builder $htmlBuilder)
     {
-        //SELECT backlogs.id_backlog FROM `backlogs` LEFT JOIN sprintbacklogs ON backlogs.id_backlog = sprintbacklogs.id_backlog WHERE finish = 1
         if ($request->ajax()) {
-            //$backlogs = Backlog::with('aplikasi')->orderBy('id_backlog', 'desc');
-            $backlogs = Backlog::select('aplications.nama as nama_aplikasi','backlogs.nama_backlog as nama_backlog','backlogs.id_backlog as id_backlog')
-                ->leftJoin('aplications','backlogs.aplikasi_id','=','aplications.id')
-                ->leftJoin('sprintbacklogs','backlogs.id_backlog','=','sprintbacklogs.id_backlog')
-                ->where('sprintbacklogs.assign',0)
-                ->get();
-
+            $backlogs = Backlog::with('aplikasi')->orderBy('id_backlog', 'desc');
             return Datatables::of($backlogs)
                 ->escapeColumns([])
                 ->addColumn('action', function ($backlog) {
@@ -41,62 +34,23 @@ class BackLogsController extends Controller
                 })
                 ->addColumn('nama_backlog', function ($backlog) {
                     return '<a title="Detail Backlog" href="' . route('backlog.show', $backlog->id_backlog) . '">' . $backlog->nama_backlog . '</a>';
+
+                    // })->addColumn('no_urut', function($backlog) {
+                    // return view('datatable._noUrut', [
+                    //     'angka' => $backlog->getKolomAttribute()
+                    // ]);
+                    // return $backlog->getKolomAttribute();
+
                 })->make(true);
         }
         $html = $htmlBuilder
-        ->addColumn(['data' => 'nama_aplikasi', 'name' => 'nama_aplikasi', 'title' => 'Aplikasi'])
+        // ->addColumn(['data' => 'no_urut', 'name' => 'no_urut', 'title' => 'No.'])
+        ->addColumn(['data' => 'aplikasi.nama', 'name' => 'aplikasi.nama', 'title' => 'Aplikasi'])
             ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
+        // ->addColumn(['data' => 'demo', 'name' => 'demo', 'title' => 'Demo'])
+        // ->addColumn(['data' => 'catatan', 'name' => 'catatan', 'title' => 'Catatan'])
             ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
-    }
-
-    public function tableCheckout(){
-        //$backlogs = Backlog::with('aplikasi')->orderBy('id_backlog', 'desc');
-        $backlogs = Backlog::select('aplications.nama as nama_aplikasi','backlogs.nama_backlog as nama_backlog','backlogs.id_backlog as id_backlog')
-                ->leftJoin('aplications','backlogs.aplikasi_id','=','aplications.id')
-                ->leftJoin('sprintbacklogs','backlogs.id_backlog','=','sprintbacklogs.id_backlog')
-                ->where([
-                    ['sprintbacklogs.assign', '=', 1],
-                    ['finish', '=', 0]
-                ])
-                ->get();
-        return Datatables::of($backlogs)
-        ->escapeColumns([])
-        ->addColumn('action', function ($backlog) {
-                    return view('datatable._action_backlog', [
-                        'model'           => $backlog,
-                        'form_url'        => route('backlog.destroy', $backlog->id_backlog),
-                        'edit_url'        => route('backlog.edit', $backlog->id_backlog),
-                        'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama_backlog . '?',
-                    ]);
-                })
-        ->addColumn('nama_backlog', function ($backlog) {
-                    return '<a title="Detail Backlog" href="' . route('backlog.show', $backlog->id_backlog) . '">' . $backlog->nama_backlog . '</a>';
-                })
-        ->make(true);
-    }
-
-    public function tableFinish(){
-        //$backlogs = Backlog::with('aplikasi')->orderBy('id_backlog', 'desc');
-        $backlogs = Backlog::select('aplications.nama as nama_aplikasi','backlogs.nama_backlog as nama_backlog','backlogs.id_backlog as id_backlog')
-                ->leftJoin('aplications','backlogs.aplikasi_id','=','aplications.id')
-                ->leftJoin('sprintbacklogs','backlogs.id_backlog','=','sprintbacklogs.id_backlog')
-                ->where('sprintbacklogs.finish',1)
-                ->get();
-        return Datatables::of($backlogs)
-        ->escapeColumns([])
-        ->addColumn('action', function ($backlog) {
-                    return view('datatable._action_backlog', [
-                        'model'           => $backlog,
-                        'form_url'        => route('backlog.destroy', $backlog->id_backlog),
-                        'edit_url'        => route('backlog.edit', $backlog->id_backlog),
-                        'confirm_message' => 'Yakin mau menghapus ' . $backlog->nama_backlog . '?',
-                    ]);
-                })
-        ->addColumn('nama_backlog', function ($backlog) {
-                    return '<a title="Detail Backlog" href="' . route('backlog.show', $backlog->id_backlog) . '">' . $backlog->nama_backlog . '</a>';
-                })
-        ->make(true);
     }
 
     public function create()

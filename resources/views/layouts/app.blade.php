@@ -1,66 +1,65 @@
 <?php
 $requestURI = @$_SERVER['REQUEST_URI'];
-$tema       = @$_COOKIE['tema'];
-function ckeditor($tema)
-{
-    switch ($tema) {
-        case 'default':
-            return 'ckeditor_moono_lisa';
-            break;
-        case 'cerulean':
-            return 'ckeditor_kama';
-            break;
-        case 'cosmo':
-            return 'ckeditor_icy_orange';
-            break;
-        case 'cyborg':
-            return 'ckeditor_moono_dark';
-            break;
-        case 'darkly':
-            return 'ckeditor_moono_dark';
-            break;
-        case 'flatly':
-            return 'ckeditor_moono_blue';
-            break;
-        case 'journal':
-            return 'ckeditor_icy_orange';
-            break;
-        case 'lumen':
-            return 'ckeditor_kama';
-            break;
-        case 'paper':
-            return 'ckeditor_flat';
-            break;
-        case 'readable':
-            return 'ckeditor_office_2013';
-            break;
-        case 'sandstone':
-            return 'ckeditor_moono_color';
-            break;
-        case 'simplex':
-            return 'ckeditor_moono';
-            break;
-        case 'slate':
-            return 'ckeditor_moono_dark';
-            break;
-        case 'solar':
-            return 'ckeditor_moono_dark';
-            break;
-        case 'spacelab':
-            return 'ckeditor_office_2013';
-            break;
-        case 'superhero':
-            return 'ckeditor_moono_dark';
-            break;
-        case 'united':
-            return 'ckeditor_icy_orange';
-            break;
-        case 'yeti':
-            return 'ckeditor_moono';
-            break;
-    }
+$tema = @$_COOKIE['tema'];
+function ckeditor($tema) {
+  switch ($tema) {
+    case 'default':
+    return 'ckeditor_moono_lisa';
+    break;
+    case 'cerulean':
+    return 'ckeditor_kama';
+    break;
+    case 'cosmo':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'cyborg':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'darkly':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'flatly':
+    return 'ckeditor_moono_blue';
+    break;
+    case 'journal':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'lumen':
+    return 'ckeditor_kama';
+    break;
+    case 'paper':
+    return 'ckeditor_flat';
+    break;
+    case 'readable':
+    return 'ckeditor_office_2013';
+    break;
+    case 'sandstone':
+    return 'ckeditor_moono_color';
+    break;
+    case 'simplex':
+    return 'ckeditor_moono';
+    break;
+    case 'slate':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'solar':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'spacelab':
+    return 'ckeditor_office_2013';
+    break;
+    case 'superhero':
+    return 'ckeditor_moono_dark';
+    break;
+    case 'united':
+    return 'ckeditor_icy_orange';
+    break;
+    case 'yeti':
+    return 'ckeditor_moono';
+    break;
+  }
 }
-?>
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,12 +77,11 @@ function ckeditor($tema)
 
   <!-- Styles -->
 
-  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/detail.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/about.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/cara-menggunakan.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet"> 
+  <link href="{{ asset('css/detail.css') }}" rel="stylesheet"> 
+  <link href="{{ asset('css/about.css') }}" rel="stylesheet"> 
   <link href="{{ asset('css/font-awesome.min.css') }}" rel='stylesheet' type='text/css'>
-  <link href="{{ asset('') }}css/bootstrap<?=(isset($tema) && $tema != 'default' ? '-' . $tema : '.min');?>.css" rel="stylesheet" type='text/css'>
+  <link href="{{ asset('') }}css/bootstrap<?=(isset($tema) && $tema != 'default' ? '-'. $tema : '.min');?>.css" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" type='text/css'>
   <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
@@ -94,8 +92,8 @@ function ckeditor($tema)
   <!-- Scripts -->
   <script>
     window.Laravel = <?php echo json_encode([
-    'csrfToken' => csrf_token(),
-]); ?>
+      'csrfToken' => csrf_token(),
+      ]); ?>
 
 
     </script>
@@ -131,7 +129,7 @@ function ckeditor($tema)
     <!-- Left Side Of Navbar -->
     <ul class="nav navbar-nav">
      @if (Auth::check())
-     <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}" id="dashboard-tour">Dashboard</a></li>
+     <li<?=(preg_match("/home/", $requestURI) ? ' class="active"' : '');?>><a href="{{ url('/home') }}">Dashboard</a></li>
      @role('admin')
      <li class="dropdown <?=(preg_match("/(users|teams)/", $requestURI) ? 'active' : '');?>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Master Data <span class="caret"></span></a>
@@ -141,9 +139,9 @@ function ckeditor($tema)
       </ul>
     </li>
     @endrole
-    <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('aplikasi.index') }}" id="aplikasi-tour" class="tour-step-element-reflex">Aplikasi</a></li>
-    <li<?=(preg_match("/^\/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('backlog.index') }}" id="backlog-tour">Backlog</a></li>
-    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('sprints.index') }}" id="sprint-tour">Sprint</a></li>
+    <li<?=(preg_match("/aplikasi/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('aplikasi.index') }}">Aplikasi</a></li>
+    <li<?=(preg_match("/^\/backlog/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('backlog.index') }}">Backlog</a></li>
+    <li<?=(preg_match("/sprints/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('sprints.index') }}">Sprint</a></li>
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> Tema <span class="caret"></span></a>
       <ul class="dropdown-menu">
@@ -166,21 +164,14 @@ function ckeditor($tema)
        <li <?=($tema == 'united' ? 'class="active"' : '');?>><a href="{{ url('tema/united') }}">United</a></li>
        <li <?=($tema == 'yeti' ? 'class="active"' : '');?>><a href="{{ url('tema/yeti') }}">Yeti</a></li>
      </ul>
-   </li>{{-- 
-   <li>
-    <p class="navbar-btn">
-      <a href="#" class="btn btn-info" id="start-tour">How to use?</a>
-    </p>
-    </li>
-  --}}
-      @endif
+   </li>
+   @endif
  </ul>
 
  <!-- Right Side Of Navbar -->
  <ul class="nav navbar-nav navbar-right">
    <!-- Authentication Links -->
    @if (Auth::guest())
-  
    <li<?=(preg_match("/login/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('login') }}">Masuk</a></li>
    <li<?=(preg_match("/register/", $requestURI) ? ' class="active"' : '');?>><a href="{{ route('register') }}">Mendaftar</a></li>
    @else
@@ -220,13 +211,13 @@ function ckeditor($tema)
 
 
 <!-- footer -->
-<footer class="text-center footer">
+<footer class="text-center footer"> 
   <a class="up-arrow" id="back-to-top" href="#" data-toggle="tooltip" title="TO TOP">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a><br><br>
-  <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id" target="_blank">Andaglos Global Teknologi</a></p>
+  <p> 2017 &copy; Scrum App &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="{{ url('/about') }}">Santri Programmer</a> &nbsp;&nbsp; <i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp; <a href="https://www.andaglos.id" target="_blank">Andaglos Global Teknologi</a></p> 
 </footer>
-<script>
+<script>   
  $(window).scroll(function() {
   if($(this).scrollTop() &gt; 200) {
     $(&#39;#back-to-top&#39;).fadeIn();
@@ -237,7 +228,7 @@ function ckeditor($tema)
  $(&#39;#back-to-top&#39;).hide().click(function() {
   $(&#39;html, body&#39;).animate({scrollTop:0}, 1000);
   return false;
-});
+});         
 </script>
 <!-- akhir footer -->
 <!-- Scripts -->
@@ -245,7 +236,6 @@ function ckeditor($tema)
 <!-- <script src="{{ asset('js/app.js') }}"></script> -->
 <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/cara-menggunakan.js') }}"></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/customize.js') }}"></script>
@@ -269,6 +259,7 @@ function ckeditor($tema)
 </script>
 
 @yield('scripts')
-<script src="{{ asset('js/howto.js') }}"></script>
+
 </body>
 </html>
+

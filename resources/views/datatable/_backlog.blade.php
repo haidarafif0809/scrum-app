@@ -1,1 +1,1 @@
-<a href="{{ $backlog }}" class="btn btn-xs btn-primary" id="sprint-backlog-tour">Sprint Backlog</a>
+<a href="{{ $backlog }}" class="btn btn-xs btn-primary">Sprint Backlog</a>
