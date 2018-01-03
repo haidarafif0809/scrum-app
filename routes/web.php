@@ -249,3 +249,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('/testing/sprintbacklog', 'SprintbacklogsController@testing');
 Route::get('/settings/password', 'SettingsController@editPassword');
 Route::post('/settings/password', 'SettingsController@updatePassword');
+
+//Table Tab di Backlog
+Route::get('/table-checkout', 'BacklogsController@tableCheckout');
+Route::get('/table-finish', 'BacklogsController@tableFinish');
