@@ -118,11 +118,11 @@ Route::group(['middleware' => ['auth']], function () {
     ]);
     Route::post('import/backlog', [
         'as'   => 'import.backlog',
-        'uses' => 'BacklogsController@importExcel',
+        'uses' => 'BackLogsController@importExcel',
     ]);
     Route::get('template/backlog', [
         'as'   => 'template.backlog',
-        'uses' => 'BacklogsController@generateExcelTemplate',
+        'uses' => 'BackLogsController@generateExcelTemplate',
     ]);
     Route::get('export/backlog', [
         'as'   => 'export.backlog',
@@ -251,5 +251,5 @@ Route::get('/settings/password', 'SettingsController@editPassword');
 Route::post('/settings/password', 'SettingsController@updatePassword');
 
 //Table Tab di Backlog
-Route::get('/table-checkout', 'BacklogsController@tableCheckout');
-Route::get('/table-finish', 'BacklogsController@tableFinish');
+Route::get('/table-checkout', 'BackLogsController@tableCheckout');
+Route::get('/table-finish', 'BackLogsController@tableFinish');

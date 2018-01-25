@@ -34,7 +34,7 @@ class TestHTTPAplikasi extends TestCase
     } 
 
 
-   //HALAMAN MENU EDIT BANK
+   //HALAMAN MENU EDIT APLIKASI
     public function testAplikasiEdit(){
 
       $aplikasi = Aplication::create(["nama" => "AplikasiHttp", "kode" => "05"]);
@@ -46,7 +46,7 @@ class TestHTTPAplikasi extends TestCase
       $response->assertStatus(200)
       ->assertSee('AplikasiHttp');
     }
-     //PROSES EDIT BANK
+     //PROSES EDIT APLIKASI
     public function testAplikasiUpdate(){
 
      $aplikasi = Aplication::create(["nama" => "AplikasiTest", "kode" => "05"]);
@@ -61,7 +61,7 @@ class TestHTTPAplikasi extends TestCase
      $response2 = $this->get($response->headers->get('location'))->assertSee('Berhasil Mengubah AplikasiHttp');
 
    }
-   //HAPUS BANK
+   //HAPUS APLIKASI
    public function testAplikasiHapus(){
     $aplikasi = Aplication::create(["nama" => "AplikasiHttp", "kode" => "05"]);
 

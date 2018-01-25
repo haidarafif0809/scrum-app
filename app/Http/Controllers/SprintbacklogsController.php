@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aplication;
 use App\Backlog;
 use App\Sprint;
 use App\Sprintbacklog;
@@ -181,11 +182,15 @@ class SprintbacklogsController extends Controller
 
                 ->addColumn('detail', function ($backlog) {
                     return '<a title="Detail Backlog" href="' . route('backlog.show', $backlog->id_backlog) . '">' . $backlog->nama_backlog . '</a>';
+                })->addColumn('nama_aplikasi', function ($backlog) {
+                    $backlogs = Backlog::select('aplikasi_id')->where('id_backlog',$backlog->id_backlog)->first();
+                    $aplikasi = Aplication::select()->where('id',$backlogs->aplikasi_id)->first();
+                    return $aplikasi->nama;
                 })->make(true);
         }
         $html = $htmlBuilder
-        // ->addColumn(['data' => 'aplikasi_id', 'name'=>'aplikasi_id', 'title'=>'Aplikasi'])
-        ->addColumn(['data' => 'detail', 'name' => 'backlog.nama_backlog', 'title' => 'Nama Backlog'])
+            ->addColumn(['data' => 'detail', 'name' => 'backlog.nama_backlog', 'title' => 'Nama Backlog'])
+            ->addColumn(['data' => 'nama_aplikasi', 'name'=>'nama_aplikasi', 'title'=>'Aplikasi'])
             ->addColumn(['data' => 'isi_kepentingan', 'name' => 'isi_kepentingan', 'title' => 'Isi Kepentingan'])
             ->addColumn(['data' => 'perkiraan_waktu', 'name' => 'perkiraan_waktu', 'title' => 'Perkiraan Waktu'])
             ->addColumn(['data' => 'assign', 'name' => 'assign', 'title' => 'Assign', 'orderable' => false, 'searchable' => false])

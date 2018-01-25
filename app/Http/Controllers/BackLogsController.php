@@ -44,7 +44,7 @@ class BackLogsController extends Controller
                 })->make(true);
         }
         $html = $htmlBuilder
-        ->addColumn(['data' => 'nama_aplikasi', 'name' => 'nama_aplikasi', 'title' => 'Aplikasi'])
+            ->addColumn(['data' => 'nama_aplikasi', 'name' => 'nama_aplikasi', 'title' => 'Aplikasi'])
             ->addColumn(['data' => 'nama_backlog', 'name' => 'nama_backlog', 'title' => 'Nama Backlog'])
             ->addColumn(['data' => 'action', 'name' => 'action', 'title' => 'Aksi', 'orderable' => false, 'searchable' => false]);
         return view('backlog.index')->with(compact('html'));
