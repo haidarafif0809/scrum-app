@@ -103,7 +103,7 @@ class SprintbacklogsController extends Controller
     public function Show(Request $request, Builder $htmlBuilder, $id)
     {
         if ($request->ajax()) {
-            $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id)->orderBy('id', 'desc');
+            $sprintbacklogs = Sprintbacklog::with('backlog')->where('id_sprint', $id)->orderBy('isi_kepentingan', 'desc');
             return Datatables::of($sprintbacklogs)
                 ->addColumn('action', function ($sprintbacklog) {
                     return view('datatable._actionSprintBacklog', [
@@ -186,7 +186,8 @@ class SprintbacklogsController extends Controller
                     $backlogs = Backlog::select('aplikasi_id')->where('id_backlog',$backlog->id_backlog)->first();
                     $aplikasi = Aplication::select()->where('id',$backlogs->aplikasi_id)->first();
                     return $aplikasi->nama;
-                })->make(true);
+                })
+                ->make(true);
         }
         $html = $htmlBuilder
             ->addColumn(['data' => 'detail', 'name' => 'backlog.nama_backlog', 'title' => 'Nama Backlog'])

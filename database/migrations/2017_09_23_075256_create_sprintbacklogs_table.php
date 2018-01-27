@@ -11,7 +11,7 @@ class CreateSprintbacklogsTable extends Migration
     {
         Schema::create('sprintbacklogs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('isi_kepentingan');
+            $table->integer('isi_kepentingan');
             $table->string('perkiraan_waktu');
             $table->integer('id_sprint');
             $table->integer('id_backlog');
